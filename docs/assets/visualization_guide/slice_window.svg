@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="713" viewBox="0 0 520 713" role="img" aria-labelledby="title description">
+<title id="title">Full diagonal intervals and a smaller window</title>
+<desc id="description">The direct sum of the closed square modules [0,2]^2 and [1,3]^2 restricts to closed intervals [0,2] and [1,3] on q(t)=(t,t). The window from t=3/2 to t=7/4 meets both intervals. Restricting the computation to that window returns two copies of the closed interval [3/2,7/4] with both ends censored. The restricted answer establishes multiplicity two in the window but does not determine the ambient endpoints. The lower panel magnifies the window and has a different scale.</desc>
+<!-- Authored schematic; regenerate with docs/build_scripts/render_visualization_guide_figures.py. -->
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#245c99" stroke-width="1.5"/></marker></defs>
+<rect width="520" height="713" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b42" text-anchor="middle">
+<text x="260" y="38" font-size="26" fill="#172b42" text-anchor="middle">Following q(t) = (t, t)</text>
+<text x="260" y="86" font-size="24" fill="#172b42" text-anchor="middle">Whole line: two closed intervals</text>
+<rect x="258.0" y="110" width="31.0" height="162" fill="#fef0d6" stroke="none" stroke-width="1"/>
+<path d="M 72 113 L 72 256" fill="none" stroke="#dbe2e8" stroke-width="1" stroke-dasharray="3 4"/>
+<text x="72" y="298" font-size="23" fill="#172b42" text-anchor="middle">0</text>
+<path d="M 196 113 L 196 256" fill="none" stroke="#dbe2e8" stroke-width="1" stroke-dasharray="3 4"/>
+<text x="196" y="298" font-size="23" fill="#172b42" text-anchor="middle">1</text>
+<path d="M 320 113 L 320 256" fill="none" stroke="#dbe2e8" stroke-width="1" stroke-dasharray="3 4"/>
+<text x="320" y="298" font-size="23" fill="#172b42" text-anchor="middle">2</text>
+<path d="M 444 113 L 444 256" fill="none" stroke="#dbe2e8" stroke-width="1" stroke-dasharray="3 4"/>
+<text x="444" y="298" font-size="23" fill="#172b42" text-anchor="middle">3</text>
+<path d="M 72 155 L 320 155" fill="none" stroke="#245c99" stroke-width="6" stroke-dasharray=""/>
+<circle cx="72" cy="155" r="6" fill="#245c99" stroke="#245c99" stroke-width="2.5"/>
+<circle cx="320" cy="155" r="6" fill="#245c99" stroke="#245c99" stroke-width="2.5"/>
+<path d="M 196 224 L 444 224" fill="none" stroke="#0f766e" stroke-width="6" stroke-dasharray=""/>
+<circle cx="196" cy="224" r="6" fill="#0f766e" stroke="#0f766e" stroke-width="2.5"/>
+<circle cx="444" cy="224" r="6" fill="#0f766e" stroke="#0f766e" stroke-width="2.5"/>
+<text x="483" y="298" font-size="24" fill="#172b42" text-anchor="middle">t</text>
+<path d="M 258.0 313 L 289.0 313" fill="none" stroke="#b45309" stroke-width="4" stroke-dasharray=""/>
+<text x="260" y="353" font-size="24" fill="#b45309" text-anchor="middle">Window: 3/2 ≤ t ≤ 7/4</text>
+<path d="M 34 379 L 486 379" fill="none" stroke="#cbd5e1" stroke-width="1" stroke-dasharray=""/>
+<text x="260" y="421" font-size="24" fill="#172b42" text-anchor="middle">Window restriction, magnified</text>
+<rect x="135" y="441" width="250" height="151" fill="#fef0d6" stroke="none" stroke-width="1"/>
+<path d="M 135 496 L 385 496" fill="none" stroke="#245c99" stroke-width="6" stroke-dasharray=""/>
+<text x="135" y="482" font-size="27" fill="#b45309" text-anchor="middle">?</text>
+<text x="385" y="482" font-size="27" fill="#b45309" text-anchor="middle">?</text>
+<text x="260" y="542" font-size="24" fill="#172b42" text-anchor="middle">multiplicity 2</text>
+<text x="135" y="581" font-size="24" fill="#172b42" text-anchor="middle">3/2</text>
+<text x="385" y="581" font-size="24" fill="#172b42" text-anchor="middle">7/4</text>
+<text x="445" y="581" font-size="24" fill="#172b42" text-anchor="middle">t</text>
+<text x="260" y="637" font-size="22" fill="#172b42" text-anchor="middle">Both classes exist throughout this window.</text>
+<text x="260" y="677" font-size="22" fill="#475569" text-anchor="middle">? leaves their ambient endpoints unknown.</text>
+</g></svg>

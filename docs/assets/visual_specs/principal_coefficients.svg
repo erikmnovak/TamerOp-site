@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="490" viewBox="0 0 520 490" role="img" aria-labelledby="title description">
+<title id="title">Two zeros in a principal summand matrix</title>
+<desc id="description">On the poset 1 less than 2, a map from P_u to P_v can have a nonzero coefficient only when v is at most u. The example is the identity matrix on P1 plus P2. Rows are targets and columns are sources. The upper right zero is allowed; the lower left zero is forced and is marked with a dagger.</desc>
+<!-- Authored schematic; regenerate with docs/build_scripts/render_visual_specs_figures.py. -->
+<rect width="520" height="490" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b42" text-anchor="middle">
+<text x="260" y="36" font-size="25" fill="#172b42" text-anchor="middle">Principal modules on 1 &lt; 2</text>
+<text x="318" y="82" font-size="23" fill="#172b42" text-anchor="middle">Source columns</text>
+<text x="253" y="123" font-size="26" fill="#172b42" text-anchor="middle">P₁</text>
+<text x="383" y="123" font-size="26" fill="#172b42" text-anchor="middle">P₂</text>
+<text x="81" y="188" font-size="22" fill="#172b42" text-anchor="middle">Target</text>
+<text x="81" y="216" font-size="22" fill="#172b42" text-anchor="middle">rows</text>
+<text x="165" y="185" font-size="26" fill="#172b42" text-anchor="middle">P₁</text>
+<text x="165" y="265" font-size="26" fill="#172b42" text-anchor="middle">P₂</text>
+<rect x="338" y="145" width="90" height="55" rx="5" fill="#eff6ff" stroke="#245c99" stroke-width="2"/>
+<rect x="208" y="225" width="90" height="55" rx="5" fill="#fff7ed" stroke="#9a470b" stroke-width="2"/>
+<path d="M 208 140 H 197 V 287 H 208" fill="none" stroke="#172b42" stroke-width="2.5" stroke-dasharray=""/>
+<path d="M 428 140 H 439 V 287 H 428" fill="none" stroke="#172b42" stroke-width="2.5" stroke-dasharray=""/>
+<text x="253" y="185" font-size="30" fill="#172b42" text-anchor="middle">1</text>
+<text x="383" y="185" font-size="30" fill="#245c99" text-anchor="middle">0</text>
+<text x="253" y="265" font-size="30" fill="#9a470b" text-anchor="middle">0†</text>
+<text x="383" y="265" font-size="30" fill="#172b42" text-anchor="middle">1</text>
+<text x="260" y="340" font-size="23" fill="#245c99" text-anchor="middle">P₂ → P₁: 1 ≤ 2, so zero is allowed.</text>
+<text x="260" y="386" font-size="23" fill="#9a470b" text-anchor="middle">P₁ → P₂: 2 ≰ 1, so zero is forced.</text>
+<text x="260" y="448" font-size="22" fill="#475569" text-anchor="middle">† marks the order condition.</text>
+</g></svg>

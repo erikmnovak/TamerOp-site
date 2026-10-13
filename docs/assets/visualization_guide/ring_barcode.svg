@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="570" viewBox="0 0 520 570" role="img" aria-labelledby="title description">
+<title id="title">A ring and its interval in first homology</title>
+<desc id="description">Over F2, the eight outer maximal cells of a three by three cubical image enter at zero. The central cell enters at five. Their faces enter with them. First homology is one dimensional from zero included to five excluded. This schematic identifies the interval without choosing a cycle from the reduction.</desc>
+<!-- Authored schematic; regenerate with docs/build_scripts/render_visualization_guide_figures.py. -->
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#245c99" stroke-width="1.5"/></marker></defs>
+<rect width="520" height="570" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b42" text-anchor="middle">
+<text x="260" y="38" font-size="26" fill="#172b42" text-anchor="middle">The cell that fills the hole</text>
+<text x="137" y="91" font-size="25" fill="#172b42" text-anchor="middle">0 ≤ t &lt; 5</text>
+<rect x="65" y="127" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="113" y="127" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="161" y="127" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="65" y="175" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="161" y="175" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="65" y="223" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="113" y="223" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="161" y="223" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<text x="137" y="317" font-size="26" fill="#172b42" text-anchor="middle">H₁ = F₂</text>
+<text x="387" y="91" font-size="25" fill="#172b42" text-anchor="middle">t ≥ 5</text>
+<rect x="315" y="127" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="363" y="127" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="411" y="127" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="315" y="175" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="363" y="175" width="48" height="48" fill="#fbd5b6" stroke="#245c99" stroke-width="1"/>
+<rect x="411" y="175" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="315" y="223" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="363" y="223" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<rect x="411" y="223" width="48" height="48" fill="#d5e6f4" stroke="#245c99" stroke-width="1"/>
+<text x="387" y="317" font-size="26" fill="#172b42" text-anchor="middle">H₁ = 0</text>
+<path d="M 228 198 L 290 198" fill="none" stroke="#245c99" stroke-width="2.5" stroke-dasharray="" marker-end="url(#arrow)"/>
+<text x="260" y="368" font-size="24" fill="#172b42" text-anchor="middle">One interval in first homology</text>
+<path d="M 104 421 L 410 421" fill="none" stroke="#245c99" stroke-width="6" stroke-dasharray=""/>
+<circle cx="104" cy="421" r="6" fill="#245c99" stroke="#245c99" stroke-width="2.5"/>
+<circle cx="410" cy="421" r="6" fill="white" stroke="#245c99" stroke-width="2.5"/>
+<text x="104" y="464" font-size="25" fill="#172b42" text-anchor="middle">0</text>
+<text x="410" y="464" font-size="25" fill="#172b42" text-anchor="middle">5</text>
+<text x="458" y="429" font-size="25" fill="#172b42" text-anchor="middle">t</text>
+<text x="260" y="510" font-size="22" fill="#172b42" text-anchor="middle">Filled end included; open end excluded.</text>
+<text x="260" y="546" font-size="22" fill="#475569" text-anchor="middle">t is the entry threshold of the cells.</text>
+</g></svg>

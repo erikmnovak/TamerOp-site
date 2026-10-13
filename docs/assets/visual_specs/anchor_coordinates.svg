@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="705" viewBox="0 0 520 705" role="img" aria-labelledby="title description">
+<title id="title">One data anchor in two horizontal windows</title>
+<desc id="description">The same data point (1,1) appears in two axis windows. Both vertical axes run from zero to two. The first horizontal axis runs from zero to two, placing the point halfway across; the second runs from zero to four, placing it one quarter across. A connector must use the updated pixel position.</desc>
+<!-- Authored schematic; regenerate with docs/build_scripts/render_visual_specs_figures.py. -->
+<rect width="520" height="705" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b42" text-anchor="middle">
+<text x="260" y="36" font-size="25" fill="#172b42" text-anchor="middle">The data anchor stays at (1, 1)</text>
+<text x="260" y="82" font-size="23" fill="#172b42" text-anchor="middle">Horizontal window: 0 to 2</text>
+<path d="M 90 102 V 252 H 450" fill="none" stroke="#172b42" stroke-width="2" stroke-dasharray=""/>
+<path d="M 85 102 H 90" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="73" y="110" font-size="22" fill="#172b42" text-anchor="end">2</text>
+<path d="M 85 177 H 90" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="73" y="185" font-size="22" fill="#172b42" text-anchor="end">1</text>
+<path d="M 85 252 H 90" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="73" y="260" font-size="22" fill="#172b42" text-anchor="end">0</text>
+<text x="48" y="146" font-size="23" fill="#172b42" text-anchor="middle">y</text>
+<path d="M 90.0 252 V 257" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="90.0" y="282" font-size="22" fill="#172b42" text-anchor="middle">0</text>
+<path d="M 270.0 252 V 257" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="270.0" y="282" font-size="22" fill="#172b42" text-anchor="middle">1</text>
+<path d="M 450.0 252 V 257" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="450.0" y="282" font-size="22" fill="#172b42" text-anchor="middle">2</text>
+<text x="472" y="260" font-size="23" fill="#172b42" text-anchor="middle">x</text>
+<path d="M 90 177 H 270.0 V 252" fill="none" stroke="#245c99" stroke-width="2" stroke-dasharray="5 5"/>
+<circle cx="270.0" cy="177" r="6" fill="#245c99"/>
+<text x="288.0" y="164" font-size="24" fill="#245c99" text-anchor="start">(1, 1)</text>
+<text x="270" y="322" font-size="22" fill="#245c99" text-anchor="middle">halfway across</text>
+<text x="260" y="370" font-size="23" fill="#172b42" text-anchor="middle">Horizontal window: 0 to 4</text>
+<path d="M 90 390 V 540 H 450" fill="none" stroke="#172b42" stroke-width="2" stroke-dasharray=""/>
+<path d="M 85 390 H 90" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="73" y="398" font-size="22" fill="#172b42" text-anchor="end">2</text>
+<path d="M 85 465 H 90" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="73" y="473" font-size="22" fill="#172b42" text-anchor="end">1</text>
+<path d="M 85 540 H 90" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="73" y="548" font-size="22" fill="#172b42" text-anchor="end">0</text>
+<text x="48" y="434" font-size="23" fill="#172b42" text-anchor="middle">y</text>
+<path d="M 90.0 540 V 545" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="90.0" y="570" font-size="22" fill="#172b42" text-anchor="middle">0</text>
+<path d="M 180.0 540 V 545" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="180.0" y="570" font-size="22" fill="#172b42" text-anchor="middle">1</text>
+<path d="M 270.0 540 V 545" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="270.0" y="570" font-size="22" fill="#172b42" text-anchor="middle">2</text>
+<path d="M 360.0 540 V 545" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="360.0" y="570" font-size="22" fill="#172b42" text-anchor="middle">3</text>
+<path d="M 450.0 540 V 545" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray=""/>
+<text x="450.0" y="570" font-size="22" fill="#172b42" text-anchor="middle">4</text>
+<text x="472" y="548" font-size="23" fill="#172b42" text-anchor="middle">x</text>
+<path d="M 90 465 H 180.0 V 540" fill="none" stroke="#245c99" stroke-width="2" stroke-dasharray="5 5"/>
+<circle cx="180.0" cy="465" r="6" fill="#245c99"/>
+<text x="198.0" y="452" font-size="24" fill="#245c99" text-anchor="start">(1, 1)</text>
+<text x="270" y="610" font-size="22" fill="#245c99" text-anchor="middle">one quarter across</text>
+<text x="260" y="652" font-size="22" fill="#475569" text-anchor="middle">Axis limits change the pixel position.</text>
+<text x="260" y="683" font-size="22" fill="#475569" text-anchor="middle">The selected point does not change.</text>
+</g></svg>

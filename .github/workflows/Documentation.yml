@@ -1,0 +1,120 @@
+name: Documentation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17,47 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.check.outputs.needed }}
+      site_sha: ${{ steps.check.outputs.site_sha }}
+      package_sha: ${{ steps.check.outputs.package_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: site
+      - uses: actions/checkout@v4
+        with:
+          repository: erikmnovak/TamerOp.jl
+          ref: main
+          path: TamerOp.jl
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: check
+        working-directory: site
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" = schedule ]; then
+            python docs/build_scripts/check_update.py --scheduled
+          else
+            python docs/build_scripts/check_update.py
+          fi
+
+  build:
+    needs: source
+    if: needs.source.outputs.needed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        working-directory: site
+    env:
+      JULIA_NUM_THREADS: '1'
+      JULIA_NUM_PRECOMPILE_TASKS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.source.outputs.site_sha }}
+          path: site
+      - uses: actions/checkout@v4
+        with:
+          repository: erikmnovak/TamerOp.jl
+          ref: ${{ needs.source.outputs.package_sha }}
+          path: TamerOp.jl
+          persist-credentials: false
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.12'
+      - uses: julia-actions/cache@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: site/docs/requirements.txt
+      - run: python -m pip install -r docs/requirements.txt
+      - run: julia --startup-file=no --threads=1 docs/bootstrap.jl
+      - run: python -m unittest discover -s docs/build_scripts -p 'test_*.py'
+      - run: python docs/build_scripts/publish.py
+      - run: python docs/build_scripts/check_site.py
+      - name: Save rendered site for review
+        if: ${{ !cancelled() && hashFiles('site/docs/build/catalog.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: teaching-site
+          path: site/docs/build
+          if-no-files-found: error
+      - name: Upload site for GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site/docs/build
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: notebook-failure
+          path: site/docs/.build/*-failed.ipynb
+          if-no-files-found: ignore
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4

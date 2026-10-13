@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="690" viewBox="0 0 520 690" role="img" aria-labelledby="title desc">
+<title id="title">Three saved selections in a closed square module</title>
+<desc id="desc">The interior points x and y have rational vector spaces and their map is the identity. The boundary point b has the same rational space. The point z beyond the square has zero space. All four parameters belong to the encoding domain.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#156b91"/></marker></defs>
+<rect width="520" height="690" fill="white"/>
+<g font-family="DejaVu Sans,sans-serif" font-size="24" fill="#19334b">
+<text x="260" y="35" text-anchor="middle">The selections we keep</text>
+<text x="260" y="75" text-anchor="middle">ℚ on the closed square; 0 outside</text>
+<rect x="120" y="182" width="208" height="208" fill="#dcebf3" stroke="#156b91" stroke-width="3"/>
+<path d="M 68.0 114.40000000000003 V 442.0 H 447.59999999999997" fill="none" stroke="#667782" stroke-width="1.5"/>
+<text x="120" y="475" text-anchor="middle">0</text>
+<text x="55" y="398" text-anchor="end">0</text>
+<text x="224" y="475" text-anchor="middle">1</text>
+<text x="55" y="294" text-anchor="end">1</text>
+<text x="328" y="475" text-anchor="middle">2</text>
+<text x="55" y="190" text-anchor="end">2</text>
+<text x="458" y="450">x₁</text>
+<text x="61" y="106">x₂</text>
+<path d="M 172.0 338.0 L 268.72 241.28" stroke="#156b91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="192" y="272">[1]</text>
+<circle cx="172.0" cy="338.0" r="6" fill="#156b91"/>
+<text x="147.0" y="328.0">x</text>
+<circle cx="276.0" cy="234.0" r="6" fill="#156b91"/>
+<text x="289.0" y="222.0">y</text>
+<circle cx="328" cy="286" r="6" fill="#a04c13"/>
+<text x="303" y="273">b</text>
+<circle cx="380.0" cy="286" r="6" fill="#a04c13"/>
+<text x="394.0" y="294">z</text>
+<text x="260" y="520" text-anchor="middle" font-size="22">x = (1/2, 1/2), y = (3/2, 3/2)</text>
+<text x="260" y="558" text-anchor="middle">M(x ≤ y) = [1]</text>
+<text x="260" y="597" text-anchor="middle">M(b) = ℚ,  b = (2, 1)</text>
+<text x="260" y="636" text-anchor="middle">M(z) = 0,  z = (5/2, 1)</text>
+<text x="260" y="678" text-anchor="middle" font-size="21">All four parameters are represented.</text>
+</g></svg>

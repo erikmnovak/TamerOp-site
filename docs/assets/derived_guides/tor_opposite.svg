@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="430" viewBox="0 0 560 430" role="img" aria-labelledby="title desc">
+<title id="title">Opposite and forward modules in Tor</title><desc id="desc">On the opposite chain, the right simple has K at vertex 2 mapping to zero at vertex 1. On the forward chain, the left simple has K at vertex 1 mapping to zero at vertex 2. Tensoring the right projective resolution with the left module gives K in degree 1 mapping by zero to zero in degree 0.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#465f72"/></marker></defs>
+<rect x="1" y="1" width="558" height="428" rx="12" fill="#fff" stroke="#cbd5df"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#183549">
+<text x="280" y="32" font-size="20" text-anchor="middle" font-weight="bold">Follow the order before tensoring</text>
+<text x="23" y="81" font-size="19" text-anchor="start" font-weight="normal">R on Pᵒᵖ</text>
+<text x="195" y="149" font-size="15" text-anchor="middle" font-weight="normal">vertex 1</text>
+<text x="420" y="149" font-size="15" text-anchor="middle" font-weight="normal">vertex 2</text>
+<text x="420" y="118" font-size="24" text-anchor="middle" font-weight="normal">K</text>
+<text x="195" y="118" font-size="24" text-anchor="middle" font-weight="normal">0</text>
+<path d="M396 111L220 111" fill="none" stroke="#465f72" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="308" y="101" font-size="17" text-anchor="middle" font-weight="normal">0</text>
+<text x="23" y="186" font-size="19" text-anchor="start" font-weight="normal">L on P</text>
+<text x="195" y="254" font-size="15" text-anchor="middle" font-weight="normal">vertex 1</text>
+<text x="420" y="254" font-size="15" text-anchor="middle" font-weight="normal">vertex 2</text>
+<text x="195" y="223" font-size="24" text-anchor="middle" font-weight="normal">K</text>
+<text x="420" y="223" font-size="24" text-anchor="middle" font-weight="normal">0</text>
+<path d="M219 216L395 216" fill="none" stroke="#465f72" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="308" y="206" font-size="17" text-anchor="middle" font-weight="normal">0</text>
+<path d="M22 277H538" stroke="#cbd5df"/>
+<text x="280" y="306" font-size="17" text-anchor="middle" font-weight="normal">After tensoring the right resolution with L</text>
+<text x="180" y="345" font-size="25" text-anchor="middle" font-weight="normal">K</text>
+<text x="405" y="345" font-size="25" text-anchor="middle" font-weight="normal">0</text>
+<path d="M208 338L378 338" fill="none" stroke="#465f72" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="290" y="329" font-size="17" text-anchor="middle" font-weight="normal">∂₁ = 0</text>
+<text x="180" y="377" font-size="17" text-anchor="middle" font-weight="normal">degree 1</text>
+<text x="405" y="377" font-size="17" text-anchor="middle" font-weight="normal">degree 0</text>
+<text x="280" y="410" font-size="19" text-anchor="middle" font-weight="normal">Tor₁(R,L) ≅ K;  Tor₀(R,L) = 0.</text>
+</g>
+</svg>

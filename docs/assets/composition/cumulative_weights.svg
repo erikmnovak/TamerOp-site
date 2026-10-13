@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="790" viewBox="0 0 520 790" role="img" aria-labelledby="title desc">
+<title id="title">Recovering the square from signed weights</title>
+<desc id="desc">At one comma one the lower positive atom gives one. At two comma one the lower positive and negative atoms cancel. Shaded rectangles select atoms below the query in both coordinates.</desc>
+<rect width="520" height="790" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif" font-size="22" fill="#19334b">
+<text x="260" y="30" text-anchor="middle">Query (1, 1)</text>
+<rect x="70.19999999999999" y="195" width="156.8" height="119.0" fill="#e5f0f5"/>
+<path d="M 70.19999999999999 195 H 227 V 314.0" fill="none" stroke="#517b94" stroke-width="2"/>
+<path d="M 70.19999999999999 314.0 H 406.2 M 70.19999999999999 314.0 V 59.0" fill="none" stroke="#667782" stroke-width="1.5"/>
+<text x="115" y="341.0" text-anchor="middle">0</text>
+<text x="56.19999999999999" y="287" text-anchor="end">0</text>
+<text x="227" y="341.0" text-anchor="middle">1</text>
+<text x="56.19999999999999" y="202" text-anchor="end">1</text>
+<text x="339" y="341.0" text-anchor="middle">2</text>
+<text x="56.19999999999999" y="117" text-anchor="end">2</text>
+<text x="417.40000000000003" y="321.0">x</text>
+<text x="63.19999999999999" y="50.49999999999997">y</text>
+<circle cx="115" cy="280" r="7" fill="#156b91" stroke="#156b91" stroke-width="2"/>
+<text x="128" y="269" font-size="24">+1</text>
+<circle cx="339" cy="280" r="7" fill="white" stroke="#156b91" stroke-width="2"/>
+<text x="352" y="269" font-size="24">−1</text>
+<circle cx="115" cy="110" r="7" fill="white" stroke="#156b91" stroke-width="2"/>
+<text x="128" y="99" font-size="24">−1</text>
+<circle cx="339" cy="110" r="7" fill="white" stroke="#156b91" stroke-width="2"/>
+<text x="352" y="99" font-size="24">+1</text>
+<path d="M 220 188 L 234 202 M 220 202 L 234 188" stroke="#a04c13" stroke-width="3"/>
+<text x="260" y="375" text-anchor="middle">Sum: +1 = 1</text>
+<text x="260" y="420" text-anchor="middle">Query (2, 1)</text>
+<rect x="70.19999999999999" y="585" width="268.8" height="119.0" fill="#e5f0f5"/>
+<path d="M 70.19999999999999 585 H 339 V 704.0" fill="none" stroke="#517b94" stroke-width="2"/>
+<path d="M 70.19999999999999 704.0 H 406.2 M 70.19999999999999 704.0 V 449.0" fill="none" stroke="#667782" stroke-width="1.5"/>
+<text x="115" y="731.0" text-anchor="middle">0</text>
+<text x="56.19999999999999" y="677" text-anchor="end">0</text>
+<text x="227" y="731.0" text-anchor="middle">1</text>
+<text x="56.19999999999999" y="592" text-anchor="end">1</text>
+<text x="339" y="731.0" text-anchor="middle">2</text>
+<text x="56.19999999999999" y="507" text-anchor="end">2</text>
+<text x="417.40000000000003" y="711.0">x</text>
+<text x="63.19999999999999" y="440.5">y</text>
+<circle cx="115" cy="670" r="7" fill="#156b91" stroke="#156b91" stroke-width="2"/>
+<text x="128" y="659" font-size="24">+1</text>
+<circle cx="339" cy="670" r="7" fill="#156b91" stroke="#156b91" stroke-width="2"/>
+<text x="352" y="659" font-size="24">−1</text>
+<circle cx="115" cy="500" r="7" fill="white" stroke="#156b91" stroke-width="2"/>
+<text x="128" y="489" font-size="24">−1</text>
+<circle cx="339" cy="500" r="7" fill="white" stroke="#156b91" stroke-width="2"/>
+<text x="352" y="489" font-size="24">+1</text>
+<path d="M 332 578 L 346 592 M 332 592 L 346 578" stroke="#a04c13" stroke-width="3"/>
+<text x="260" y="765" text-anchor="middle">Sum: +1 − 1 = 0</text>
+<text x="260" y="786" text-anchor="middle" font-size="19">Filled dots contribute; the cross marks the query.</text>
+</g></svg>

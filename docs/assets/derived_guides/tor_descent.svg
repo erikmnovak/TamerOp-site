@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="426" viewBox="0 0 560 426" role="img" aria-labelledby="title desc">
+<title id="title">Checking that a product descends to homology</title><desc id="desc">Decompose cycles in each degree into boundaries B and a chosen complement H. Products involving a boundary must represent zero; only products from H in both degrees contribute homology coordinates.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#465f72"/></marker></defs>
+<rect x="1" y="1" width="558" height="424" rx="12" fill="#fff" stroke="#cbd5df"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#183549">
+<text x="280" y="31" font-size="17" text-anchor="middle" font-weight="bold">Expand each cycle into boundary and representative</text>
+<text x="280" y="66" font-size="20" text-anchor="middle">Z<tspan baseline-shift="sub" font-size="14">p</tspan> = B<tspan baseline-shift="sub" font-size="14">p</tspan> ⊕ H<tspan baseline-shift="sub" font-size="14">p</tspan>,    Z<tspan baseline-shift="sub" font-size="14">q</tspan> = B<tspan baseline-shift="sub" font-size="14">q</tspan> ⊕ H<tspan baseline-shift="sub" font-size="14">q</tspan></text>
+<text x="275" y="113" font-size="23" text-anchor="middle">B<tspan baseline-shift="sub" font-size="16.1">q</tspan></text>
+<text x="443" y="113" font-size="23" text-anchor="middle">H<tspan baseline-shift="sub" font-size="16.1">q</tspan></text>
+<text x="88" y="173" font-size="23" text-anchor="middle">B<tspan baseline-shift="sub" font-size="16.1">p</tspan></text>
+<text x="88" y="279" font-size="23" text-anchor="middle">H<tspan baseline-shift="sub" font-size="16.1">p</tspan></text>
+<rect x="190" y="132" width="156" height="91" rx="7" fill="#f2f5f8" stroke="#b5c4ce"/>
+<text x="268" y="167" font-size="19" text-anchor="middle" font-weight="normal">[μ(x,y)]</text>
+<text x="268" y="197" font-size="19" text-anchor="middle" font-weight="normal">= 0</text>
+<rect x="358" y="132" width="156" height="91" rx="7" fill="#f2f5f8" stroke="#b5c4ce"/>
+<text x="436" y="167" font-size="19" text-anchor="middle" font-weight="normal">[μ(x,y)]</text>
+<text x="436" y="197" font-size="19" text-anchor="middle" font-weight="normal">= 0</text>
+<rect x="190" y="238" width="156" height="91" rx="7" fill="#f2f5f8" stroke="#b5c4ce"/>
+<text x="268" y="273" font-size="19" text-anchor="middle" font-weight="normal">[μ(x,y)]</text>
+<text x="268" y="303" font-size="19" text-anchor="middle" font-weight="normal">= 0</text>
+<rect x="358" y="238" width="156" height="91" rx="7" fill="#e8f3ec" stroke="#b5c4ce"/>
+<text x="436" y="273" font-size="19" text-anchor="middle" font-weight="normal">[μ(x,y)]</text>
+<text x="436" y="303" font-size="19" text-anchor="middle" font-weight="normal">coordinates</text>
+<text x="280" y="372" font-size="17" text-anchor="middle" font-weight="normal">B = boundaries; H = chosen representatives.</text>
+<text x="280" y="403" font-size="17" text-anchor="middle" font-weight="normal">Changing a representative adds only zero classes.</text>
+</g>
+</svg>

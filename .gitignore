@@ -1,0 +1,15 @@
+/.DS_Store
+/AGENTS.md
+/audit/
+/docs/.venv/
+/docs/.build/
+/docs/build/
+/docs/Manifest.toml
+**/__pycache__/
+*.pyc
+**/.ipynb_checkpoints/
+/test/browser/node_modules/
+/test/browser/test-results/
+/test/browser/playwright-report/
+/tamerop_outputs/
+.env

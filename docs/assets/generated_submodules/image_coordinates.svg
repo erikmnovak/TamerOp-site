@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="570" viewBox="0 0 560 570" role="img" aria-labelledby="title desc">
+<title id="title">Maps induced on a generated line</title><desc id="desc">A commuting square: N(u) and N(v) are Q, with identity map across the top. M(u) is Q squared and M(v) is Q, with row matrix zero, one across the bottom. Inclusions are the column one, one on the left and scalar one on the right.</desc>
+<!-- Authored mathematical schematic; see render_generated_submodule_figures.py. -->
+<rect width="560" height="570" fill="white"/>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 0 0 L 8 4 L 0 8 Z" fill="#526576"/></marker></defs>
+<g font-family="DejaVu Sans, sans-serif" text-anchor="middle" fill="#172b42">
+<text x="280" y="38" font-size="26" fill="#172b42">Follow the generated coordinate a</text>
+<text x="105" y="115" font-size="27" fill="#245c99">N(u) = Q</text>
+<text x="455" y="115" font-size="27" fill="#245c99">N(v) = Q</text>
+<path d="M 178 105 H 375" fill="none" stroke="#526576" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="280" y="81" font-size="24" fill="#245c99">Nᵤᵥ = [1]</text>
+<text x="105" y="165" font-size="25" fill="#245c99">a</text>
+<text x="455" y="165" font-size="25" fill="#245c99">a</text>
+<path d="M 105 187 V 334" fill="none" stroke="#526576" stroke-width="2.4" marker-end="url(#arrow)"/>
+<path d="M 455 187 V 334" fill="none" stroke="#526576" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="193" y="245" font-size="23" fill="#172b42">Iᵤ = [1; 1]</text>
+<text x="365" y="245" font-size="23" fill="#172b42">Iᵥ = [1]</text>
+<text x="105" y="380" font-size="27" fill="#9a470b">M(u) = Q²</text>
+<text x="455" y="380" font-size="27" fill="#9a470b">M(v) = Q</text>
+<path d="M 184 370 H 371" fill="none" stroke="#526576" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="280" y="346" font-size="23" fill="#9a470b">Mᵤᵥ = [0  1]</text>
+<text x="105" y="430" font-size="25" fill="#9a470b">(a, a)</text>
+<text x="455" y="430" font-size="25" fill="#9a470b">a</text>
+<text x="280" y="492" font-size="26" fill="#172b42">Iᵥ Nᵤᵥ = Mᵤᵥ Iᵤ = [1]</text>
+<text x="280" y="537" font-size="22" fill="#172b42">Q denotes the rational coefficient field.</text>
+</g></svg>

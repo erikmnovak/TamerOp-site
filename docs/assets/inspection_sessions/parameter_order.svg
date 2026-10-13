@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="664" viewBox="0 0 520 664" role="img" aria-labelledby="title description">
+<title id="title">Parameter order survives finite encoding</title>
+<desc id="description">The rational square module has the same finite label q at x=(1/2,3/2) and y=(3/2,1/2). The first coordinate increases from x to y while the second decreases. Neither pair is comparable in product order, so the original module prescribes no map between them.</desc>
+<defs>
+<marker id="blue-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#156b91"/></marker>
+<marker id="orange-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#b45323"/></marker>
+</defs>
+<rect width="520" height="664" fill="white"/>
+<g font-family="DejaVu Sans, sans-serif">
+<text x="260" y="37" font-size="25" text-anchor="middle" fill="#25333b" font-weight="normal">Same label, different parameters</text>
+<text x="260" y="75" font-size="23" text-anchor="middle" fill="#25333b" font-weight="normal">Closed support [0, 2] × [0, 2]</text>
+<rect x="120" y="120" width="280" height="280" fill="#e7f2f7" stroke="#156b91" stroke-width="3"/>
+<path d="M 120 102 V 422 M 100 400 H 449" fill="none" stroke="#46545e" stroke-width="2"/>
+<text x="461" y="408" font-size="23" text-anchor="start" fill="#25333b" font-weight="normal">p₁</text>
+<text x="107" y="103" font-size="23" text-anchor="end" fill="#25333b" font-weight="normal">p₂</text>
+<text x="107" y="429" font-size="23" text-anchor="end" fill="#25333b" font-weight="normal">0</text>
+<text x="400" y="429" font-size="23" text-anchor="middle" fill="#25333b" font-weight="normal">2</text>
+<text x="105" y="129" font-size="23" text-anchor="end" fill="#25333b" font-weight="normal">2</text>
+<path d="M 120 190 H 190 V 400 M 120 330 H 330 V 400" fill="none" stroke="#7e9baa" stroke-width="1.5" stroke-dasharray="5 5"/>
+<circle cx="190" cy="190" r="8" fill="#156b91"/>
+<rect x="322" y="322" width="16" height="16" fill="#b45323"/>
+<text x="153" y="163" font-size="23" text-anchor="start" fill="#156b91" font-weight="normal">x = (½, 3/2)</text>
+<text x="254" y="305" font-size="23" text-anchor="start" fill="#b45323" font-weight="normal">y = (3/2, ½)</text>
+<text x="260" y="482" font-size="25" text-anchor="middle" fill="#25333b" font-weight="normal">qₓ = qᵧ = q,   N(q) = ℚ</text>
+<path d="M 35 509 H 485" stroke="#d4dce0" stroke-width="1.5"/>
+<text x="260" y="552" font-size="25" text-anchor="middle" fill="#25333b" font-weight="normal">x₁ &lt; y₁   and   x₂ &gt; y₂</text>
+<text x="260" y="595" font-size="23" text-anchor="middle" fill="#25333b" font-weight="normal">Neither x ≤ y nor y ≤ x.</text>
+<text x="260" y="637" font-size="22" text-anchor="middle" fill="#25333b" font-weight="normal">No structure map in either direction.</text>
+</g>
+</svg>

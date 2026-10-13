@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="665" viewBox="0 0 560 665" role="img" aria-labelledby="title desc">
+<title id="title">A quotient need not be a complementary submodule</title><desc id="desc">Three diagrams on the chain u less than v. Ambient module: Q maps by identity to Q. Tail submodule: zero maps to Q. Proposed complement: Q maps to zero, but the ambient identity sends its scalar one to one outside that zero space.</desc>
+<!-- Authored mathematical schematic; see render_generated_submodule_figures.py. -->
+<rect width="560" height="665" fill="white"/>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 0 0 L 8 4 L 0 8 Z" fill="#526576"/></marker></defs>
+<g font-family="DejaVu Sans, sans-serif" text-anchor="middle" fill="#172b42">
+<text x="280" y="37" font-size="25" fill="#172b42">One ambient identity, two proposed parts</text>
+<text x="96" y="88" font-size="23" fill="#172b42">vertex u</text>
+<text x="459" y="88" font-size="23" fill="#172b42">vertex v</text>
+<text x="280" y="132" font-size="24" fill="#172b42">Ambient module M</text>
+<text x="96" y="181" font-size="31" fill="#172b42">Q</text>
+<text x="459" y="181" font-size="31" fill="#172b42">Q</text>
+<path d="M 136 171 H 418" fill="none" stroke="#526576" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="280" y="160" font-size="22" fill="#172b42">identity</text>
+<text x="280" y="258" font-size="24" fill="#245c99">Submodule N: closed under the map</text>
+<text x="96" y="311" font-size="31" fill="#245c99">0</text>
+<text x="459" y="311" font-size="31" fill="#245c99">Q</text>
+<path d="M 136 301 H 418" fill="none" stroke="#526576" stroke-width="2.4" marker-end="url(#arrow)"/>
+<text x="280" y="287" font-size="22" fill="#172b42">zero map</text>
+<text x="280" y="374" font-size="24" fill="#9a470b">Proposed complement L</text>
+<text x="96" y="427" font-size="31" fill="#9a470b">Q</text>
+<text x="459" y="427" font-size="31" fill="#9a470b">0</text>
+<path d="M 136 417 H 418" fill="none" stroke="#526576" stroke-width="2.4" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+<text x="280" y="405" font-size="22" fill="#172b42">would have to be zero</text>
+<text x="280" y="486" font-size="24" fill="#172b42">But the ambient map sends 1 to 1.</text>
+<text x="280" y="526" font-size="23" fill="#172b42">Its image leaves the proposed space L(v).</text>
+<text x="280" y="585" font-size="23" fill="#172b42">The quotient M/N has dimensions (1, 0).</text>
+<text x="280" y="627" font-size="23" fill="#172b42">It does not supply an included complement.</text>
+</g></svg>

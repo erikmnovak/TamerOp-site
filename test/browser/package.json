@@ -1,0 +1,11 @@
+{
+  "name": "tamerop-site-browser-checks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node documentation.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
