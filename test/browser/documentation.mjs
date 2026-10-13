@@ -258,6 +258,7 @@ try {
 
   // Use Chrome's tab zoom API: reducing viewport width alone is not browser zoom.
   const extension = path.join(directory, 'zoom-extension');
+  await fs.access(path.join(extension, 'manifest.json'));
   const zoomContext = await chromium.launchPersistentContext('', {
     channel: 'chromium', headless: true, chromiumSandbox: true,
     viewport: { width: 1440, height: 1050 },
