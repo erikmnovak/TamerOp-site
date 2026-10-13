@@ -724,7 +724,7 @@ Run the diagram adapters and the canonical novice notebook with:
 
 ```sh
 julia --project=. test/runtests.jl --file=test_ordinary_persistence.jl --prefix=A116
-julia --project=. docs/build_scripts/check_ordinary_analysis.jl
+julia --project=docs/.build/environment docs/build_scripts/check_ordinary_analysis.jl
 ```
 
 The distance oracle enumerates partial bijections independently, including all
@@ -1021,7 +1021,7 @@ julia --startup-file=no --project=. test/runtests.jl \
   --file=test_ordinary_persistence.jl --prefix=A118
 ```
 
-Run `julia --project=. docs/build_scripts/check_relative_pair.jl` to execute
+Run `julia --project=docs/.build/environment docs/build_scripts/check_relative_pair.jl` to execute
 the canonical boundary recipe and check its displayed conclusions, including
 the public basis accessor and the existing barcode/diagram specifications.
 
@@ -1068,7 +1068,7 @@ reversed and non-square classifiers. The Hom oracle distinguishes maps into an
 interval from maps out of it. Browser checks exercise real pointer and keyboard
 selection, invalid-input recovery, shared clients and cleanup.
 
-`julia --project=test/browser docs/build_scripts/check_decomposition.jl --record`
+`julia --project=../TamerOp.jl/test/browser docs/build_scripts/check_decomposition.jl --record`
 executes and records the canonical guide. Repeat with `--main-path` to check it
 without the optional styling cell. `--gallery=PATH` exports figures from those
 same cells; it does not maintain a separate authored example.

@@ -472,7 +472,7 @@ and exterior points, all comparable pairs and triples in its sample, and an
 incomparable pair with a shared label. Run from the repository root:
 
 ```sh
-julia --startup-file=no --project=. docs/build_scripts/check_first_encoding.jl
+julia --startup-file=no --project=docs/.build/environment docs/build_scripts/check_first_encoding.jl
 ```
 
 The verified Julia 1.12.1 run passed 8,710 checks, including 49 square query
@@ -488,7 +488,7 @@ projection, and zero composite described in the third background chapter.
 Run it with:
 
 ```sh
-julia --startup-file=no --project=. docs/build_scripts/check_indicator_presentations.jl
+julia --startup-file=no --project=docs/.build/environment docs/build_scripts/check_indicator_presentations.jl
 ```
 
 Keep installation verification, mathematical checks, rendering checks, and
