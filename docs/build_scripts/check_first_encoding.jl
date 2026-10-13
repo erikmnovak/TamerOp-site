@@ -1,6 +1,6 @@
 # Mathematical oracle for the first documentation examples, not a tutorial.
 # Run from the package root:
-#   julia --startup-file=no --project=. docs/build_scripts/check_first_encoding.jl
+#   julia --startup-file=no --project=docs/.build/environment docs/build_scripts/check_first_encoding.jl
 # This script constructs its own fixtures through public APIs. It does not load
 # test helpers, local notebooks, or the ignored documentation planning files.
 

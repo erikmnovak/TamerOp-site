@@ -1,6 +1,6 @@
 #!/usr/bin/env julia
 """
-    julia --project=. docs/build_scripts/api_inventory.jl [--check] [OUTPUT]
+    julia --project=docs/.build/environment docs/build_scripts/api_inventory.jl [--check] [OUTPUT]
 
 Reconcile curated declarations, runtime exports, and qualified owner bindings.
 OUTPUT defaults to docs/api_inventory.toml, relative to this script's project.
@@ -387,7 +387,7 @@ end
 
 function main(args=ARGS)
     if "--help" in args || "-h" in args
-        println("Usage: julia --project=. docs/build_scripts/api_inventory.jl [--check] [OUTPUT]")
+        println("Usage: julia --project=docs/.build/environment docs/build_scripts/api_inventory.jl [--check] [OUTPUT]")
         return 0
     end
     check = "--check" in args

@@ -1,5 +1,5 @@
 # Execute the guide's canonical static examples and save its two public-API views.
-# Run from the repository root: julia --project=docs docs/build_scripts/render_spaces_maps.jl
+# Run from the repository root: julia --project=docs/.build/environment docs/build_scripts/render_spaces_maps.jl
 using LinearAlgebra
 BLAS.set_num_threads(1)
 

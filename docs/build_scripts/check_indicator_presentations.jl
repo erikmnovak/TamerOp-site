@@ -1,6 +1,6 @@
 # Mathematical oracle for the indicator-presentations chapter, not a tutorial.
 # Run from the package root:
-#   julia --startup-file=no --project=. docs/build_scripts/check_indicator_presentations.jl
+#   julia --startup-file=no --project=docs/.build/environment docs/build_scripts/check_indicator_presentations.jl
 # The fixtures use public APIs and need no test helpers or local notebooks.
 
 using Test

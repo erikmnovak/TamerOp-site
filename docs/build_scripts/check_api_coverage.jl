@@ -1,6 +1,6 @@
 #!/usr/bin/env julia
 # Validate documentation intent against the checked-in inventory; never load TamerOp.
-# Usage: julia --startup-file=no --project=. docs/build_scripts/check_api_coverage.jl [coverage.toml]
+# Usage: julia --startup-file=no --project=docs/.build/environment docs/build_scripts/check_api_coverage.jl [coverage.toml]
 using TOML
 
 const PROJECT_ROOT = normpath(joinpath(@__DIR__, "..", ".."))

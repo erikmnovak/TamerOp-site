@@ -4,7 +4,7 @@ candidate_policy = "Review candidates only; nonunderscore names are not automati
 docstring_policy = "Docs.hasdoc, including alias and method documentation; presence is not semantic coverage"
 generator = "docs/build_scripts/api_inventory.jl"
 generator_version = 1
-julia_version = "1.12.1"
+julia_version = "1.12.7"
 loaded_optional_extensions = []
 package_version = "0.1.0"
 schema_version = 1
@@ -76498,11 +76498,10 @@ undefined_curated_owner_bindings = []
 
 [source]
 algorithm = "sha256"
-fingerprint = "ac4202bc41fd3b1b2d46bde91c64aa22e46ca42375a11bf87416385b9a7eaa83"
+fingerprint = "3554f5fbdf5ee7899c6e515ff8d1729b8c58383752d2d3dc5b3ce322afe483f3"
 
     [source.files]
     "Project.toml" = "e6f1e19b1411f840f913b138ec417cbda1acdd92ea0c041c7cd389962d3f9c89"
-    "docs/build_scripts/api_inventory.jl" = "9a3737a4a7f5e9039a31f2cb9795372ab6ae2885d62d3d033710f3b64ac7cb26"
     "ext/TamerOpArrowExt.jl" = "be3f36af66428d5b269837a7852389df540a933237bf9eb257cf045b3c3b905a"
     "ext/TamerOpCSVExt.jl" = "7ca16ca4892ecebfeb3550e853bc1b8236c5477220cec0ed0a0a24ee4fde8a9f"
     "ext/TamerOpCairoMakieExt.jl" = "7229114833eeda37822bfa71d71982889530ed5571bdbf110877aa209f3e837c"
@@ -76542,6 +76541,7 @@ fingerprint = "ac4202bc41fd3b1b2d46bde91c64aa22e46ca42375a11bf87416385b9a7eaa83"
     "ext/visualization_wgl_summands.jl" = "d283d2d6ec972c79e55cac727b772fdb2448dbedae71b456eb5b8fd5f97abef5"
     "ext/visualization_wgl_transport.jl" = "dc6b18077bb897e5fcabb46f98e81c2ea5910105319370abca0c3a922f7390e3"
     "ext/visualization_wgl_volume.jl" = "cbe75432738b7cabc362b95755d52156346885fa5b300ca60c10311e3e892ac4"
+    "site:docs/build_scripts/api_inventory.jl" = "624ac2343495eb60d635f64c29ec83fa290ad302ad4a3e4a1175392b23de0777"
     "src/APISurface.jl" = "118111867f63d3e70ff1dfbaa3b01fe7828df4aa49127eb998d315f366d533c9"
     "src/AbelianCategories.jl" = "2d826aa95e053ed62d3f94db5a0a6859fc483c49f6787250a788605b3dfedb14"
     "src/ChainComplexes.jl" = "e30868db78287f0056dcc82d5f03c4060369e62216a9f8a7ee648156e3b5e3bf"
@@ -76601,7 +76601,7 @@ fingerprint = "ac4202bc41fd3b1b2d46bde91c64aa22e46ca42375a11bf87416385b9a7eaa83"
     "src/data_ingestion/rhomboid.jl" = "342c45c163d1de2970e09e122916e4815bf15bb02405843e2bb13697e1e9a2a8"
     "src/data_ingestion/rhomboid_depth.jl" = "3e3fdd7d124ffa4bce4ff2d6a8fef11b8b554d9f1e58fadebbb50a5a4b0c881b"
     "src/data_ingestion/rhomboid_incremental.jl" = "fac04d1a9c2dc76432b2ec5a3f5e611bae802f6758ddceac30ba0c90e4a23561"
-    "src/data_ingestion/source_chains.jl" = "92de05bcec1f5ba83612d99854fff192a8c743fbc75426a2467b7df9ecc7ec10"
+    "src/data_ingestion/source_chains.jl" = "bf621fce6ec59e0ad5c980161f038512af962c3c6ef7e359457438d7a12583f0"
     "src/data_ingestion/subdivision_cech.jl" = "0b6493de2f5c6900bcc0ccb211e0ce7e2395e7899d037cc6c5d47329401e5758"
     "src/data_ingestion/weighted_flags.jl" = "bdafef9998912314d66e4015133895e8157329a9a17d9bab7d40a12bbc50d982"
     "src/derived_functors/algebras.jl" = "06a6cd9a25ee9bb86e4c2c74dcc6a1a254e79e18ef340401bf72ccf20f770669"

@@ -16,6 +16,9 @@ open(joinpath(environment, "Project.toml"), "w") do io
     TOML.print(io, project; sorted=true)
 end
 Pkg.activate(environment)
+# resolve() does not install a registry in a fresh Julia depot. This is a
+# no-op when General is already installed, including ordinary local builds.
+Pkg.Registry.add("General")
 Pkg.resolve()
 Pkg.instantiate()
 println("Website environment: ", environment)
