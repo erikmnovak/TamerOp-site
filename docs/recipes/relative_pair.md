@@ -110,6 +110,48 @@ The lower rows show the resulting homology intervals. Having an edge
 coordinate at one does not yet give a relative class: its boundary vanishes
 only when the second endpoint enters $A$ at three.*
 
+Choose a parameter in the schematic below to follow that calculation one
+event at a time. The two drawings show the cells of $K_t$ and $A_t$;
+the table records the remaining quotient coordinates and their boundary
+over $\mathbb F_3$. In particular, compare one, two and three: the edge is
+present throughout, while its boundary loses one endpoint and then the other.
+The homology dimensions count the classes after taking those boundaries
+into account.
+
+```@raw html
+<link rel="stylesheet" href="../assets/relative_persistence/delayed_entry.css">
+<div class="relative-pair-explorer" id="relative-pair-explorer">
+  <div class="relative-pair-control">
+    <label for="relative-pair-scale">Parameter t</label>
+    <select id="relative-pair-scale" aria-describedby="relative-pair-status" disabled>
+      <option value="0">0: both vertices enter K</option>
+      <option value="1">1: the edge enters K</option>
+      <option value="2">2: v₀ enters A</option>
+      <option value="3" selected>3: v₁ enters A</option>
+      <option value="4">4: the edge enters A</option>
+    </select>
+  </div>
+  <div class="relative-pair-drawing" aria-label="Cells in the ambient complex and its subcomplex"></div>
+  <p class="relative-pair-legend">Solid cells are present. Faint dashed cells show what has not entered yet.</p>
+  <div class="relative-pair-table">
+    <table>
+      <caption>Quotient chains and relative homology over F₃ at t = <span data-relative-scale>3</span></caption>
+      <tbody>
+        <tr><th scope="row">Vertex coordinates in C₀(Kₜ,Aₜ)</th><td data-relative-vertices>None</td></tr>
+        <tr><th scope="row">Edge coordinates in C₁(Kₜ,Aₜ)</th><td data-relative-edges>e</td></tr>
+        <tr><th scope="row">Boundary of e in the quotient</th><td data-relative-boundary>0 (a 0 × 1 matrix)</td></tr>
+        <tr><th scope="row">Dimension of H₀(Kₜ,Aₜ)</th><td data-relative-h0>0</td></tr>
+        <tr><th scope="row">Dimension of H₁(Kₜ,Aₜ)</th><td data-relative-h1>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p id="relative-pair-status" role="status" aria-live="polite">At three both endpoints belong to A. Their quotient coordinates are zero, so the edge is a cycle. There are no cells of dimension two to fill it, giving one relative class.</p>
+  <p class="relative-pair-note">This is an authored schematic of the exact calculation in the recipe. The table describes quotient chain coordinates, without drawing a geometric quotient space.</p>
+  <noscript><p>The table shows t = 3. Enable JavaScript to choose another parameter; the timeline above shows every event.</p></noscript>
+</div>
+<script src="../assets/relative_persistence/delayed_entry.js"></script>
+```
+
 We can inspect the map that ends this interval directly:
 
 ```julia

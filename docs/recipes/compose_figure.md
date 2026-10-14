@@ -76,7 +76,8 @@ OP.save_visual("figures", "square", figure; format=:html)
 
 The HTML embeds the SVG and descriptions of its annotations. It can reopen
 without Julia or network access, with a scrollable figure at the saved size
-on narrow screens. It preserves this selected picture. To save several
+on narrow screens. The composition guide offers a [cycle and interval figure in each export format](../tutorials/compose_figures.ipynb#optional-export-the-selected-figure)
+to inspect or download. Each export preserves one selected picture. To save several
 selections and resume supported queries, continue with the
 [saved session guide](../tutorials/live_inspection.ipynb).
 

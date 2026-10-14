@@ -5,6 +5,9 @@ chosen to represent it. We can put two prepared views in one HTML file: an
 overview of the barcode and a selected interval with its coefficient readout.
 The recipient can switch between them in a browser with Julia closed.
 
+The saved session guide includes a [prepared ring viewer](../tutorials/live_inspection.ipynb#optional-preserve-an-ordinary-interval-and-its-representative)
+where you can try these two choices before making your own file.
+
 We will use a small image ring. Its eight outer squares enter at zero and its
 centre enters at five, so first homology has the interval `[0,5)`. The default
 coefficients are in `F2`, the field with two elements. Asking for

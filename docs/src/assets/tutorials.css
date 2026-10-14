@@ -202,6 +202,14 @@ html.theme--documenter-dark #documenter-page {
 }
 
 #documenter-page .notebook-figure { margin: 1.5rem 0; }
+#documenter-page .prepared-example { margin: 1.5rem 0; }
+#documenter-page .prepared-example iframe {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid var(--reading-map-border);
+    background: white;
+}
 #documenter-page .notebook-figure figcaption { margin-top: .65rem; line-height: 1.5; }
 #documenter-page .notebook-figure-scroll { max-width: 100%; overflow-x: auto; }
 #documenter-page .notebook-figure-scroll:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }

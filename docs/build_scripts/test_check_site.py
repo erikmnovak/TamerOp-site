@@ -5,12 +5,61 @@ import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 from urllib.parse import quote
 
 import nbformat as nbf
 
+import check_site as site_checks
 from check_site import Links, check_catalog, check_notebooks
 from publish import sha256
+
+
+class RawHtmlAssetTests(unittest.TestCase):
+    def test_resources_do_not_count_as_page_entrances(self):
+        parsed = Links()
+        parsed.feed('<script src="assets/view.js"></script>'
+                    '<script>const inline = true;</script>'
+                    '<link rel="alternate STYLESHEET" href="assets/view.css">'
+                    '<link rel="canonical" href="https://example.org/page">')
+        self.assertEqual(parsed.links, ['assets/view.js', 'assets/view.css'])
+        self.assertEqual(parsed.anchor_links, [])
+        self.assertEqual(parsed.frames, [])
+
+    def test_missing_raw_stylesheet_or_script_fails_site_validation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = Path(tmp)
+            root = docs / 'build'
+            assets = root / 'assets/schematic'
+            assets.mkdir(parents=True)
+            (root / 'recipes').mkdir()
+            (root / 'downloads').mkdir()
+            (root / 'recipes/example.html').write_text(
+                '<link rel="stylesheet" href="../assets/schematic/view.css?v=1">'
+                '<script src="../assets/schematic/view.js" defer></script>'
+                '<script src="https://example.org/external.js"></script>')
+            (root / 'downloads/publication.json').write_text('{"notebooks": []}')
+            (root / 'catalog.json').write_text('{}')
+            (docs / 'publication.toml').write_text(
+                'notebooks = []\n[reading_map]\nsource = "reading_map.toml"\npage = "reading_map.md"\n')
+            (docs / 'reading_map.toml').write_text('nodes = []\n')
+            for name in ('view.css', 'view.js'):
+                (assets / name).write_text('/* published asset */')
+            with patch.multiple(site_checks, DOCS=docs), \
+                    patch.object(site_checks, 'validate_continuations', return_value=[]), \
+                    patch.object(site_checks, 'published_pages', return_value={}), \
+                    patch.object(site_checks, 'continuation_links', return_value=''), \
+                    patch.object(site_checks, 'check_notebooks'), \
+                    patch.object(site_checks, 'check_catalog'):
+                site_checks.check_site()
+                for name in ('view.css', 'view.js'):
+                    with self.subTest(missing=name):
+                        target = assets / name
+                        contents = target.read_bytes()
+                        target.unlink()
+                        with self.assertRaisesRegex(ValueError, rf'broken link .*{name}'):
+                            site_checks.check_site()
+                        target.write_bytes(contents)
 
 
 class NotebookSiteTests(unittest.TestCase):
@@ -93,6 +142,7 @@ class NotebookSiteTests(unittest.TestCase):
                 changed[page].optional_sections = 0
             else:
                 changed[page].links = []
+                changed[page].anchor_links = []
             with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, message):
                 self.check(changed)
 

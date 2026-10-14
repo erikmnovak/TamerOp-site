@@ -205,16 +205,20 @@ def transform(source: str, current: str, catalog: dict) -> str:
 
 
 def finalize_site(docs: Path) -> None:
+    from public_outputs import output_routes
     docs = Path(docs)
     catalog = json.loads((docs / '.build/src/catalog.json').read_text())
     build = docs / 'build'
+    record = build / 'downloads/publication.json'
+    standalone = output_routes(json.loads(record.read_text())) if record.exists() else set()
     for asset in ('site_navigation.css', 'site_navigation.js'):
         target = build / 'assets' / asset
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((docs / 'src/assets' / asset).read_bytes())
     # Validate every transformation before changing any generated page.
     changes = [(page, transform(page.read_text(), page.relative_to(build).as_posix(), catalog))
-               for page in sorted(build.rglob('*.html'))]
+               for page in sorted(build.rglob('*.html'))
+               if page.relative_to(build).as_posix() not in standalone]
     for page, rendered in changes:
         page.write_text(rendered)
     print(f"Added catalog navigation and article outlines to {len(changes)} pages.")

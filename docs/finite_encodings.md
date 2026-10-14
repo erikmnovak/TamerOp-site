@@ -331,6 +331,113 @@ The triangle follows one parameter through the two assignments. Its arrows
 assign labels; they are not structure maps between vector spaces. This is
 a schematic of the two specified encodings, with the outer regions cropped.*
 
+Choose a parameter below to follow both label assignments. In particular,
+compare $(-1,3)$ with $(3,-1)$: their band labels differ, but the same
+disconnected fiber is highlighted in each case. Then try the corners of
+the square, where the included endpoints matter.
+
+```@raw html
+<link rel="stylesheet" href="assets/finite_encodings/compare_encodings_interactive.css">
+<figure id="encoding-label-explorer" aria-labelledby="encoding-explorer-caption" data-selected-point="inside">
+  <div class="encoding-controls">
+    <label for="encoding-parameter">Choose a parameter q</label>
+    <select id="encoding-parameter" disabled>
+      <option value="inside" data-x="1" data-y="1" data-band="CC" data-signature="10" selected>(1, 1): inside the square</option>
+      <option value="left" data-x="-1" data-y="1" data-band="LC" data-signature="00">(-1, 1): left of the square</option>
+      <option value="lower-left" data-x="-1" data-y="-1" data-band="LL" data-signature="00">(-1, -1): below and left</option>
+      <option value="below" data-x="1" data-y="-1" data-band="CL" data-signature="00">(1, -1): below the square</option>
+      <option value="upper-left" data-x="-1" data-y="3" data-band="LH" data-signature="01">(-1, 3): upper left piece</option>
+      <option value="lower-right" data-x="3" data-y="-1" data-band="HL" data-signature="01">(3, -1): lower right piece</option>
+      <option value="right" data-x="3" data-y="1" data-band="HC" data-signature="11">(3, 1): right of the square</option>
+      <option value="above" data-x="1" data-y="3" data-band="CH" data-signature="11">(1, 3): above the square</option>
+      <option value="upper-right" data-x="3" data-y="3" data-band="HH" data-signature="11">(3, 3): above and right</option>
+      <option value="corner-00" data-x="0" data-y="0" data-band="CC" data-signature="10" data-boundary="true">(0, 0): lower left corner</option>
+      <option value="corner-02" data-x="0" data-y="2" data-band="CC" data-signature="10" data-boundary="true">(0, 2): upper left corner</option>
+      <option value="corner-20" data-x="2" data-y="0" data-band="CC" data-signature="10" data-boundary="true">(2, 0): lower right corner</option>
+      <option value="corner-22" data-x="2" data-y="2" data-band="CC" data-signature="10" data-boundary="true">(2, 2): upper right corner</option>
+    </select>
+  </div>
+  <noscript><p>The figure shows q = (1, 1). Enable JavaScript to choose another prepared point; the surrounding tables and argument give the same label assignments.</p></noscript>
+  <div class="encoding-panels">
+    <div class="encoding-diagram" tabindex="0" role="region" aria-label="Parameter diagram; scroll horizontally if needed">
+      <svg viewBox="0 0 360 360" role="img" aria-labelledby="encoding-plane-title encoding-plane-desc">
+        <title id="encoding-plane-title">The parameter and its band region</title>
+        <desc id="encoding-plane-desc">Nine cropped band regions carry their band pair and signature. The dot marks q, its band label is underlined, and shading marks every region with the same signature. The solid central square includes its boundary. A text readout below records the selected values.</desc>
+        <text x="180" y="22" text-anchor="middle">Cropped parameter plane</text>
+        <rect class="encoding-region" data-signature="01" x="50" y="38" width="88" height="88"/>
+        <rect class="encoding-region" data-signature="11" x="138" y="38" width="88" height="88"/>
+        <rect class="encoding-region" data-signature="11" x="226" y="38" width="88" height="88"/>
+        <rect class="encoding-region" data-signature="00" x="50" y="126" width="88" height="88"/>
+        <rect class="encoding-region encoding-same-signature" data-signature="10" x="138" y="126" width="88" height="88"/>
+        <rect class="encoding-region" data-signature="11" x="226" y="126" width="88" height="88"/>
+        <rect class="encoding-region" data-signature="00" x="50" y="214" width="88" height="88"/>
+        <rect class="encoding-region" data-signature="00" x="138" y="214" width="88" height="88"/>
+        <rect class="encoding-region" data-signature="01" x="226" y="214" width="88" height="88"/>
+        <path class="encoding-grid" d="M50 38H314V302H50Z M138 38V302 M226 38V302 M50 126H314 M50 214H314"/>
+        <rect class="encoding-support" x="138" y="126" width="88" height="88"/>
+        <g text-anchor="middle">
+          <text class="encoding-band" data-band="LH" x="94" y="65">(L, H)</text>
+          <text class="encoding-band" data-band="CH" x="182" y="65">(C, H)</text>
+          <text class="encoding-band" data-band="HH" x="270" y="65">(H, H)</text>
+          <text class="encoding-band" data-band="LC" x="94" y="153">(L, C)</text>
+          <text class="encoding-band encoding-selected-band" data-band="CC" x="182" y="153">(C, C)</text>
+          <text class="encoding-band" data-band="HC" x="270" y="153">(H, C)</text>
+          <text class="encoding-band" data-band="LL" x="94" y="241">(L, L)</text>
+          <text class="encoding-band" data-band="CL" x="182" y="241">(C, L)</text>
+          <text class="encoding-band" data-band="HL" x="270" y="241">(H, L)</text>
+          <g class="encoding-signature-label">
+            <text x="94" y="107">(0, 1)</text><text x="182" y="107">(1, 1)</text><text x="270" y="107">(1, 1)</text>
+            <text x="94" y="195">(0, 0)</text><text x="182" y="195">(1, 0)</text><text x="270" y="195">(1, 1)</text>
+            <text x="94" y="283">(0, 0)</text><text x="182" y="283">(0, 0)</text><text x="270" y="283">(0, 1)</text>
+          </g>
+        </g>
+        <path class="encoding-axis" d="M40 38V312H326 M138 307V317 M226 307V317 M35 214H45 M35 126H45"/>
+        <text x="138" y="336" text-anchor="middle">0</text><text x="226" y="336" text-anchor="middle">2</text>
+        <text x="26" y="219" text-anchor="middle">0</text><text x="26" y="131" text-anchor="middle">2</text>
+        <text x="334" y="317">x</text><text x="26" y="36">y</text>
+        <circle id="encoding-selected-point" class="encoding-point" cx="182" cy="170" r="4.5"/>
+        <text id="encoding-selected-point-label" class="encoding-point-label" x="191" y="175">q</text>
+      </svg>
+    </div>
+    <div class="encoding-diagram" tabindex="0" role="region" aria-label="Finite signature diagram; scroll horizontally if needed">
+      <svg viewBox="0 0 360 360" role="img" aria-labelledby="encoding-diamond-title encoding-diamond-desc">
+        <title id="encoding-diamond-title">The four signature labels and their spaces</title>
+        <desc id="encoding-diamond-desc">The signatures form a diamond in coordinatewise order. Only (1,0) carries the coefficient field; the other three carry zero spaces. The selected signature is outlined more heavily and printed in bold. Arrows point upward along the finite order.</desc>
+        <defs><marker id="encoding-order-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path class="encoding-arrowhead" d="M0 0L8 4L0 8Z"/></marker></defs>
+        <text x="180" y="22" text-anchor="middle">Four signature labels</text>
+        <g class="encoding-order" marker-end="url(#encoding-order-arrow)">
+          <path d="M155 257L112 215"/><path d="M205 257L248 215"/>
+          <path d="M112 145L155 103"/><path d="M248 145L205 103"/>
+        </g>
+        <g class="encoding-node" data-signature="11" text-anchor="middle">
+          <rect x="125" y="38" width="110" height="64" rx="5"/>
+          <text x="180" y="66">(1, 1)</text><text x="180" y="89">space 0</text>
+        </g>
+        <g class="encoding-node encoding-selected-node" data-signature="10" text-anchor="middle">
+          <rect x="35" y="148" width="110" height="64" rx="5"/>
+          <text x="90" y="176">(1, 0)</text><text x="90" y="199">space 𝕜</text>
+        </g>
+        <g class="encoding-node" data-signature="01" text-anchor="middle">
+          <rect x="215" y="148" width="110" height="64" rx="5"/>
+          <text x="270" y="176">(0, 1)</text><text x="270" y="199">space 0</text>
+        </g>
+        <g class="encoding-node" data-signature="00" text-anchor="middle">
+          <rect x="125" y="258" width="110" height="64" rx="5"/>
+          <text x="180" y="286">(0, 0)</text><text x="180" y="309">space 0</text>
+        </g>
+        <text x="180" y="346" text-anchor="middle">Arrows mean increasing signatures.</text>
+      </svg>
+    </div>
+  </div>
+  <div class="encoding-readout" aria-live="polite" aria-atomic="true">
+    <p id="encoding-lookup-equation" class="encoding-equation">q = (1, 1): π₉(q) = (C, C); ρ(π₉(q)) = (1, 0) = π₄(q).</p>
+    <p id="encoding-lookup-explanation">Both lookups recover the coefficient field 𝕜. The central band pair is exactly the closed square; only its signature carries a nonzero space.</p>
+  </div>
+  <figcaption id="encoding-explorer-caption">An authored schematic of the two specified encodings. The dot marks the selected parameter; its band label is underlined. Shading marks the band regions with its signature, and the heavier outline selects that signature in the finite poset. Coordinates equal to 0 or 2 belong to C. The outer regions continue beyond the drawing, whose dotted lines divide bands or mark the cropped window.</figcaption>
+</figure>
+<script src="assets/finite_encodings/compare_encodings_interactive.js" defer></script>
+```
+
 To compare maps as well as labels, take $(1,1)\leq(3,1)$. The first
 encoding gives the comparison $(C,C)\leq(H,C)$, and applying $\rho$ gives
 $(1,0)\leq(1,1)$, exactly as $\pi_4$ does directly. Both finite modules

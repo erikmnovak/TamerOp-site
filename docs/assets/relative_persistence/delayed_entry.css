@@ -1,0 +1,62 @@
+.relative-pair-explorer {
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid #8b949e;
+  border-radius: 0.3rem;
+}
+.relative-pair-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+}
+.relative-pair-control label { font-weight: 600; }
+.relative-pair-control select {
+  max-width: 100%;
+  min-height: 2.6rem;
+  padding: 0.4rem;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 0.2rem;
+}
+.relative-pair-control select:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.relative-pair-drawing svg {
+  display: block;
+  width: 100%;
+  height: 190px;
+  margin-top: 1rem;
+  color: inherit;
+}
+.relative-pair-drawing text { fill: currentColor; font: 16px sans-serif; }
+.relative-pair-drawing .present-cell { stroke: currentColor; stroke-width: 2.5; }
+.relative-pair-drawing .absent-cell {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+  opacity: 0.35;
+}
+.relative-pair-drawing circle.present-cell { fill: currentColor; }
+.relative-pair-drawing circle.absent-cell { fill: none; }
+.relative-pair-explorer .relative-pair-legend,
+.relative-pair-explorer .relative-pair-note { font-size: 0.9rem; }
+.relative-pair-explorer .relative-pair-table table {
+  width: 100%;
+  margin: 1rem 0;
+  table-layout: fixed;
+}
+.relative-pair-table caption { text-align: left; margin-bottom: 0.5rem; }
+.relative-pair-table th { width: 59%; font-weight: 500; text-align: left; }
+.relative-pair-table td, .relative-pair-table th {
+  overflow-wrap: anywhere;
+  vertical-align: top;
+}
+.relative-pair-explorer #relative-pair-status { margin-top: 1rem; }
+@media (max-width: 450px) {
+  .relative-pair-explorer { padding: 0.75rem; }
+  .relative-pair-control select { width: 100%; }
+}

@@ -1,5 +1,5 @@
 # Execute the canonical task recipe and its stated mathematical conclusions.
-using TamerOp, Test, SparseArrays
+using TamerOp, Test, SparseArrays, JSON3
 using TamerOp.CoreModules: F3
 const _RELATIVE_RECIPE = joinpath(@__DIR__,"..","recipes","relative_pair.md")
 for code in eachmatch(r"```julia\n(.*?)\n```"s,read(_RELATIVE_RECIPE,String))
@@ -18,6 +18,26 @@ end
     for (scale, expected) in ((0, [2,0]), (1, [2,1]), (2, [1,1]), (3, [0,1]), (4, [0,0]))
         snapshot = OA.relative_complex(changing; scale)
         @test OA.dimensions(snapshot) == expected
+    end
+    # Read the finite authored viewer states, using this same executed recipe
+    # to check cell membership, signed quotient boundaries and homology.
+    viewer = read(joinpath(@__DIR__, "..", "assets", "relative_persistence", "delayed_entry.js"), String)
+    states = JSON3.read(only(match(r"const states = (\[.*?\]);"s, viewer).captures))
+    @test [state.scale for state in states] == collect(0:4)
+    for state in states
+        snapshot = OA.relative_complex(changing; scale=state.scale)
+        homology = OA.relative_homology(snapshot)
+        @test OA.dimensions(homology) == collect(state.homology)
+        for (part, expected) in ((:ambient,state.ambient), (:subcomplex,state.subcomplex))
+            ids = vcat([collect(OA.relative_cells(snapshot; dim, part).cell_ids) for dim in 0:1]...)
+            @test ids == collect(expected)
+        end
+        for dim in 0:1
+            @test collect(OA.relative_cells(snapshot; dim).cell_ids) == collect(state.quotient[dim+1])
+        end
+        boundary = OA.relative_boundary(snapshot; dim=1)
+        @test size(boundary) == Tuple(length.(state.quotient))
+        @test vec(Matrix(boundary)) == TamerOp.CoreModules.coeff_type(F3()).(collect(state.boundary))
     end
     # The implementation account's explicit cone must give the same intervals.
     # Columns of D1 are e, s(v0), s(v1); the D2 column is s(e).

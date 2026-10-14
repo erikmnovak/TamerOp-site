@@ -30,6 +30,7 @@ from navigation import validate_continuations
 from site_catalog import prepare_catalog
 from source_paths import package_root, source_path, source_name, source_url
 from visualization_support import render_selected
+from public_outputs import declarations, output_records, verify_outputs, render_outputs
 
 DOCS = Path(__file__).resolve().parents[1]
 ROOT = DOCS.parent
@@ -76,6 +77,16 @@ def documenter_markdown(text: str) -> str:
 
 def figure_alt(text: str) -> str:
     return html.escape(text.replace("\n", " "), quote=True)
+
+
+def stage_web_assets(stage: Path, docs: Path = DOCS) -> None:
+    """Retain local scripts and styles referenced by authored raw HTML."""
+    assets = Path(docs) / "assets"
+    for source in sorted(assets.rglob("*")):
+        if source.is_file() and source.suffix in (".css", ".js"):
+            target = Path(stage) / "assets" / source.relative_to(assets)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
 
 
 def rewrite_links(text: str, source: Path, destination: Path | None,
@@ -151,6 +162,7 @@ def validate_outputs(nb) -> int:
 
 
 def export_lesson(nb, source: Path, page: Path, pages: dict, stage: Path) -> None:
+    declared = declarations(nb)
     rendered = copy.deepcopy(nb)
     for cell in rendered.cells:
         if cell.cell_type == "markdown":
@@ -181,6 +193,10 @@ def export_lesson(nb, source: Path, page: Path, pages: dict, stage: Path) -> Non
                     + html.escape(next_section) + '</summary>\n```'))
             section = next_section
         cells.append(cell)
+        shown = cell.metadata.get("tamerop", {}).get("show_outputs", [])
+        if shown:
+            cells.append(nbformat.v4.new_markdown_cell('```@raw html\n' +
+                render_outputs(shown, declared, source, page, stage) + '\n```'))
     if section is not None:
         cells.append(nbformat.v4.new_markdown_cell("```@raw html\n</details>\n```"))
     rendered.cells = cells
@@ -246,6 +262,11 @@ def validate_capture(record: dict, previous: Path, config: dict,
     for name in ("Project.toml", "requirements.txt"):
         if sha256(DOCS / name) != sha256(previous / "environment" / name):
             raise ValueError(f"Execution environment changed ({name}); execute a fresh publication.")
+    for lesson in record["notebooks"]:
+        saved = previous / Path(lesson['source']).name
+        # Use the captured declarations: a changed source may add new exports.
+        notebook = nbformat.read(saved, as_version=4)
+        verify_outputs(notebook, previous / 'figures' / saved.stem, lesson)
 
 
 def package_source_hashes() -> dict:
@@ -405,6 +426,7 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
         temporary = Path(temporary)
         stage = temporary / "src"
         shutil.copytree(DOCS / "src", stage)
+        stage_web_assets(stage, DOCS)
         downloads = stage / "downloads"
         if reuse_executed or reuse_unchanged:
             shutil.copytree(previous, downloads)
@@ -500,12 +522,14 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
             if (downloads / source.name).stat().st_size > 20 * 1024 * 1024:
                 raise ValueError(f"Notebook exceeds the 20 MiB publication budget: {source.name}")
             exports = work / "tamerop_outputs"
+            public_outputs = output_records(nb, exports)
             if exports.exists():
                 shutil.copytree(exports, downloads / "figures" / source.stem)
             records.append({"source": lesson["source"], "sha256": notebook_hash,
                 "code_cells": sum(c.cell_type == "code" for c in nb.cells),
                 "figures": figures, "seconds": round(elapsed, 3),
-                "download_sha256": sha256(downloads / source.name)})
+                "download_sha256": sha256(downloads / source.name),
+                "public_outputs": public_outputs})
             if reuse_unchanged:
                 records[-1].update(execution_origin=copy.deepcopy(current), reuse_history=[])
         environment = downloads / "environment"

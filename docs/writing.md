@@ -735,6 +735,19 @@ prerequisites to explain the result in their own words.
 
 ## Describe the actual display contract
 
+Look for opportunities to let readers explore a mathematical choice themselves.
+Selecting a threshold can connect a changing shape to its barcode; selecting
+two parameters can connect their positions to a structure map. Prepared browser
+views often provide enough freedom for these comparisons without a running
+Julia session. Bring useful opportunities forward during review, including
+ones the current page does not yet suggest. Interactivity is an encouraged
+option, with no quota or obligation to add it to a complete static explanation.
+
+When offering a saved example, make its file or viewer available from the page.
+Follow the [publication instructions](README.md#publish-prepared-examples-and-downloads)
+to retain declared outputs and check their links. A file created successfully
+in a temporary directory is not yet available to a website reader.
+
 When teaching a visualization, identify the mathematical object and the display
 path the reader is using. Static figures, WGL scene navigation, live Julia
 selection and offline selection among saved states have different capabilities.

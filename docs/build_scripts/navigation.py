@@ -134,6 +134,8 @@ def finalize_navigation(docs: Path = DOCS):
              if (docs / node["source"]).resolve() in pages}
     map_page = build / Path(manifest["reading_map"]["page"]).with_suffix(".html")
     for page in build.rglob("*.html"):
+        if page.is_relative_to(build / 'downloads'):
+            continue
         links = continuation_links(nodes.get(page), records, pages, page, map_page, docs)
         page.write_text(replace_footer(page.read_text(), links))
 

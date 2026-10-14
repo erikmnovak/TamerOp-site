@@ -488,6 +488,52 @@ environment needs no WGLMakie dependency. Do not tag an executable live widget
 as optional and expect publication to skip it: optional metadata controls
 website folding only.
 
+## Publish prepared examples and downloads
+
+A notebook can publish files as well as its inline figures. Save the files
+under `tamerop_outputs` in the notebook's working directory. The build copies
+that directory to `downloads/figures/<notebook name>/`. A temporary directory
+is appropriate for intermediate work; a file intended for readers must reach
+the export directory before its producer finishes.
+
+Declare the files offered to readers in notebook metadata:
+
+```json
+{"tamerop": {"public_outputs": [
+  {"path": "square/views.html", "label": "Compare the square selections",
+   "embed": true, "height": 800},
+  {"path": "square/data.json", "label": "Download the recorded selections"}
+]}}
+```
+
+The paths are relative to `tamerop_outputs`, so the first file is written to
+`tamerop_outputs/square/views.html`. On the Markdown or code cell after which
+the output belongs, add `tamerop.show_outputs` with a list of those paths.
+The publisher places the links and, for `embed: true`, a titled HTML frame
+after that cell. Its height is in CSS pixels, with 720 as the default. Choose
+the height after reviewing the actual figure and controls. An embedded view
+also has links to open separately and download, which are useful when its
+panels need more room. Nonembedded HTML receives open and download links;
+other declared files receive download links.
+
+Use the notebook's existing mathematical objects to prepare a small collection
+with `save_visual_session`. The browser selects among the stored answers, so
+these examples work after Julia closes. Preserve informative static figures
+and explain what the selections reveal. Export code can live in an optional
+section while its viewer appears beside the main explanation. There is no
+requirement to make every lesson interactive.
+
+Every declared output must have a `show_outputs` entrance. The build rejects
+missing, empty or oversized files, records their sizes and hashes, and checks
+them again when reusing an execution. Site checks verify their delivered bytes,
+page links and declared embeds. Standalone HTML exports retain their own
+controls and do not receive the article sidebar. Keep them self contained;
+the frames allow scripts and downloads without access to the parent page.
+Browser review must still check the mathematical selections, readable labels,
+keyboard use and narrow layouts with the producing Julia process stopped.
+Run `python docs/build_scripts/check_site.py` on the built site and verify
+the selected files after deployment.
+
 ## Benchmark result pages
 
 [Benchmark results](benchmarks/index.md) collects completed comparisons, with

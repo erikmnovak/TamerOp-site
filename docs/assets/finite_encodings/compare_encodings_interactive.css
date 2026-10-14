@@ -1,0 +1,98 @@
+#encoding-label-explorer {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px solid var(--reading-map-border);
+    color: var(--reading-map-text);
+    background: var(--reading-map-bg);
+}
+#encoding-label-explorer .encoding-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem 1rem;
+}
+#encoding-label-explorer label { font-weight: 600; }
+#encoding-label-explorer select {
+    font: inherit;
+    padding: .45rem .65rem;
+    max-width: 100%;
+    color: inherit;
+    background: var(--reading-map-bg);
+    border: 1px solid var(--reading-map-border);
+    border-radius: .25rem;
+}
+#encoding-label-explorer select:focus-visible,
+#encoding-label-explorer .encoding-diagram:focus-visible {
+    outline: 3px solid var(--reading-map-accent);
+    outline-offset: 3px;
+}
+#encoding-label-explorer .encoding-panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: .5rem;
+    margin-top: .8rem;
+}
+#encoding-label-explorer .encoding-diagram {
+    min-width: 0;
+    overflow-x: auto;
+}
+#encoding-label-explorer svg {
+    display: block;
+    width: 100%;
+    min-width: 340px;
+    height: auto;
+    font-family: inherit;
+    font-size: 16px;
+    fill: var(--reading-map-text);
+}
+#encoding-label-explorer .encoding-region { fill: var(--reading-map-bg); }
+#encoding-label-explorer .encoding-region.encoding-same-signature {
+    fill: var(--reading-map-accent);
+    fill-opacity: .16;
+}
+#encoding-label-explorer .encoding-band.encoding-selected-band {
+    font-weight: 700;
+    text-decoration: underline;
+}
+#encoding-label-explorer .encoding-signature-label { fill: var(--reading-map-muted); }
+#encoding-label-explorer .encoding-grid {
+    fill: none;
+    stroke: var(--reading-map-border);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+}
+#encoding-label-explorer .encoding-support {
+    fill: none;
+    stroke: var(--reading-map-accent);
+    stroke-width: 2.5;
+}
+#encoding-label-explorer .encoding-axis,
+#encoding-label-explorer .encoding-order {
+    fill: none;
+    stroke: var(--reading-map-line);
+    stroke-width: 1.8;
+}
+#encoding-label-explorer .encoding-arrowhead { fill: var(--reading-map-line); }
+#encoding-label-explorer .encoding-point { fill: var(--reading-map-text); }
+#encoding-label-explorer .encoding-point-label { font-style: italic; }
+#encoding-label-explorer .encoding-node rect {
+    fill: var(--reading-map-bg);
+    stroke: var(--reading-map-border);
+    stroke-width: 1.5;
+}
+#encoding-label-explorer .encoding-node.encoding-selected-node rect {
+    fill: var(--reading-map-soft);
+    stroke: var(--reading-map-accent);
+    stroke-width: 3;
+}
+#encoding-label-explorer .encoding-node.encoding-selected-node text { font-weight: 700; }
+#encoding-label-explorer .encoding-readout {
+    border-top: 1px solid var(--reading-map-border);
+    padding-top: .6rem;
+}
+#encoding-label-explorer .encoding-equation { margin-bottom: .4rem; }
+#encoding-label-explorer figcaption { color: var(--reading-map-muted); }
+@media (max-width: 480px) {
+    #encoding-label-explorer { padding: .65rem; }
+    #encoding-label-explorer select { width: 100%; }
+}

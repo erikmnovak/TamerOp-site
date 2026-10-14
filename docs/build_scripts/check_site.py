@@ -10,6 +10,7 @@ import nbformat
 from publish import DOCS, sha256, validate_outputs
 from navigation import continuation_links, published_pages, validate_continuations
 from site_shell import Structure
+from public_outputs import declarations, output_routes, verify_outputs
 
 
 class Links(HTMLParser):
@@ -18,6 +19,8 @@ class Links(HTMLParser):
         self.links, self.ids, self.images = [], set(), 0
         self.optional_sections = 0
         self.continuations, self.map_links = [], []
+        self.frames = []
+        self.anchor_links = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -29,6 +32,7 @@ class Links(HTMLParser):
             self.ids.add(attrs['id'])
         if tag == 'a' and 'href' in attrs:
             self.links.append(attrs['href'])
+            self.anchor_links.append(attrs['href'])
             classes = attrs.get('class', '').split()
             if 'docs-footer-prevpage' in classes:
                 raise ValueError('Sidebar-order previous link remains in the lesson footer')
@@ -41,6 +45,15 @@ class Links(HTMLParser):
             self.links.append(attrs.get('src', ''))
             if not attrs.get('alt', '').strip():
                 raise ValueError('Image has no description')
+        if tag == 'iframe':
+            if not attrs.get('title', '').strip() or not attrs.get('src', '').strip():
+                raise ValueError('Prepared example needs a title and source')
+            self.frames.append(attrs['src'])
+            self.links.append(attrs['src'])
+        if tag == 'script' and 'src' in attrs:
+            self.links.append(attrs['src'])
+        if tag == 'link' and 'stylesheet' in attrs.get('rel', '').lower().split() and 'href' in attrs:
+            self.links.append(attrs['href'])
 
 
 def check_notebooks(manifest, html, root, docs=DOCS):
@@ -60,6 +73,7 @@ def check_notebooks(manifest, html, root, docs=DOCS):
         if sha256(source) != lesson['sha256'] or sha256(download) != lesson['download_sha256']:
             raise ValueError(f'Stale source or modified download: {source.name}')
         notebook = nbformat.read(download, as_version=4)
+        outputs = verify_outputs(notebook, root / 'downloads/figures' / source.stem, lesson)
         figures = validate_outputs(notebook)
         if sum(cell.cell_type == 'code' for cell in notebook.cells) != lesson['code_cells']:
             raise ValueError(f'Incorrect executed-cell record: {source.name}')
@@ -69,10 +83,19 @@ def check_notebooks(manifest, html, root, docs=DOCS):
         if figures != lesson['figures'] or html[page].images < figures:
             raise ValueError(f'Missing published figures: {source.name}')
         download_links = [(page.parent / unquote(urlsplit(link).path)).resolve()
-                          for link in html[page].links
+                          for link in html[page].anchor_links
                           if not urlsplit(link).scheme and not urlsplit(link).netloc]
         if download.resolve() not in download_links:
             raise ValueError(f'Missing executed-notebook link: {source.name}')
+        frame_paths = {(page.parent / unquote(urlsplit(link).path)).resolve()
+                       for link in html[page].frames}
+        declared = declarations(notebook)
+        for output in outputs:
+            target = (root / 'downloads/figures' / source.stem / output['path']).resolve()
+            if target not in download_links:
+                raise ValueError(f'Missing public-output link: {output["path"]}')
+            if declared[output['path']].get('embed') and target not in frame_paths:
+                raise ValueError(f'Missing prepared-example embed: {output["path"]}')
         sections = [cell.metadata.get('tamerop', {}).get('optional_section') for cell in notebook.cells]
         groups = sum(section is not None and (i == 0 or section != sections[i-1])
                      for i, section in enumerate(sections))
@@ -106,7 +129,10 @@ def check_catalog(catalog, root):
         raise ValueError('Catalog must define six distinct main collection roots')
     for route in [*catalog['pages'], *roots, *catalog['anchors'].values()]:
         published(route)
-    pages = sorted(root.rglob('*.html'))
+    record = root / 'downloads/publication.json'
+    standalone = output_routes(json.loads(record.read_text())) if record.exists() else set()
+    pages = sorted(page for page in root.rglob('*.html')
+                   if page.relative_to(root).as_posix() not in standalone)
     extra = {page.relative_to(root).as_posix() for page in pages} - set(catalog['pages'])
     if extra:
         raise ValueError('Built HTML pages are absent from the catalog: ' + ', '.join(sorted(extra)))
@@ -244,7 +270,10 @@ def check_site():
     nodes = {pages[(DOCS / node['source']).resolve()]: node for node in config['nodes']
              if (DOCS / node['source']).resolve() in pages}
     map_page = root / Path(manifest['reading_map']['page']).with_suffix('.html')
+    standalone = output_routes(json.loads((root / 'downloads/publication.json').read_text()))
     for page, parsed in html.items():
+        if page.relative_to(root).as_posix() in standalone:
+            continue
         expected = Links()
         expected.feed(continuation_links(nodes.get(page), records, pages, page, map_page, DOCS))
         if (parsed.continuations, parsed.map_links) != (expected.continuations, expected.map_links):

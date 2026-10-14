@@ -1491,7 +1491,9 @@ PNG, SVG and PDF record the chosen view. A composition's HTML export uses
 CairoMakie to embed a fixed SVG and its annotation explanations. Ordinary WGL
 HTML export does not preserve Julia callbacks. For a finite set of named
 choices that can be selected offline, use the [saved session
-operations](visual_sessions.md#choose-the-execution-contract). To save a live
+operations](visual_sessions.md#choose-the-execution-contract); the
+[square example](../../tutorials/live_inspection.ipynb#keep-the-choices-that-explain-your-result)
+lets you select among three such views on this website. To save a live
 inspector as a static figure, export `OA.inspection_snapshot(session)`.
 A volume's `:slice_viewer` cannot be exported as a functioning offline slider;
 select an `:image` plane with the desired `slice_indices` instead.

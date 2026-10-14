@@ -368,6 +368,28 @@ class UnchangedPublicationTests(unittest.TestCase):
         publication.publish('julia-fixture', **kwargs)
         return json.loads((self.previous / 'publication.json').read_text())
 
+    def test_raw_html_assets_are_staged_during_capture_reuse(self):
+        assets = self.docs / 'assets/schematic'
+        assets.mkdir(parents=True)
+        files = {'view.js': b'const caption = "a\\nb";\r\n',
+                 'view.css': b'.schematic { color: #123456; }\r\n',
+                 'generate.jl': b'error("authoring only")',
+                 'notes.md': b'# Private generation notes',
+                 'unused.svg': b'<svg></svg>'}
+        for name, contents in files.items():
+            (assets / name).write_bytes(contents)
+        shell = self.docs / 'src/assets/shell.css'
+        shell.parent.mkdir(parents=True)
+        shell.write_bytes(b'.shell { display: block; }')
+        self.build(reuse_unchanged=True)
+        staged = self.docs / '.build/src/assets'
+        self.assertEqual((staged / 'shell.css').read_bytes(), shell.read_bytes())
+        self.assertEqual({file.name for file in (staged / 'schematic').iterdir()},
+                         {'view.js', 'view.css'})
+        for name in ('view.js', 'view.css'):
+            self.assertEqual((staged / 'schematic' / name).read_bytes(), files[name])
+        self.assertEqual(self.executed, [])
+
     def test_mixed_reuse_and_successive_provenance(self):
         self.change_second()
         previous_hash = sha256(self.previous / 'publication.json')

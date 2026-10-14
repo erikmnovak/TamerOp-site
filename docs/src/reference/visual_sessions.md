@@ -34,7 +34,9 @@ encoding or persistence diagram, is retained only when explicitly requested.
 | `inspection_session(saved; state=...)` | A new inspector with the saved selection | Julia, a supported recorded request and its matching source |
 
 The HTML state selector switches among the saved answers without Julia or
-network access. To make a new selection, reopen a supported inspector in Julia
+network access. The guide's [square viewer](../../tutorials/live_inspection.ipynb#keep-the-choices-that-explain-your-result)
+offers three prepared selections and their exact readouts to try in the browser.
+To make a new selection, reopen a supported inspector in Julia
 with its matching mathematical source. Including that source in HTML makes
 it available to Julia later; the browser continues to display the prepared
 states only.

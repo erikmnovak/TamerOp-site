@@ -65,8 +65,10 @@ For a longer investigation of spaces, maps and presentation bases, see
 return to it later, [Keeping a selected mathematical
 view](tutorials/live_inspection.ipynb) explains saved figures, exact recorded
 data and finite offline choices. CairoMakie renders static figures; the live
-examples below load WGLMakie and require Julia to remain running. Published
-lessons use saved figures without requiring a live Julia session.
+examples below load WGLMakie and require Julia to remain running. You can
+explore the guide's [prepared square selections](tutorials/live_inspection.ipynb#keep-the-choices-that-explain-your-result)
+on the website without Julia: the selector displays the identity map inside
+the square, its boundary space and the zero space beyond that boundary.
 
 ## Previewing source data
 
