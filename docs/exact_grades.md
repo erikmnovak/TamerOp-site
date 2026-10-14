@@ -1,115 +1,136 @@
 # Exact rhomboid grades
 
-Two nearby radii can mark different topological events even when a plot displays
-them at the same position. A grade is the parameter value at which a cell
-appears. For rhomboid filtrations, keeping these grades distinct preserves the
-events that determine the finite model's spaces and maps. This guide explains
-which coordinates remain exact during construction, queries, and saving; the
-[finite-encoding introduction](finite_encodings.md) explains the role of those
-coordinates in recovering the represented module.
+Two nearby radii can mark different topological events even when a plot places
+them at the same position. A *grade* is the parameter value at which a cell
+appears. If we round two distinct grades to one value, a cell and a boundary
+that entered at different times may appear together, changing the persistence
+module. Keeping the grades distinct lets the finite encoding retain the spaces
+and maps of the supplied rhomboid filtration.
 
-`RhomboidFiltration()` stores physical radii as `AlgebraicReal` values, which
-represent real roots of polynomials with rational coefficients. The
-construction computes rational squared radii and takes exact square roots.
-Sorting, membership, cell attachments and grid indices use these exact values;
-two radii with the same `Float64` display remain different computational grades.
-Exactness refers to the supplied coordinates: a floating input means its
-represented binary value, not an unrecorded intended decimal value.
+`RhomboidFiltration()` stores physical radii as `AlgebraicReal` values: real
+roots of polynomials with rational coefficients, represented exactly. The
+construction first computes rational squared radii, then takes exact square
+roots. Sorting, membership, cell attachments and grid indices all use these
+values. A conversion to `Float64` supplies an approximation for display without
+replacing the stored grade.
 
 ```julia
-using TamerOp
+import TamerOp as OP
 
-A = AlgebraicReal
-r = sqrt(A(2))
+r = sqrt(OP.AlgebraicReal(2))
 r^2 == 2                       # true exactly
-Float64(r)                     # explicit approximation for display
+Float64(r)                     # an approximation for display
 
-points = PointCloud(reshape(QQ[0, 2, 4 + QQ(1, big(2)^70)], :, 1))
-enc = encode(points, RhomboidFiltration(); degree=0)
-encoding_axes(enc)             # distinct exact critical values
-provenance(enc).approximation.grade_arithmetic  # :exact_real_algebraic
+points = OP.PointCloud(reshape(OP.QQ[0, 2, 4 + OP.QQ(1, big(2)^70)], :, 1))
+enc = OP.encode(points, OP.RhomboidFiltration(); degree=0)
+OP.encoding_axes(enc)           # distinct exact critical values
+OP.provenance(enc).approximation.grade_arithmetic  # :exact_real_algebraic
 ```
 
-An exact cutoff such as `RhomboidFiltration(radius=sqrt(A(2)))` includes cells
-born at that radius. Finite values smaller or larger than the `Float64` range
-remain valid grades. `AlgebraicReal` supports exact arithmetic and comparisons;
-converting an irrational value to `QQ` or `Int` raises `InexactError`.
+The gap between the second and third points is slightly larger than the gap
+between the first two. Writing that difference as a rational number preserves
+it before construction begins. Exactness always refers to the coordinates
+supplied: if a coordinate arrives as a floating number, its represented binary
+value is the input, even if a different decimal value was intended.
+
+An exact cutoff such as
+`OP.RhomboidFiltration(radius=sqrt(OP.AlgebraicReal(2)))` includes cells born
+at that radius. Finite grades smaller or larger than the `Float64` range remain
+valid. Arithmetic and comparisons between `AlgebraicReal` values are exact;
+converting an irrational value to `QQ` or `Int` raises `InexactError`, because
+that target cannot represent the value.
 
 ## Coordinates and queries
 
-The physical parameters are `(radius, depth)`. Their order increases radius
-and decreases depth. The encoded axes are therefore `(r, -k)`, both increasing.
-`locate` receives physical `(r, k)` queries; grid signed-measure and Euler axes
-are the stored oriented `(r, -k)` coordinates. This distinction matters when
-supplying your own axes. The default critical grid retains every birth. An
-explicit coarse grid or quantization deliberately changes grade placement;
-`provenance(enc).discretization` records that choice.
+The physical parameters are radius $r$ and depth $k$. Increasing radius or
+*decreasing* depth adds cells, so the stored axes are $(r,-k)$, with both
+coordinates increasing along the order. The encoding map, which assigns each
+physical parameter its finite label, handles this reversal when queried by
+`locate`.
 
-An exact radius is not a squared-radius coordinate. Replacing `r` by `r^2`
-preserves the filtration order, but changes straight slices and metric values.
-The slicing and matching paths preserve the radius coordinate. The exact 2D
-matching optimizer requires a finite window and a positively oriented
-classifier. The default rhomboid classifier has orientation `(1,-1)`
-and is rejected by that optimizer. To compare in increasing coordinates
-`(r,-k)`, use a classifier with orientation `(1,1)` on the same stored axes and
-finite poset, and express the matching window in those coordinates. Its
-geometric arithmetic is exact, and its final scalar output is `Float64`.
+| Operation | Coordinates it receives or returns |
+| --- | --- |
+| `locate` on the rhomboid encoding map | Physical radius and depth, $(r,k)$ |
+| Stored encoding axes | Increasing coordinates $(r,-k)$ |
+| Grid signed measures and Euler tables | The stored oriented coordinates $(r,-k)$ |
 
-Exact 2D slice queries retain algebraic endpoints. Sampled queries retain the
-specified sample points and their exact classifications, but still only
-represent those samples. Compiled sampled plans preserve exact parameter
-values and can be reused across modules. Ingestion, slice-plan and feature
-caches compare exact request contents, including filtration parameters,
-bounds, directions, offsets and sample values. The ingestion keys also retain
-the final encoding axes, so changing a grid cannot reuse a module computed on
-another grid. Request arrays are snapshotted into immutable keys; later edits
-cannot change an already-stored key. Different exact values remain distinct
-even when their hashes coincide.
-For a hand-built grid, use `AlgebraicReal.(axis)` on each axis to select the
-same exact slice-arrangement arithmetic. Other classifier families have their
-own geometry-arithmetic contracts.
+This distinction matters when you supply your own axes. The default critical
+grid retains every birth. A coarser grid, or a quantization that replaces
+grades by chosen levels, changes where births occur;
+`OP.provenance(enc).discretization` records that choice. The [finite encoding
+introduction](finite_encodings.md) explains how the axes and encoding map
+relate the original parameters to the finite model.
 
-Featurizer constructors retain exact query directions, offsets, slice bounds
-`tmin`/`tmax`, barcode-clipping `window` bounds and supplied invariant-query
-axes. Saving and loading feature metadata preserves these coordinates.
-Feature caches and composite feature
-groups share computations only when the corresponding exact requests agree.
-Barcode summaries and top-k features compare exact endpoints and subtract them
-before converting persistence lengths to numerical outputs.
-Images, silhouettes and entropy also form exact endpoint differences before
-evaluating numerical powers, exponentials and logarithms.
-Euler-surface tables also retain exact axis labels, including when materialized
-as columns through Tables.jl.
+Radius is also different from squared radius. Replacing $r$ by $r^2$ preserves
+the order of births for $r\geq0$, but bends straight slices and changes metric
+values. Slicing and matching therefore retain the radius coordinate. The exact
+2D matching optimizer requires a finite window and an encoding map whose two
+coordinates increase with the order. The default rhomboid map has orientation
+`(1,-1)` and is rejected by that optimizer. A comparison in $(r,-k)$
+coordinates uses a map with orientation `(1,1)` on the same stored axes and
+finite poset, with the matching window expressed in those coordinates. The
+optimizer's geometry is exact; its final scalar output is `Float64`.
 
-Feature evaluation grids such as landscape `tgrid` and image `xgrid`/`ygrid`,
-weights, kernel parameters and final feature vectors remain numerical. A
-numerical sampling grid can miss a narrow feature; it does not replace or
-merge the underlying exact grades.
+## Which later computations remain exact?
 
-Projection-based invariants also retain algebraic levels when constructing
-their finite target chains and pushforward maps. Their cached barcodes keep
-exact endpoints, and distance evaluation subtracts those endpoints before
-rounding. A projection pushforward and restriction to a line are different
-mathematical constructions; preserving grades does not make their invariants
-equal. Numerical quadrature and feature outputs still have their stated
-floating-point precision.
+An exact 2D slice query retains algebraic interval endpoints. A sampled query
+instead classifies the supplied sample points exactly and describes those
+samples; it cannot discover a short interval between them. For a grid you
+construct yourself, use `OP.AlgebraicReal.(axis)` on each axis to select the
+same exact arithmetic for locating slice crossings. Other families of encoding
+maps have their own arithmetic contracts.
+
+Feature specifications retain exact directions, offsets, slice bounds
+`tmin`/`tmax`, clipping `window` bounds and supplied axes for invariant
+queries. Saving their metadata preserves these coordinates. Barcode summaries
+and the features formed from the longest intervals compare exact endpoints and
+subtract them before converting interval lengths to numerical outputs.
+Persistence images, silhouettes and entropy likewise form exact endpoint
+differences before evaluating powers, exponentials or logarithms numerically.
+Euler tables retain exact axis labels, including through Tables.jl.
+
+The grids on which a feature is *evaluated*, such as landscape `tgrid` and
+image `xgrid`/`ygrid`, are numerical, as are weights, kernel parameters and
+final feature vectors. A narrow feature can fall between those samples even
+though its exact underlying grades remain distinct. The two choices answer
+different questions: exact grades preserve when an event occurred, while the
+evaluation grid determines where we look at the resulting feature.
+
+Projection invariants retain algebraic levels when constructing their finite
+target chains and pushforward maps. Their barcodes have exact endpoints, and
+distance evaluation subtracts those endpoints before rounding. A pushforward
+along a projection and a restriction to a line are different constructions, so
+their invariants need not agree. Numerical integration and final feature
+outputs still use their declared floating precision.
+
+## Reusing exact requests
+
+Compiled sampled slice plans retain their parameter values and can be reused
+across modules. A cache reuses a computation only when the relevant requests
+agree exactly, including their filtration parameters, bounds, directions,
+offsets and sample values. Ingestion keys include the final encoding axes, so
+changing the grid cannot retrieve a module computed on the old one.
+
+Request arrays are copied into immutable keys when stored. Later edits to an
+array therefore leave the existing entry intact. A hash helps find possible
+matches, but equality of the exact values decides whether the entry can be
+reused. Composite feature groups follow the same rule when sharing work.
 
 ## Saving and inspecting
 
-Owned dataset and encoding JSON stores rational coordinates as canonical
-rational strings, and real algebraic coordinates by a primitive integer
-minimal polynomial and the index of its real root. Loading validates these
-records and preserves exact values, orientations and maps. Ordinary floating
-coordinate arrays keep their compact numeric storage.
+TamerOp's dataset and encoding JSON formats store rational coordinates as
+canonical rational strings. A real algebraic coordinate is stored by its
+primitive integer minimal polynomial and the index specifying which real root
+it represents. Loading checks these records and preserves exact values,
+orientations and maps; ordinary floating arrays keep their numeric storage.
 
-Saved ingestion encodings retain their recorded coordinate meaning. After
-loading, `provenance(enc).coordinate_semantics` reports the persisted grade
-scale, orientation and grade arithmetic. It does not recreate execution
-history that the artifact did not record. A raw graded complex has generic
-coordinates; save its filtration specification when you also need to preserve
-the construction's geometric interpretation.
+After loading an ingestion encoding, `OP.provenance(enc).coordinate_semantics`
+reports its recorded grade scale, orientation and arithmetic. A raw graded
+complex has generic coordinates, so save its filtration specification as well
+when the geometric meaning is needed. An artifact can recover only the
+construction information that was recorded.
 
-Exact algebraic arithmetic costs more than floating arithmetic. It supplies a
-correctness guarantee rather than a speed claim. The [multicover guide](tutorials/multicover.ipynb)
-describes bounded-depth models, incremental enumeration and the explicit exact
-backend for degenerate inputs.
+Exact algebraic arithmetic costs more than floating arithmetic. It is useful
+here because separating births matters to the represented module. The
+[multicover guide](tutorials/multicover.ipynb) develops the construction,
+including bounds on depth and the exact backend for degenerate inputs.

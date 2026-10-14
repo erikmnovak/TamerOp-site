@@ -176,9 +176,9 @@ guide need not become another GUI manual.
 | Choose a summary or comparison | `guide_generalized_rank`, `guide_decomposition`, `guide_approximation`, `exact_matching`, `guide_slices_diagrams` | Scalar queries and witnesses, true summands, approximation guarantees, finite-window optimization and interval exploration remain separately scoped. |
 | Analyze results and collections | `guide_features`, `guide_signed_transport`, `guide_uncertainty`, `guide_learned_gril` | Feature choices precede collection analysis; signed mass, sampling uncertainty and learned parameters retain their own contracts. |
 | Inspect and share a view | `visualization`, `guide_live_inspection`, `guide_comparisons`, `guide_visualize_share` | Choose a view; manage live selection; align compared objects; compose/export/reopen. Subject-specific mathematics stays in its guide. |
-| Repeat or exchange work | `lazy_inspection`, `reuse_computations`, `guide_data_io` | Know what is already represented, what computation is requested, what is reused and what survives an artifact or external interface. |
+| Repeat or exchange work | `lazy_inspection`, `guide_data_io` | Know what is already represented, what computation is requested, what is reused and what survives an artifact or external interface. |
 
-These 35 guide homes include existing articles to narrow or extend. A guide
+These 34 guide homes include existing articles to narrow or extend. A guide
 may offer a small variation, but should not collect every operation sharing a
 source module. A growing section becomes an article only when it owns a
 distinct reader question, input/output contract and coherent example.
@@ -201,10 +201,11 @@ exploration at the point of need; do not duplicate an entire guide's choices.
 | Preserve a result | `save_reload`, `export_figure`, `reopen_session`, `compose_figure` | Recovered mathematical queries, a faithful figure, or explicitly supported reopened interaction. |
 
 The plan has 30 recipe homes, including existing rewrites. This is not a recipe
-for every feature or option. In particular, `cdd_concurrency` currently states
-an important contract; its recipe migration needs a runnable task and
-recognizable result, while internal lock mechanics move to B49. A catalogue of
-optional integrations should not replace the bounded activation procedure.
+for every feature or option. The `cdd_concurrency` recipe now constructs
+several polyhedral encodings concurrently and checks their fibers. Ownership
+and external-library restrictions stay beside the task; internal coordination
+can move to B49 when that account is usable. A catalogue of optional
+integrations should not replace the bounded activation procedure.
 
 Exploratory input/visual recipes are notebook-first. Deterministic scripts can
 check their mathematics without becoming a second independently authored
@@ -302,7 +303,7 @@ workflow, task, contract or mechanism.
 | Pairs, extended and temporal persistence | Relative, extended and temporal lessons | `ordinary_persistence`, `guide_temporal_persistence`; `relative_pair` | `ref_persistence_variants`; B66-B68 |
 | Comparison, features and inference | `distances_stability`, `features_lesson`, `uncertainty_lesson`, `morphism_matchings_lesson` | Diagram, feature, signed, uncertainty and learning guides; `distance_witness`, `feature_table` | `ref_comparisons`, `ref_features`; B39-B43, B61-B62, B71-B72 |
 | Interpretation and interaction | `reading_module_figures` plus the subject lesson for each view | Subject guides plus `guide_live_inspection`, `guide_comparisons`, `guide_visualize_share`; `compose_figure`, `reopen_session` | `ref_visualization`, `ref_visual_sessions`; B44-B48 |
-| Exactness, execution and reproducibility | `coefficients_lesson`, category/encoding assumptions at point of use | `numerical_algebra`, `lazy_inspection`, `reuse_computations`, `guide_data_io`; field/reuse/save recipes | `ref_fields`, `ref_results`, `ref_io`; B01-B05, B48-B50, measured C-series reports |
+| Exactness, execution and reproducibility | `coefficients_lesson`, category/encoding assumptions at point of use | `numerical_algebra`, `lazy_inspection`, `guide_data_io`; field/reuse/save recipes | `ref_fields`, `ref_results`, `ref_io`; B01-B05, B48-B50, measured C-series reports |
 
 The generalized-rank branch now has an executable usage guide and a focused
 branching-region recipe. Its finite-region, repeated-occurrence boundary and
@@ -333,7 +334,7 @@ require the links needed to understand and use the supported feature.
 | `spaces_and_maps.md` | Retain intra-module investigation and presentation inspection. | Link inter-module algebra and generated objects separately; reuse live controls without removing mathematical interpretation. |
 | `math_categories.md` | Keep the mathematical category/comparison argument. | Move operational API/conversion/cache tables to transport/derived usage or reference when ready; never move away hypotheses needed by the argument. |
 | `exact_matching.md` | Keep operational scope and a meaningful witness. | B40 owns the optimizer proof; comparison and interleaving lessons own general meaning. Preserve a direct link and essential hypotheses at use. |
-| `lazy_inspection.md` | Develop inspection, deferred computation and reuse as one guide. | Move specialized product instruction to derived usage. Add the missing repeated-query or batch example here, then reconcile the overlapping planned `reuse_computations` identity and its incoming references. |
+| `lazy_inspection.md` | Develop inspection, deferred computation and reuse as one guide. | Keep the repeated-query and barcode-summary batch with inspection and SessionCache ownership. Specialized product instruction lives in derived usage; the overlapping reuse guide has been consolidated into this existing article. |
 | `tutorials/multicover.ipynb`, `rhomboid_depth.md`, `exact_grades.md` | Extend useful input choices without becoming algorithm transcripts. | The multicover notebook links balls, retained models and invariants, then returns to finite encodings. B23 now owns the shared exact construction and inspector; B13 and B24–B26 keep their grade-transport and deeper cap/discovery/degenerate-model scopes. The geometric lesson remains a separate planned explanation in the mathematical map. |
 | `option_contracts.md` | Keep shared effective-option rules. | Detailed method keywords move to canonical domain reference entries, avoiding two specifications. |
 | Existing foundations | Preserve the worked reasoning; strengthen direct-input and onward-algebra entrances. | `representation_domains` and the direct-construction guide supply breadth; the encoding lesson remains a coherent recovery argument. |

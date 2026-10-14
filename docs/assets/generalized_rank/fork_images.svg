@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="490" viewBox="0 0 520 490" role="img" aria-labelledby="title desc">
+<title id="title">The same arrow ranks can give different common images</title>
+<desc id="desc">Two sources K map to a target K squared. Above, both maps send 1 to e1, so their images coincide and intersect in a line. Below, they send 1 to e1 and e2, so their images intersect only at zero. The blue solid and orange dashed lines label the images of sources 1 and 2. Coordinates are vector coordinates in the target plane, not parameters of the module.</desc>
+<rect x="1" y="1" width="518" height="488" rx="10" fill="white" stroke="#cbd5df"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#183549">
+<text x="260" y="30" font-size="19" text-anchor="middle">Two image lines in the target space K²</text>
+<text x="25" y="63" font-size="18">Same image: 1 ↦ e₁ along both maps</text>
+<path d="M260 83V186" stroke="#899aa8" stroke-width="1.5"/>
+<text x="270" y="100" font-size="17">e₂</text>
+<path d="M60 140H460" stroke="#3876a2" stroke-width="6"/>
+<path d="M60 140H460" stroke="#b06629" stroke-width="3" stroke-dasharray="9 7"/>
+<circle cx="260" cy="140" r="4" fill="#183549"/>
+<text x="270" y="165" font-size="17">0</text><text x="466" y="145" font-size="17">e₁</text>
+<text x="260" y="211" font-size="18" text-anchor="middle">Intersection = K e₁; generalized rank = 1</text>
+<path d="M20 234H500" stroke="#cbd5df"/>
+<text x="25" y="264" font-size="18">Different images: 1 ↦ e₁ and 1 ↦ e₂</text>
+<path d="M60 340H460" stroke="#3876a2" stroke-width="4"/>
+<path d="M260 282V389" stroke="#b06629" stroke-width="3.5" stroke-dasharray="9 7"/>
+<circle cx="260" cy="340" r="5" fill="#183549"/>
+<text x="273" y="331" font-size="17">0</text><text x="466" y="346" font-size="17">e₁</text><text x="272" y="301" font-size="17">e₂</text>
+<text x="260" y="416" font-size="18" text-anchor="middle">Intersection = {0}; generalized rank = 0</text>
+<path d="M39 449H85" stroke="#3876a2" stroke-width="4"/><text x="96" y="455" font-size="17">image of source 1</text>
+<path d="M285 449H331" stroke="#b06629" stroke-width="3.5" stroke-dasharray="9 7"/><text x="342" y="455" font-size="17">source 2</text>
+<text x="260" y="479" font-size="15" text-anchor="middle">K = ℚ; both individual arrows have rank one.</text>
+</g></svg>

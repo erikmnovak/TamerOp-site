@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="548" viewBox="0 0 440 548" role="img" aria-labelledby="title desc">
+<title id="title">Bootstrap sampling preserves complete rows</title>
+<desc id="desc">Two observations at three probes are (0,1,4) and (2,3,8). A resample with indices 2 and 2 contains two copies of (2,3,8), retaining all three probe coordinates together.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9" fill="none" stroke="#526c79" stroke-width="1.4"/></marker></defs>
+<rect width="440" height="548" rx="10" fill="#f7fafb"/>
+<g font-family="sans-serif" fill="#213b49" font-size="22" text-anchor="middle">
+<text x="220" y="36" font-size="24">Observed table</text>
+<text x="142" y="82">probe 1</text><text x="242" y="82">probe 2</text><text x="342" y="82">probe 3</text>
+<rect x="94" y="96" width="296" height="48" rx="6" fill="#e4edf5"/><rect x="94" y="158" width="296" height="48" rx="6" fill="#e1eee8"/>
+<text x="44" y="128">row 1</text><text x="44" y="190">row 2</text>
+<text x="142" y="128">0</text><text x="242" y="128">1</text><text x="342" y="128">4</text>
+<text x="142" y="190">2</text><text x="242" y="190">3</text><text x="342" y="190">8</text>
+<text x="242" y="240">mean = (1, 2, 6)</text>
+<text x="220" y="333" font-size="24">One resample: rows 2, 2</text>
+<text x="142" y="376">probe 1</text><text x="242" y="376">probe 2</text><text x="342" y="376">probe 3</text>
+<rect x="94" y="390" width="296" height="48" rx="6" fill="#e1eee8"/><rect x="94" y="452" width="296" height="48" rx="6" fill="#e1eee8"/>
+<text x="44" y="422">row 2</text><text x="44" y="484">row 2</text>
+<text x="142" y="422">2</text><text x="242" y="422">3</text><text x="342" y="422">8</text>
+<text x="142" y="484">2</text><text x="242" y="484">3</text><text x="342" y="484">8</text>
+<text x="220" y="533">resampled mean = (2, 3, 8)</text>
+</g>
+<path d="M220 260 L220 301" fill="none" stroke="#526c79" stroke-width="2.3" marker-end="url(#arrow)"/>
+</svg>

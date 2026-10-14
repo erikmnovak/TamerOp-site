@@ -1,9 +1,11 @@
 # When does a module split into intervals?
 
-The two-square example gives us a module by putting two simpler modules side
-by side. At a parameter covered by both squares its space is two-dimensional;
-on an overlap boundary, its map tells us which coordinate continues. Can we
-recover those pieces when we are given only the resulting spaces and maps?
+In the [two-square example](two_parameters.md), we built a module from two
+simpler modules. At a parameter covered by both squares its space has dimension
+two, and the maps across an overlap boundary tell us which coordinate continues.
+Suppose instead that someone gives us the spaces and maps without telling us
+how they were assembled. We would like to recover the pieces, even if a change
+of basis has mixed their coordinates.
 
 Work first on the finite poset of an encoding. This keeps the algebraic
 question explicit, whether the original input was a filtration, a lattice
@@ -11,12 +13,27 @@ presentation, a collection of geometric regions, or a directly supplied diagram.
 
 ## A summand needs a way back
 
-A submodule supplies compatible subspaces. A **direct summand** supplies more:
-a module $S$, an inclusion $i:S\to M$, and a projection $p:M\to S$ such that
-$p i=1_S$. The projection extracts the chosen component without disrupting
-any structure map. Its kernel $R$ is a complement, so $M\cong S\oplus R$.
+A submodule consists of a subspace at each vertex, with structure maps that
+carry these subspaces into one another. To recover it as a separate component
+of $M$, we need a module map $p:M\to S$ that reverses its inclusion
+$i:S\to M$: the equation $pi=1_S$ says that a vector returns unchanged.
+Such a map $p$ is a **retraction**, and $S$ is then a **direct summand**.
+Its kernel $R=\ker p$ supplies a complement, giving $M\cong S\oplus R$.
+
+At each vertex, a vector $v$ separates as $ip(v)+(v-ip(v))$. The first term
+lies in the selected copy of $S$, and the second lies in $\ker p$ because
+$p(v-ip(v))=p(v)-pi(p(v))=0$. Since $i$ and $p$ commute with the structure
+maps, this separation is compatible across the whole diagram.
+
+```@raw html
+<div class="notebook-figure-scroll" style="--notebook-figure-min-width: 820px" tabindex="0" role="region" aria-label="Scrollable figure: inclusion and projection maps for a module splitting">
+```
 
 [![A splitting retains both directions. Inclusion sends a summand into M; projection recovers it. The complement has its own inclusion and projection, and the two resulting idempotents add to the identity.](assets/decomposition/splitting.svg)](assets/decomposition/splitting.svg)
+
+```@raw html
+</div>
+```
 
 [Open the diagram at full size.](assets/decomposition/splitting.svg)
 
@@ -37,16 +54,22 @@ directions. Order-convex means that $a,b\in I$ and $a\le z\le b$ force
 $z\in I$. An interval can branch; it need not be a rectangle or a totally
 ordered chain.
 
-The thin interval module $k_I$ has one copy of $k$ at each vertex in $I$ and
+The **interval module** $k_I$ has one copy of the coefficient field $k$ at each vertex in $I$ and
 zero elsewhere. Maps inside $I$ are identities, and the other maps are zero.
 Convexity makes these maps consistent with composition. Connectedness means
-that an endomorphism must multiply every nonzero stalk by the same scalar.
-In particular, $k_I$ is indecomposable.
+that an endomorphism, a module map from $k_I$ to itself, must multiply every
+nonzero stalk by the same scalar. In particular, $k_I$ is **indecomposable**:
+it cannot split into two nonzero modules. Otherwise projection onto either
+piece would be an idempotent other than zero or the identity, whereas a scalar
+satisfying $a^2=a$ in a field is either zero or one. Such a module is also
+called **thin**, meaning that every stalk has dimension at most one.
 
 The **interval multiplicity** $m_I(M)$ is the number of copies of $k_I$ in a
-Krull–Schmidt decomposition of $M$. Equivalently, it is the largest $m$ for
+decomposition of $M$ into indecomposable modules. Equivalently, it is the largest $m$ for
 which $k_I^{\oplus m}$ is a direct summand. For finite-dimensional modules on
-a finite poset these counts are well defined. This is the multiplicity problem
+a finite poset, the Krull–Schmidt theorem says that the indecomposable pieces
+are unique up to isomorphism and order, so these counts are well defined.
+This is the multiplicity problem
 studied by [Asashiba and Liu](https://arxiv.org/abs/2411.11594).
 
 On the square with arrows $1\to2$, $1\to3$, $2\to4$, $3\to4$, take
@@ -65,15 +88,24 @@ three-dimensional subspace of $k^4$, and the projection recovers its three
 coordinates. The same choices commute with all four arrows, which makes the
 selection a submodule with a complement.
 
+```@raw html
+<div class="notebook-figure-scroll" style="--notebook-figure-min-width: 1020px" tabindex="0" role="region" aria-label="Scrollable figure: stalk dimensions of selected summands and their complement">
+```
+
 [![The full square has dimensions 1,2,1,4. The selected edge and two sink copies contribute 0,1,0,3, and the complementary constant square contributes one dimension at every vertex.](assets/decomposition/selected_summands.svg)](assets/decomposition/selected_summands.svg)
+
+```@raw html
+</div>
+```
 
 *The dimension equality holds at every vertex. The inclusion and projection
 supply the compatible maps needed to turn these equalities into a splitting.*
 
-If the module has an encoding classifier, we can pull each selected support
-back to the original parameter domain and draw the regions where it is
-present. A picture reconstructed by another approximation procedure has a
-separate accuracy question: exact splitting maps do not certify its boundary.
+If the module has an encoding map, assigning each original parameter its
+finite label, the preimage of a selected support gives the region where the
+piece is present. We can draw that region directly from the encoding. A support
+picture produced by an approximation procedure has its own accuracy question;
+the splitting maps alone give no information about the error in its boundary.
 For a piece whose stalk dimension varies, a dimension panel also records
 information that a uniformly colored support would omit.
 
@@ -86,7 +118,7 @@ is exactly the obstruction to a retraction.
 
 | Construction | What its numbers describe |
 | :--- | :--- |
-| Interval-summand multiplicity | Actual copies of $k_I$ inside $M$, with a complement. |
+| Interval multiplicity | Copies of $k_I$ inside $M$, with a complement. |
 | Generalized rank on $I$ | Compatible persistence through the restricted diagram. |
 | Signed interval-family summary | Coefficients reconstructing specified rank queries on a declared family. |
 | Matched slice tracks or support approximations | A chosen comparison or approximation, with its own guarantees. |
@@ -98,15 +130,27 @@ splitting of $M$.
 
 Intervals do not exhaust the indecomposable modules of a general finite
 poset. Put $k$ at each of three incomparable sources and $k^2$ at their common
-sink, with image lines spanned by $(1,0)$, $(0,1)$ and $(1,1)$. This module has
-no interval summand. To retract onto a piece carrying one source, a functional
-at the sink would have to vanish on the other two lines, which span $k^2$.
-A piece carrying two sources would require their distinct image lines to
-coincide. A sink-only piece would require a functional vanishing on all three.
+sink, with image lines spanned by $(1,0)$, $(0,1)$ and $(1,1)$.
 
-Every module has a maximal interval-decomposable part, unique up to
+[![Three source spaces map into k squared with images along the horizontal, vertical and diagonal lines. Any two image lines span the sink.](assets/decomposition/three_lines.svg)](assets/decomposition/three_lines.svg)
+
+*The upper diagram specifies the three maps. The lower is a schematic of their
+image lines in the common sink; the arrows mark the images of the source
+basis vectors. A projection that vanishes on any two of these lines must
+vanish on the whole sink.*
+
+This module has no interval summand. To retract onto a piece carrying one source, a functional
+at the sink would have to vanish on the other two lines, which span $k^2$.
+A piece carrying two or more sources would require their distinct image lines
+to lie in the same one-dimensional sink stalk. A piece supported only at the
+sink would require a functional vanishing on all three lines. Finally, a piece
+supported only at a source cannot be a submodule, since its outgoing map is
+nonzero. These possibilities exhaust the interval supports of this poset.
+
+Every finite-dimensional module on this finite base has a maximal part that
+is a sum of interval modules, unique up to
 isomorphism, with a residual containing no interval summands. That residual
-can still split into several non-interval pieces. A complete interval search
+can still split into several pieces that are not intervals. A complete interval search
 therefore answers interval-decomposability without solving general
 indecomposable decomposition. With only a chosen family, a nonzero residual
 leaves the global question open.

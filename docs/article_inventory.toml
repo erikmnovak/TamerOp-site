@@ -282,15 +282,15 @@ migration_note = "Keep grade semantics and meaningful user choices; refer to B13
 id = "lazy_inspection"
 title = "Inspection and explicit computation"
 type = "library_guide"
-topics = ["encodings", "algebra", "performance"]
-question = "What is already retained, and what extra computation does my next query request?"
+topics = ["encodings", "algebra", "performance", "features"]
+question = "What is already retained, what does a query compute, and what can I reuse across repeated queries or a batch?"
 state = "existing"
-plan_ids = ["A27"]
+plan_ids = ["A27", "A30"]
 source = "docs/lazy_inspection.md"
-related = ["guide_spaces_maps", "reuse_computations", "B17", "B49", "ref_results"]
-migration = "split"
-scope = "Deferred computation, retained state and reuse across ingestion, algebra, geometry and features; the spaces-and-maps guide owns the concrete selection workflow."
-migration_note = "Develop inspection, deferred computation and reuse as one guide. The existing explanation covers retained results, SessionCache ownership and repeated coordinate queries; add a worked repeated-query or batch example for the remaining reuse_computations scope. Specialized Yoneda matrix-product instruction now lives in guide_derived, with an anchored contextual link here. Reconcile the overlapping planned reuse_computations identity after its remaining scope is fulfilled. Keep meaning and cost promises stable through optimizations."
+related = ["guide_spaces_maps", "repeat_queries", "benchmarking", "B17", "B49", "ref_results", "ref_features"]
+migration = "retain"
+scope = "Inspection, deferred computation, retained results and SessionCache ownership, repeated queries and an explicit barcode-summary batch with reproducible inputs and parameters; distinguish computational reuse from compilation. The spaces-and-maps guide owns concrete selection and the derived guide owns specialized Yoneda products."
+migration_note = "Keep inspection and reuse in this one guide. Its fixed barcode-summary batch absorbs the overlapping planned reuse_computations scope. Preserve input ownership, field and coordinate choices, session lifetime and the distinction between cached preparation and a returned result; retain links to specialized computations."
 
 [[articles]]
 id = "numerical_algebra"
@@ -365,8 +365,8 @@ question = "How can I safely run polyhedral computations concurrently?"
 state = "existing"
 source = "docs/cdd_concurrency.md"
 related = ["B49", "benchmarking"]
-migration = "split"
-migration_note = "Add a runnable task-level procedure with explicit input ownership and a recognizable result; the current page mostly states concurrency restrictions. Keep external-library interaction accessible and let B49 own internal lock ordering and cache mechanics."
+migration = "retain"
+migration_note = "Retain the complete concurrent polyhedral encoding task and its interpreted fiber checks. Keep task ownership and the boundary of the shared CDD lock beside the example; relocate internal coordination detail only when a usable implementation account exists."
 
 [[articles]]
 id = "benchmarking"
@@ -1006,19 +1006,6 @@ related = ["guide_inputs", "ingestion_options", "ref_inputs"]
 migration = "author"
 
 [[articles]]
-id = "reuse_computations"
-title = "Reuse computations in repeated queries and batches"
-type = "library_guide"
-topics = ["performance", "encodings", "features"]
-question = "What can I reuse when asking related questions or comparing many results?"
-state = "planned"
-plan_ids = ["A30"]
-scope = "SessionCache and retained results, repeated queries, batching, reproducible parameters and cache ownership; keep mathematical reuse separate from first-use compilation."
-related = ["lazy_inspection", "repeat_queries", "benchmarking", "B49", "ref_results", "ref_features"]
-migration = "review"
-migration_note = "Consolidate this planned treatment into lazy_inspection rather than commission a second overlapping guide. Review and supply the remaining batch example, reproducible parameters and ownership explanation there, then reconcile this planned identity and its incoming references. No separate source has been authored and the consolidation is not yet complete."
-
-[[articles]]
 id = "compare_encodings"
 title = "Refining and transporting encoded modules"
 type = "library_guide"
@@ -1094,7 +1081,7 @@ question = "How do I retain reusable slice planning while asking several related
 state = "planned"
 plan_ids = ["A30"]
 scope = "Carry one explicit SessionCache through a small repeated slice_barcodes workflow on supported input. Hold the encoding and mathematical choices fixed for the repeated request, then change one query deliberately and verify the requested results. Show which retained result can be queried directly and which new call needs computation; link the broader cache ownership and mutation contracts. Do not infer saved work from wall time alone or promise a particular speedup, memory bound or reuse after arbitrary mutation."
-related = ["reuse_computations", "lazy_inspection", "chosen_slice", "ref_results", "ref_invariants"]
+related = ["lazy_inspection", "chosen_slice", "ref_results", "ref_invariants"]
 migration = "author"
 
 [[articles]]
@@ -1105,7 +1092,7 @@ topics = ["features", "data_io", "invariants"]
 question = "How do I turn several compatible persistence results into a matrix whose columns mean the same thing for every sample?"
 state = "planned"
 scope = "Apply one supported typed featurizer specification to a small batch using a shared grid, axes and mathematical settings. Inspect sample IDs, feature names and the samples-by-features matrix; keep unsupported samples explicit rather than silently changing row correspondence. Save one portable table together with the metadata needed to interpret its columns. State that comparing feature rows does not recover a distance between original modules. Link the feature lesson for the choice of summary and reference for other transforms."
-related = ["features_lesson", "reuse_computations", "optional_integrations", "ref_features", "ref_io"]
+related = ["features_lesson", "lazy_inspection", "optional_integrations", "ref_features", "ref_io"]
 migration = "author"
 
 [[articles]]
@@ -2816,7 +2803,7 @@ state = "existing"
 plan_ids = ["A42", "A31", "A48", "A49", "A105"]
 source = "docs/tutorials/resolutions.ipynb"
 scope = "Begin with the finite category and a cheap ordinary table, then request degrees, maps or full terms only when needed. Explore presentation-native and supported selected-grade routes, specialized H0 input and justified duality-based alternatives. Keep ordinary projective/injective, indicator and relative rank-exact families separate with their hypotheses, exact structure, truncation and minimality contracts. Explain supported cache reuse and output costs without promising a general resolution engine for every input."
-related = ["resolutions_lesson", "relative_rank_exact_lesson", "module_operations", "reuse_computations", "B31", "B51", "B52", "B55", "ref_resolutions", "B44", "ref_visualization"]
+related = ["resolutions_lesson", "relative_rank_exact_lesson", "module_operations", "lazy_inspection", "B31", "B51", "B52", "B55", "ref_resolutions", "B44", "ref_visualization"]
 migration = "review"
 
 migration_note = "The canonical notebook develops finite-poset projective/injective and indicator tables, incidence, support, truncation, verification and graded basis changes. Extend it when selected-grade, specialized H0, duality-based or relative rank-exact workflows have supported implementations; do not advertise them from the planned scope alone. Site routing and publication remain separate."
@@ -3085,7 +3072,7 @@ question = "How do I interpret sampled features in original coordinates and comp
 state = "existing"
 source = "docs/tutorials/features.ipynb"
 scope = "Explore landscapes, images, silhouettes, entropy, scalar summaries and feature tables with common windows, units, layers, grids and normalization. Keep mathematical information loss visible. Include ordinary A116 transforms and feature-table construction; hand off supplied collection/distance/kernel matrices and declared embedding displays to guide_comparisons, keeping information loss explicit; branch to signed transport, GRIL, uncertainty and learned probes for their specialized contracts. Batching, optional backends, reuse and saved tables are operational choices here, not new definitions. For A44/A98, distinguish an ambient landscape query/grid from a stack indexed by sampled slices. Controlled higher-dimensional sections state the fixed coordinates, remaining domain, layers and normalization; neither a surface nor an embedding supplies an unstated stability or injectivity claim."
-related = ["features_lesson", "ordinary_analysis", "guide_generalized_rank", "guide_signed_transport", "guide_uncertainty", "guide_learned_gril", "feature_table", "reuse_computations", "B43", "ref_features"]
+related = ["features_lesson", "ordinary_analysis", "guide_generalized_rank", "guide_signed_transport", "guide_uncertainty", "guide_learned_gril", "feature_table", "lazy_inspection", "B43", "ref_features"]
 plan_ids = ["A25", "A33", "A44", "A95", "A98", "A110", "A116", "A122"]
 migration = "review"
 
@@ -3334,7 +3321,7 @@ topics = ["algebra", "invariants"]
 question = "Which multiplicities, summands, subquotients and witnesses are certified by a result?"
 state = "existing"
 source = "docs/src/reference/decomposition.md"
-scope = "Exact finite-poset interval multiplicities, candidate pruning, complete and supplied-family outcomes, counts, residual dimensions, simultaneous splitting maps, validation, exact fields and budgets; checked supplied summand collections, support drawings, ranking/filter statistics, live sessions and bounded ordinary Hom inspection. Other indecomposable, approximation and pruning methods remain separately scoped future additions."
+scope = "Interval multiplicity, splitting and residual checks, with a concise lookup for general indecomposable decomposition over supported finite prime fields and bounded rational certification through Hecke. Keep the complete A50 algorithm account separate."
 related = ["decomposition_lesson", "guide_decomposition", "guide_approximation", "B53", "B58", "B59"]
 plan_ids = ["A46", "A50", "A87", "A103", "A107"]
 migration = "review"

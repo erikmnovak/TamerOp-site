@@ -518,265 +518,38 @@ representatives.
 
 ## Move a line and read its intervals
 
-How do classes continue when both parameters increase along a chosen line?
-Restricting the encoded module to that line gives a module with one parameter.
-Its intervals describe which classes persist along this particular path; they
-do not determine every map of the original two-parameter module.
+Restricting an encoded module to an increasing line gives intervals whose
+endpoints are measured in that line's parameter. The
+[slices guide](tutorials/slices_diagrams.ipynb#what-a-slice-window-can-establish)
+follows two closed square summands through this calculation. Its figures compare
+the full intervals with their restrictions to a smaller window, where question
+marks leave ambient endpoints undetermined. A certified infinite endpoint,
+a known finite endpoint outside the picture, and a censored endpoint convey
+different information.
 
-Add a second copy of our square module, shifted by one in each coordinate.
-Their direct sum, constructed below as `enc2`, has summands supported on
-`[0,2]^2` and `[1,3]^2`. On the diagonal `q(t) = (0,0) + t(1,1)`, their
-restrictions are the closed intervals `[0,2]` and `[1,3]`. At `t=2`, both are
-still present. This differs from a left closed, right open convention that
-would discard the first class there.
-
-```julia
-import WGLMakie
-
-opts = OA.EncodingOptions(; backend=:pl_backend, poset_kind=:signature,
-                          field=OP.CoreModules.QQField())
-enc2 = OP.encode([OA.BoxUpset([0,0]), OA.BoxUpset([1,1])],
-                 [OA.BoxDownset([2,2]), OA.BoxDownset([3,3])],
-                 Rational{BigInt}[1 0; 0 1], opts)
-slice_session = OP.inspection_session(enc2; box=([-1,-1], [4,4]),
-    slice=(basepoint=(0,0), direction=(1,1)))
-OP.visualize(slice_session; backend=:wglmakie)
-
-# Select a multiplicity group in both the barcode and decorated diagram.
-OA.select_inspection!(slice_session; interval=1)
-
-# Translate the line upward: the intervals become [0,1] and [1,2].
-OA.select_inspection!(slice_session;
-    slice=(basepoint=(0,1), direction=(1,1)))
-```
-
-The **Exact basepoint** and **Exact direction** fields specify `q(t)=a+t*d`.
-Directions must be coordinatewise nonnegative and nonzero; horizontal and
-vertical lines are allowed. The direction is not normalized, so replacing `d`
-by `2d` rescales the interval parameters. Rational input retains its exact
-meaning. The **Slice angle** and **Slice offset** sliders choose a line using
-decimal approximations. They start from the viewport centre and shift
-perpendicularly to the chosen direction. The first square handle translates
-the line; the second changes its direction. This can change the origin and
-scale of `t` even when the geometric line is unchanged; read the committed
-equation when comparing endpoints.
-
-Releasing a handle queries its coordinates rounded to ten decimal places. To
-choose a value before requesting a calculation, turn off **Continuous slice
-updates**, adjust the sliders, then press **Apply slice**. Exact text fields
-always wait for Apply. Previously computed lines are retained in a bounded
-cache; a new line may require the whole restriction calculation. The
-[live inspection guide](tutorials/live_inspection.ipynb#optional-use-a-live-browser-view)
-explains how pending requests relate to the answer on screen and when to
-capture a completed selection.
-
-Click a barcode interval or diagram point to select its group in both charts
-and highlight its segment in the parameter plane. The **Selected interval
-group** dropdown provides a keyboard alternative and an exact endpoint and
-multiplicity readout. Coincident diagram points share a multiline label
-listing their distinct groups; repeated clicks cycle through those groups.
-Identical decorated intervals form one group with a multiplicity. Group IDs
-apply only to the current line: changing the line clears its interval
-selection, without claiming to track an individual class between slices. The
-independent stalk or map selection remains in place.
-
-Filled endpoint circles mean inclusion, and hollow circles mean exclusion. The
-diagram's bracket labels retain the same distinction. An interval supported at
-a single parameter remains visible on the diagonal. For example,
-`basepoint=(0,2), direction=(1,1)` meets each square only at a corner: the
-answer is `[0,0]` together with `[1,1]`, each of multiplicity one. Looking
-only between consecutive event values would miss both corner classes.
-
-The default `slice_scope=:window` restricts the computation to the part of the
-line inside the viewing box. An end at the viewing boundary is marked `?`,
-meaning that it is censored: this computation does not establish whether the
-class continues beyond the box. For instance, the diagonal window from
-`(3/2,3/2)` to `(7/4,7/4)` gives two copies of `[3/2,7/4]`, with both ends
-censored. That answer describes the restricted module, but it cannot recover
-the two different ambient intervals.
-
-To ask for those actual intervals, compute the restriction to the whole line:
-
-```julia
-global_session = OP.inspection_session(enc2;
-    box=([3//2,3//2], [7//4,7//4]),
-    slice=(basepoint=(0,0), direction=(1,1)), slice_scope=:global)
-OP.visualize(global_session; backend=:wglmakie)
-OA.inspection_snapshot(global_session).metadata.slice_result.intervals
-# Two groups: [0,2] and [1,3], each with multiplicity one.
-
-# Keep the same line, but ask only what the small window establishes.
-OA.select_inspection!(global_session; slice_scope=:window)
-# One group: two copies of [3/2,7/4], with both ends censored.
-```
-
-The browser's **Slice scope** selector offers the same choice; press **Apply
-slice** to commit it. Changing scope clears the selected interval because the
-two computations can have different groups. In global mode the parameter plane
-still uses the chosen box, while exact readouts retain the full interval. An
-interval wholly outside the box remains in the result and can be selected from
-the dropdown, even though there is no segment to highlight in that box.
-
-![Two known intervals for the full diagonal, from zero through two and one through three, include both endpoints. Restricting to the smaller parameter window from three halves through seven quarters gives two identical restricted intervals with question marks at both ends.](assets/visualization_guide/slice_window.svg)
-
-*On the full diagonal the two classes have different endpoints. Inside the
-small window, both are present everywhere. The window restriction records that
-fact with multiplicity two; its question marks leave the endpoints of the
-ambient classes undetermined.*
-
-The endpoint symbols tell us which information is available:
-
-| Display | What the computation establishes |
-| --- | --- |
-| Filled or hollow endpoint | A known finite endpoint, included or excluded respectively |
-| Finite continuation arrow / `outside` label | A known finite endpoint lies beyond the drawing window; its exact value remains in the readout |
-| `?` | A restricted computation has reached its boundary without establishing the ambient endpoint |
-| Labelled `Inf` lane or arrow | The result certifies an infinite endpoint; this is an essential direction of the interval |
-
-Infinite endpoints themselves are never included. A class born at a finite
-parameter and persisting for all larger parameters has an interval such as
-`[1,Inf)`. A class present for arbitrarily small parameters can instead have a
-left endpoint `-Inf`; a constant class on the whole line has `(-Inf,Inf)`.
-These are different from a finite interval whose death is merely outside the
-picture. If a window or drawing budget omits intervals, displayed and total
-counts make the omission visible. Labels may be moved for readability, with
-connector lines identifying their intervals; the exact endpoints and inclusion
-remain in the readout.
-
-For a window restriction, the computation uses the prepared exact planar
-geometry. For a global restriction, it enumerates all classifier changes along
-the line, including those outside the picture. Each boundary point is
-evaluated separately from adjacent open intervals. Beyond the first and last
-change the classifier is constant, so those outer intervals certify any
-infinite tails. The finite chain of spaces and maps determines the barcode,
-preserving singleton intervals and endpoint inclusion. Coefficients use the
-encoding's field; `RealField` retains its usual numerical rank semantics.
-Reversed grid axes are excluded. General polyhedral classifiers require
-rational line and viewing-box coordinates; irrational algebraic inputs are
-rejected explicitly.
-
-Box classifiers, general polyhedral classifiers, and the nearest-lattice
-extension used for integer drawings can certify a whole line when all the
-points and open intervals on which its label is constant are represented. A
-positively oriented grid usually leaves parameters below its first thresholds
-unrepresented. Such a global request is rejected; it does not extend the
-unknown part by zero. Use a fully represented window for that grid. The same
-rejection applies to an incomplete polyhedral partition. A line missing the
-box has an empty window restriction, but can still have nonzero intervals in
-global mode.
-
-Computing a slice can materialize a lazy module and request a number of ranks
-quadratic in the number of event strata: the change points and the intervening
-open intervals. `slice_limit=512` bounds that count before the rank
-calculation; use a smaller box for window mode or explicitly raise the limit
-if needed. A smaller picture does not reduce global event work. Interval
-selection reuses the current result, and revisiting a cached line reuses its
-restriction. It bounds the number of strata; running time and memory also
-depend on the spaces and maps.
-
-```julia
-OA.select_inspection!(slice_session; interval=0)  # Clear only the interval selection.
-OP.save_visual("selected-slice.svg", OA.inspection_snapshot(slice_session);
-               backend=:cairomakie)
-OA.select_inspection!(slice_session; slice=false)  # Hide the slice, retaining the stalk/map.
-OA.close_inspection!(slice_session)
-OA.close_inspection!(global_session)
-```
-
-The saved snapshot retains its decorated barcode and diagram without live
-callbacks. These interval groups do not track classes between changing lines,
-and a finite encoding alone need not retain cycles in the source.
+The guide's [optional controls](tutorials/slices_diagrams.ipynb#optional-moving-a-slice)
+let you move the line, enter exact coordinates and select interval groups.
+These controls require Julia. A global query requires the entire line to be
+represented and uses the encoding's coefficient field; numerical fields retain
+their rank policy. Changing the line does not track individual classes between
+slices.
 
 ## Inspect an existing barcode and its members
 
-Sometimes the question begins after the restriction has already been computed:
-which interval is this, and what does its multiplicity mean? The same endpoint
-conventions and linked selection apply to ordinary persistence diagrams, raw
-interval dictionaries or vectors, packed barcodes, selected
-`SliceBarcodesResult` and `ProjectedBarcodesResult` entries, and
-`FiberedSliceResult` restrictions. Pass `index` when a family has more than
-one barcode. A raw barcode supplies its own endpoints; displaying an explicit
-infinity does not add a proof about an unrecorded source computation.
+An existing barcode can be inspected without computing persistence again.
+The [interval example](tutorials/slices_diagrams.ipynb#inspect-repeated-intervals)
+explains multiplicity, essential intervals and groups outside the viewing
+window, followed by the corresponding live selections.
 
-```julia
-import WGLMakie
-
-bars = Dict((0,2) => 2, (1,Inf) => 1, (8,9) => 1)
-interval_session = OP.inspection_session(bars;
-    window=(-1,4), max_intervals=200)
-OP.visualize(interval_session; backend=:wglmakie)
-OA.select_inspection!(interval_session; interval=1)
-OA.inspection_summary(interval_session)
-```
-
-This input has three distinct interval groups and total multiplicity four. The
-displayed window intersects two groups. The finite interval `[8,9)` is still
-available in the exact selector; the interval `[1,Inf)` has a labelled
-infinity lane. The two copies of `[0,2)` share one bar and a multiplicity
-label. They carry no information about source cells because none was supplied.
-
-Click either chart or use **Selected interval group**. Both charts and the
-readout share the same group ID. Coincident points cycle through their groups
-on repeated clicks. `max_intervals` limits displayed groups, retaining the
-full group list and counts. Selecting an omitted group brings it into the
-display if it intersects the window; selecting an offscreen group gives its
-exact readout. This operation reads retained intervals and does not recompute
-persistence. Ordinary diagrams use `dim` to choose homological degree and
-respect sublevel or superlevel orientation. In superlevel order, classes
-continue toward smaller parameter values and essential intervals end at
-`-Inf`.
-
-An ordinary computation can retain more than endpoints: it can keep a cycle
-representing each original interval. This must be requested when computing the
-diagram, because endpoints alone cannot recover the cycle. Recompute the
-opening ring with `representatives=true` to retain this additional
-information:
-
-```julia
-diagram_with_cycles = OP.cubical_persistence(values; representatives=true)
-cycle_session = OP.inspection_session(diagram_with_cycles; dim=1, window=(-1,6))
-OP.visualize(cycle_session; backend=:wglmakie)
-OA.select_inspection!(cycle_session; interval=1, representative=true)
-
-cycle = OA.persistence_representative(diagram_with_cycles; dim=1, kind=:finite, index=1)
-cycle.cycle.cell_ids
-cycle.bounding_chain.cell_ids
-```
-
-The hole has interval `[0,5)`. Its retained cycle is nonzero in homology at
-birth and remains nonzero before five. At five it becomes the boundary of the
-returned bounding chain of dimension two. This example uses the default `F2`.
-With another prime field, the readout names that field and retains its actual
-coefficients. The readout gives the original cell IDs, their indices within
-each dimension, their entry grades and their coefficients. At most twelve
-cells from each chain are displayed, with counts indicating any omission. The
-accessor and snapshot metadata retain each full chain. These are deterministic
-choices made by the reduction, rather than canonical or geometrically
-optimized cycles. Cell IDs alone do not assert an embedding in a point cloud
-or image.
-
-If several original intervals have the same decorated endpoints, choose
-**Original member number** and press **Select member** before checking **Show
-retained representative**. Equivalently, use
-`OA.select_inspection!(cycle_session; interval=i, member=j,
-representative=true)` for an existing group `i` and its original member `j`.
-Different members can have different cycles even though their endpoints agree.
-A group with a single original member selects that member automatically.
-Changing the group or member clears the representative opt-in unless
-explicitly requested again. An ordinary diagram computed without retention
-reports the representative as unavailable; raw and slice barcodes without
-source correspondence do the same. In either case, the interval is still
-available for inspection without a cycle.
-
-Export `OA.inspection_snapshot(cycle_session)` to keep the selection and its
-literal readout. Ordinary representative retention does not by itself supply
-correspondences with source cells for arbitrary multiparameter slices.
-Close the two interval sessions when finished:
-
-```julia
-OA.close_inspection!(interval_session)
-OA.close_inspection!(cycle_session)
-```
+To inspect a cycle for an ordinary interval, request `representatives=true`
+when computing the diagram. Equal endpoint groups can contain several original
+members with different retained cycles. The
+[source cell guide](tutorials/source_cells.ipynb#ask-which-cells-represent-the-hole)
+shows a cycle and its filling, and its
+[periodic example](tutorials/source_cells.ipynb#keep-a-periodic-class-tied-to-its-cells)
+selects one member of a repeated interval. These choices retain their field
+coefficients and cell identities; they need not be canonical or shortest.
+A slice barcode alone does not supply that correspondence with source cells.
 
 ## Rendering and saving
 

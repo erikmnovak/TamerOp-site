@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="590" viewBox="0 0 420 590" role="img" aria-labelledby="title desc">
+  <title id="title">Closed boundaries carry vector spaces</title>
+  <desc id="desc">A point module assigns Q at zero and zero spaces on both open sides. A segment module in the plane assigns Q at every point on the vertical closed segment from zero to two, with identity maps upward. Points outside the segment have zero spaces. Both diagrams are schematics.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#526577"/></marker></defs>
+  <rect x="1" y="1" width="418" height="588" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+  <g font-family="system-ui, sans-serif" fill="#172d40" font-size="17">
+    <text x="22" y="33" font-size="20" font-weight="600">A point on the line</text>
+    <text x="22" y="60">Support: {0}</text>
+    <path d="M38 124H380" stroke="#8092a3" stroke-width="2" marker-end="url(#arrow)"/>
+    <circle cx="210" cy="124" r="7" fill="#ae5838"/>
+    <text x="383" y="150">x</text><text x="204" y="151">0</text>
+    <text x="90" y="100" text-anchor="middle">x &lt; 0</text>
+    <text x="210" y="100" text-anchor="middle">x = 0</text>
+    <text x="330" y="100" text-anchor="middle">x &gt; 0</text>
+    <text x="90" y="188" text-anchor="middle" font-size="24">0</text>
+    <text x="210" y="188" text-anchor="middle" font-size="24" fill="#914328">ℚ</text>
+    <text x="330" y="188" text-anchor="middle" font-size="24">0</text>
+    <path d="M110 180H187" stroke="#526577" stroke-width="1.6" marker-end="url(#arrow)"/><path d="M235 180H307" stroke="#526577" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <text x="149" y="171" font-size="14" text-anchor="middle">zero</text>
+    <text x="271" y="171" font-size="14" text-anchor="middle">zero</text>
+    <text x="210" y="222" text-anchor="middle" font-size="15">Spaces and maps in the parameter order</text>
+    <path d="M22 246H398" stroke="#dbe3e9"/>
+    <text x="22" y="280" font-size="20" font-weight="600">A segment in the plane</text>
+    <text x="22" y="307">Support: {0} × [0, 2]</text>
+    <path d="M55 486H366" stroke="#8092a3" stroke-width="1.7" marker-end="url(#arrow)"/><path d="M165 526V341" stroke="#8092a3" stroke-width="1.7" marker-end="url(#arrow)"/>
+    <text x="369" y="510">x</text><text x="142" y="346">y</text>
+    <path d="M165 486V365" stroke="#ae5838" stroke-width="6"/>
+    <circle cx="165" cy="365" r="6" fill="#ae5838"/><circle cx="165" cy="486" r="6" fill="#ae5838"/>
+    <text x="140" y="492">0</text><text x="140" y="371">2</text>
+    <text x="65" y="420" font-size="24">0</text>
+    <text x="270" y="373" font-size="24">0</text>
+    <path d="M199 458V399" stroke="#526577" stroke-width="1.8" marker-end="url(#arrow)"/>
+    <text x="215" y="426" font-size="16">identity maps</text>
+    <text x="215" y="452" font-size="16" fill="#914328">ℚ along the segment</text>
+    <text x="210" y="557" text-anchor="middle" font-size="15">Schematic; solid dots include the endpoints.</text>
+  </g>
+</svg>

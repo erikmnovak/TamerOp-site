@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 690" role="img" aria-labelledby="title desc">
+<title id="title">Three image lines in a common sink</title>
+<desc id="desc">Three incomparable source spaces k map to a common sink k squared. Their basis vectors map to (1,0), (0,1), and (1,1). The lower panel draws these three lines schematically. Any two span the sink, so a linear functional vanishing on two also vanishes on the third.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#455d6a"/></marker></defs>
+<rect width="540" height="690" fill="#fff"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#193b4b" text-anchor="middle">
+<text x="270" y="34" font-size="23">Three sources, one sink</text>
+<text x="92" y="77" font-size="18">source 1</text><text x="270" y="77" font-size="18">source 2</text><text x="448" y="77" font-size="18">source 3</text>
+<g fill="#edf3f5" stroke="#516472" stroke-width="1.5"><circle cx="92" cy="107" r="23"/><circle cx="270" cy="107" r="23"/><circle cx="448" cy="107" r="23"/><rect x="231" y="226" width="78" height="47" rx="7"/></g>
+<g font-size="24"><text x="92" y="115">k</text><text x="270" y="115">k</text><text x="448" y="115">k</text><text x="270" y="256">k²</text></g>
+<g fill="none" stroke="#455d6a" stroke-width="2" marker-end="url(#arrow)"><path d="M108 125L231 235"/><path d="M270 133L270 222"/><path d="M432 125L309 235"/></g>
+<g font-size="18"><text x="112" y="193">1 ↦ (1,0)</text><text x="338" y="164">1 ↦ (0,1)</text><text x="428" y="209">1 ↦ (1,1)</text></g>
+<text x="270" y="303" font-size="18">The sources have no maps between them.</text>
+<path d="M35 330H505" stroke="#c8d5db"/>
+<text x="270" y="368" font-size="23">Image lines inside k²</text>
+<g fill="none" stroke-width="2.5"><path d="M111 520H429" stroke="#216782"/><path d="M260 620V407" stroke="#477969" stroke-dasharray="8 5"/><path d="M163 617L368 412" stroke="#a65320" stroke-dasharray="2 5"/></g>
+<g stroke="#455d6a" stroke-width="2" marker-end="url(#arrow)"><path d="M260 520H361"/><path d="M260 520V422"/><path d="M260 520L356 424"/></g>
+<circle cx="260" cy="520" r="4" fill="#193b4b"/>
+<g font-size="19"><text x="386" y="548">(1,0)</text><text x="223" y="417">(0,1)</text><text x="405" y="418">(1,1)</text><text x="238" y="546">0</text></g>
+<text x="270" y="655" font-size="19">Any two lines span the sink.</text>
+<text x="270" y="680" font-size="16">Schematic; valid over any coefficient field.</text>
+</g>
+</svg>

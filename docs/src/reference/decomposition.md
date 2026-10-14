@@ -1,10 +1,12 @@
 # Interval decomposition contracts
 
-These operations compute actual interval summands in representations of a
-specified finite poset. Begin with the [lesson](../../decomposition.md) for
-meaning, the [guide](../../tutorials/decomposition.ipynb) for exploration, or the
-[implementation account](../../implementation/interval_decomposition.md) for
-algorithms and costs.
+These operations ask how many copies of an interval module split off a module
+on a specified finite poset. A splitting includes a compatible way to project
+back onto those copies, so the answer depends on the maps entering and leaving
+the interval as well as the spaces on it. The [lesson](../../decomposition.md)
+develops that distinction; use the [guide](../../tutorials/decomposition.ipynb)
+for worked calls or the [implementation account](../../implementation/interval_decomposition.md)
+for algorithms and costs.
 
 ## Inputs and calls
 
@@ -14,17 +16,25 @@ r = interval_decomposition(M; family=[[2,4]], witnesses=true)
 is_interval_decomposable(r)
 ```
 
-`M` is a `PModule` over `QQField()` or a `PrimeField`. `RealField` is rejected.
-The complete module must define a functor; structure and path independence are
-checked, including maps outside the queried interval. Vertex IDs need not be
-in topological order. An interval is a nonempty, connected, order-convex set
-of distinct finite labels. Accept vectors, tuples, ranges or sets; reject
-Boolean/noninteger labels, duplicates, out-of-range labels and invalid supports.
+`M` is a `PModule` over `QQField()` or a `PrimeField`, so the calculation uses
+exact rational or prime field arithmetic. `RealField` is rejected. The module
+must define a functor: composites along different paths between the same
+vertices must agree. Validation checks this condition on the complete base,
+including maps outside the interval being queried. Vertex IDs need not follow
+the order of the poset.
+
+An interval is a nonempty connected, order-convex set of distinct finite labels.
+Connectedness ignores arrow direction; convexity requires every vertex between
+two members to be included. Supply labels in a vector, tuple, range or set.
+Boolean or noninteger labels, duplicates, labels outside the base and supports
+that fail these interval conditions are rejected.
 
 The root task methods also accept `EncodingResult` with `cache=:auto` or a
 `SessionCache`. They use the represented finite module. Query labels name its
-poset vertices, not points or an unspecified region in the original parameter
-domain. No completeness or invariance under change of encoding is asserted.
+poset vertices. To interpret a support in the original parameter domain, take
+its preimage under the encoding map. The calculation's completeness statement
+concerns its chosen finite base; comparing decompositions across different
+encodings requires additional mathematics.
 
 | Call | Result and scope |
 | :--- | :--- |
@@ -38,12 +48,14 @@ For a result, `is_interval_decomposable(r)` returns `true` when all residual
 stalks are zero, `false` for a nonzero residual after `family=:all`, and
 `missing` for a nonzero residual with a supplied family. Even a supplied
 family listing every interval is conservatively marked as supplied; use
-`:all` to certify an interval-free residual. Exhausting a budget throws and
-is never returned as `false` or `missing`.
+`:all` when the conclusion requires a residual containing no interval summands.
+Exhausting a budget throws, so neither `false` nor `missing` can be mistaken for
+an interrupted calculation.
 
 ## Inspecting the result
 
-Use `interval_decomposition_summary(r)` or `describe(r)` for cheap metadata.
+Use `interval_decomposition_summary(r)` or `describe(r)` to inspect retained
+metadata without repeating the decomposition.
 `Advanced.interval_family(r)`, `Advanced.interval_multiplicities(r)` and
 `Advanced.residual_dimensions(r)` return copies. Supports are sorted
 lexicographically by finite labels, and counts have the same order. Zero
@@ -60,7 +72,9 @@ It returns a named tuple with the following natural maps and modules:
 | `summand`, `inclusion`, `projection` | $S$, $i:S\to M$, $p:M\to S$. |
 | `residual`, `residual_inclusion`, `residual_projection` | $R$, $j:R\to M$, $q:M\to R$. |
 
-The equations are $pi=1_S$, $qj=1_R$, $pj=0$, $qi=0$, and $ip+jq=1_M$.
+The retraction equations are $pi=1_S$ and $qj=1_R$. The mixed composites
+$pj$ and $qi$ vanish, and $ip+jq=1_M$ reconstructs a vector from its two
+components.
 At each vertex, the basis of $S$ concatenates the active support blocks in
 result order, with one coordinate per copy. Individual block maps can be
 selected from the corresponding columns of $i$ and rows of $p$. These bases
@@ -84,7 +98,8 @@ Limits are positive non-Boolean machine integers. They limit work and logical
 storage, not exact byte usage or the growth of rational coefficients.
 Enumeration can be exponential. Budget violations and invalid query families
 raise `ArgumentError`; malformed module input also raises validation errors.
-No partial result is returned. A supplied family bypasses endpoint enumeration.
+The call returns no partial result. Supplying a family avoids the enumeration
+of possible interval endpoints.
 
 `Advanced.check_interval_decomposition(r; budget=..., throw=false)` recomputes
 multiplicities, residual dimensions and scope, then checks every retained
@@ -92,8 +107,8 @@ splitting and reconstruction equation. Its typed
 `IntervalDecompositionValidationSummary` exposes `valid`, `issues`,
 `multiplicities_checked` and `splitting_checked`. With no retained maps,
 `splitting_checked` is false. Validation budget exhaustion is an invalid report;
-`throw=true` raises `ArgumentError`. This is an expensive exact check, unlike
-`describe`. Treat retained source data and witnesses as read-only.
+`throw=true` raises `ArgumentError`. This repeats exact algebra, whereas `describe` reads metadata already in the
+result. Keep retained source data and witnesses unchanged during their use.
 
 ## Checked summand collections and visual inspection
 
@@ -105,7 +120,8 @@ report the field, local block IDs, multiplicities and residual dimensions.
 `Advanced.summand_module(c; id)` and `Advanced.summand_maps(c; id)` return
 the retained block and its inclusion/projection pair. Use `id=:residual` for
 the original residual and `Advanced.source_module(c)` for the full module.
-These accessors return read-only references, not copies.
+These accessors return references to the retained objects. Keep those objects
+unchanged while the collection uses them.
 
 For supplied general pieces, use
 
@@ -156,7 +172,8 @@ Ranking, type filtering and the display limit apply in that order. The
 complement panel contains omitted blocks plus the retained residual, so its
 dimensions always add to the selected dimensions to recover the full module.
 The residual alone is reported separately. Finite support counts and total
-stalk dimensions are sensitive to the finite model; neither is ambient area.
+stalk dimensions depend on the finite model and do not measure area in the
+original parameter domain.
 Block IDs are local to the supplied splitting and have no stability or matching
 guarantee across different inputs.
 
@@ -172,7 +189,63 @@ Live selection uses `Advanced.select_inspection!`, `reset_inspection!` and
 explicit Hom requests perform additional algebra. Failed updates preserve the
 previous snapshot and selection. Hover reads retained data. Close releases
 inputs, Hom spaces and listeners while retaining `inspection_snapshot`.
-Static PNG/SVG/PDF and saved finite states are supported; arbitrary live
-queries require Julia/WGLMakie. Saved views do not serialize this mathematical
-source for reconstruction, and standalone browser checks do not qualify a
-notebook host.
+Static PNG, SVG and PDF figures and selection among saved finite states are
+supported. Live queries require Julia and WGLMakie. Saving those views retains
+the prepared selections; it does not save the mathematical source needed to
+reconstruct a session. See the [display support guide](../../visualization_support.md)
+for the distinct browser and notebook display contracts.
+
+
+## General indecomposable decompositions
+
+An indecomposable module cannot be expressed as a direct sum of two nonzero
+modules. On a general finite poset, such a piece need not be an interval.
+Use the separate operation below when those further pieces are the question:
+
+```julia
+r = indecomposable_decomposition(M; witnesses=false, backend=:native)
+is_indecomposable(r)
+```
+
+The input is a finite `PModule` over the rationals or a prime field. An
+`EncodingResult` is also accepted, with `cache=:auto` or a `SessionCache`,
+and the answer concerns its represented finite module. The result retains one
+dimension vector per indecomposable, including repeated copies.
+`Advanced.summand_dimensions(r)` returns copies of these vectors;
+`indecomposable_decomposition_summary(r)` and `describe(r)` summarize the
+result without reconstructing its maps. Equal dimension vectors alone do not
+identify isomorphic summands, and neither ordering nor bases are canonical.
+`is_indecomposable(r)` is true exactly when the result has one nonzero summand;
+the zero module is not indecomposable.
+
+With `witnesses=true`, `Advanced.decomposition_maps(r)` returns `summands`,
+`inclusions` and `projections`. Each projection retracts its corresponding
+inclusion, cross composites vanish, and the sum of inclusion–projection
+composites is the identity of the source. `Advanced.indecomposable_summands(r)`
+returns the retained pieces. Keep these objects unchanged during use.
+`Advanced.check_indecomposable_decomposition(r; throw=false, budget=...)`
+rechecks the decomposition and any retained maps; inspect `valid`, `issues`
+and `splitting_checked` in its report.
+
+The default `backend=:native` uses exact arithmetic over the supplied field.
+Over a prime field, its search is exhaustive if the resource budget permits.
+Over the rationals, it can certify terminal pieces through a nilpotent ideal
+of their endomorphism algebra, whose elements are self-maps and whose
+multiplication is composition, with a field quotient. An ideal is a subspace
+closed under multiplication by algebra elements; nilpotence means that a
+sufficiently long product of its elements is zero. A field quotient rules out
+further splitting, but some rational indecomposable modules have a
+noncommutative division algebra as quotient and need a more general certificate.
+
+After installing and loading [Hecke](../../optional_integrations.md),
+`backend=:hecke` provides that additional rational certification. A division
+algebra has an inverse for every nonzero element without requiring multiplication
+to commute. This backend is available over the rationals only and retains the
+native search for splitting maps.
+
+Both routes accept `budget=Advanced.IndecomposableDecompositionBudget()`.
+An inconclusive or exhausted search raises `IndecomposableSearchExhausted`,
+without returning an unproved or partial decomposition. The budget does not
+impose a wall time or coefficient size bound on Hecke's arithmetic. A successful
+result is a decomposition on the specified finite base; it supplies neither a
+stability statement nor independence of the chosen encoding.
