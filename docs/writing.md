@@ -707,8 +707,9 @@ restrained color, appropriate aspect and enough information to interpret the
 result. Explain symbols actually used; do not print an entire diagnostic
 catalog on a simple figure. Always retain visible notices for censoring,
 omitted results, coordinate collisions and other relevant limitations.
-Exact values and detailed display metadata remain inspectable. Repeated
-cosmetic repairs in tutorials are a reason to improve the shared recipe.
+Keep exact values and display metadata available through the relevant API or
+export workflow; their availability does not require a panel in every lesson.
+Repeated cosmetic repairs in tutorials are a reason to improve the shared recipe.
 
 Before publication, execute the full notebook and separately check that the
 main path works with optional cells skipped. Review both the simple defaults
@@ -743,10 +744,12 @@ Julia session. Bring useful opportunities forward during review, including
 ones the current page does not yet suggest. Interactivity is an encouraged
 option, with no quota or obligation to add it to a complete static explanation.
 
-When offering a saved example, make its file or viewer available from the page.
+When offering a prepared example, make the viewer available from the page.
 Follow the [publication instructions](README.md#publish-prepared-examples-and-downloads)
-to retain declared outputs and check their links. A file created successfully
-in a temporary directory is not yet available to a website reader.
+to retain its files and check its controls. An embedded viewer is already an
+entrance to the example; it needs no accompanying download or separate opening
+link. A file created successfully in a temporary directory is not yet available
+to a website reader.
 
 When teaching a visualization, identify the mathematical object and the display
 path the reader is using. Static figures, WGL scene navigation, live Julia
@@ -756,3 +759,32 @@ frontends. A successful notebook execution or static publication does not verify
 an embedded live notebook client. Keep test coverage, implementation dates and
 backlog status in contributor guidance; retain concise operational requirements
 beside the action they affect.
+
+### Keep interactive examples focused on the mathematics
+
+Start with the figure, the controls needed to explore it, and a short explanation
+of what changes. A threshold selector might help a reader see when a hole closes;
+the caption should connect that change to the interval in the barcode. Label
+controls by the choices they offer, using the same notation as the surrounding
+lesson. Keep assumptions and qualifications that affect the result visible.
+
+Include a panel or action when it helps the reader answer the page's question.
+Routine lesson viewers need no Download HTML button, permalink to a saved view,
+session JSON download or download of selected values. Do not repeat an embedded
+view through an Open separately link. When a wide comparison needs its own
+page, one clearly named opening link is enough.
+
+Raw object representations, empty selections, runtime metadata and serialized
+plot data do not explain the mathematics. Omit them from teaching viewers.
+When a selected value matters, show the value with its mathematical meaning,
+such as a parameter pair and its structure matrix. Preserve useful captions
+and explain consequential conventions in ordinary prose. Moving an unexplained
+dump into a collapsed panel leaves the explanatory problem unresolved.
+
+Saving, sharing and reopening are useful tasks with their own recipes and
+guides. Offer files there when the reader needs them to carry out the task,
+and explain what each file preserves. A library export may contain more tools
+and information than a teaching page needs; review its website presentation
+before publishing it. Exercise every retained control and check the result at
+ordinary and narrow widths, asking what each visible element helps the reader
+understand or do.

@@ -328,7 +328,17 @@ class UnchangedPublicationTests(unittest.TestCase):
         patch.object(publication, 'checkout_state', side_effect=lambda: dict(self.current)).start()
         patch.object(publication, 'prepare_catalog').start()
         patch.object(publication, 'validate_environment').start()
-        patch.object(publication.subprocess, 'run').start()
+        def documenter_run(command, *args, **kwargs):
+            if Path(command[-1]).name == 'make.jl':
+                # Documenter copies the captured files into its website output.
+                # Keep this boundary real for the subsequent presentation pass.
+                copied = self.docs / 'build/downloads'
+                if copied.exists():
+                    shutil.rmtree(copied)
+                shutil.copytree(self.docs / '.build/src/downloads', copied)
+            return SimpleNamespace(returncode=0)
+
+        patch.object(publication.subprocess, 'run', side_effect=documenter_run).start()
         outer = self
 
         class Client:

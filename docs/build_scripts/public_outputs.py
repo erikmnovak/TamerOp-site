@@ -3,9 +3,12 @@ from __future__ import annotations
 
 import hashlib
 import html
+import json
 import os
 from pathlib import Path, PurePosixPath
 from urllib.parse import quote
+
+from lesson_viewer import render_lesson_viewer
 
 
 def output_path(value):
@@ -67,11 +70,68 @@ def output_records(nb, directory):
     return records
 
 
-def verify_outputs(nb, directory, record):
+def verify_outputs(nb, directory, record, *, published=False):
     actual = output_records(nb, directory)
-    if actual != record.get('public_outputs', []):
+    expected = record.get('public_outputs', [])
+    if published:
+        expected = [published_record(item) for item in expected]
+    if actual != expected:
         raise ValueError('Public output files differ from the execution record; execute a fresh publication')
+    if published:
+        for item in actual:
+            path = Path(directory) / item['path']
+            if path.suffix == '.html' and render_lesson_viewer(path.read_text(encoding='utf-8')) is not None:
+                raise ValueError(f'Unprepared native viewer remains in the website: {item["path"]}')
     return actual
+
+
+def published_record(item):
+    """Use presentation hashes only when checking the delivered website copy."""
+    presentation = item.get('presentation')
+    if presentation is None:
+        return item
+    if (set(presentation) != {'kind', 'sha256', 'bytes'}
+            or presentation['kind'] != 'lesson-viewer'):
+        raise ValueError('Unknown public output presentation')
+    return {'path': item['path'], 'sha256': presentation['sha256'],
+            'bytes': presentation['bytes']}
+
+
+def present_outputs(root):
+    """Simplify website viewers after copying verified execution artifacts.
+
+    The capture and its record remain unchanged. The built record distinguishes
+    their original hashes from the delivered presentation. Validate all inputs
+    before replacing any file, so malformed exports fail publication together.
+    """
+    root = Path(root).resolve()
+    record_path = root / 'downloads/publication.json'
+    record = json.loads(record_path.read_text(encoding='utf-8'))
+    replacements = []
+    for lesson in record['notebooks']:
+        directory = root / 'downloads/figures' / Path(lesson['source']).stem
+        for item in lesson.get('public_outputs', []):
+            if 'presentation' in item:
+                raise ValueError('Prepare website views from the original execution capture')
+            path = directory / output_path(item['path'])
+            if not path.is_file() or not path.resolve().is_relative_to(directory.resolve()):
+                raise ValueError(f'Missing or escaping public output: {item["path"]}')
+            data = path.read_bytes()
+            if len(data) != item['bytes'] or hashlib.sha256(data).hexdigest() != item['sha256']:
+                raise ValueError(f'Public output differs from the execution record: {item["path"]}')
+            if path.suffix != '.html':
+                continue
+            rendered = render_lesson_viewer(data.decode('utf-8'))
+            if rendered is None:
+                continue
+            delivered = rendered.encode('utf-8')
+            item['presentation'] = {'kind': 'lesson-viewer',
+                'sha256': hashlib.sha256(delivered).hexdigest(), 'bytes': len(delivered)}
+            replacements.append((path, delivered))
+    for path, data in replacements:
+        path.write_bytes(data)
+    record_path.write_text(json.dumps(record, indent=2) + '\n', encoding='utf-8')
+    return len(replacements)
 
 
 def output_routes(record):
@@ -96,14 +156,11 @@ def render_outputs(paths, declared, source, page, stage):
         if item.get('embed'):
             blocks.append(
                 '<div class="prepared-example">'
-                f'<p><a href="{url}" target="_blank" rel="noopener">{label} (open separately)</a>'
-                f' · <a href="{url}" download>Download HTML</a></p>'
                 f'<iframe src="{url}" title="{label}" loading="lazy"'
-                ' sandbox="allow-scripts allow-downloads"'
+                ' sandbox="allow-scripts"'
                 f' height="{item.get("height", 720)}"></iframe></div>')
         elif Path(name).suffix == '.html':
-            blocks.append(f'<p class="prepared-download"><a href="{url}" target="_blank" rel="noopener">{label}</a>'
-                          f' · <a href="{url}" download>Download HTML</a></p>')
+            blocks.append(f'<p class="prepared-download"><a href="{url}" target="_blank" rel="noopener">{label}</a></p>')
         else:
             blocks.append(f'<p class="prepared-download"><a href="{url}" download>{label}</a></p>')
     return '\n'.join(blocks)

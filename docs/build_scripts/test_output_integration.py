@@ -1,6 +1,9 @@
 """Check public lesson outputs across capture reuse and site finalization."""
+import base64
+import copy
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 
@@ -8,7 +11,7 @@ import nbformat as nbf
 
 from check_site import Links, check_notebooks
 from navigation import finalize_navigation
-from public_outputs import output_records
+from public_outputs import output_records, present_outputs, verify_outputs
 from publish import sha256
 from site_shell import finalize_site
 import test_publication as publication_fixtures
@@ -21,6 +24,19 @@ NATIVE_HTML = b'''<!doctype html><html lang="en"><head>
 <h1>Selected map</h1><p>Keep this native document byte for byte.</p>
 <script type="application/json" id="values">{"matrix":[[1]]}</script>
 </body></html>\n'''
+
+
+def session_html():
+    image = 'data:image/svg+xml;base64,' + base64.b64encode(
+        b'<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h5v5z"/></svg>').decode()
+    payload = {'initial': 'selected', 'states': [{
+        'id': 'selected', 'label': 'A selected map', 'image': image,
+        'selection': 'NamedTuple()', 'context': 'Source identity: nothing',
+        'plotted_json': '{"matrix":[[1]]}'}], 'session_json': '{"source":"full record"}'}
+    return ('<!doctype html><html><body><header><h1>A selected map</h1>'
+            '<p>Follow the retained drawing.</p></header>'
+            '<script id="portable-visual-data" type="application/json">'
+            + json.dumps(payload) + '</script></body></html>').encode()
 
 
 def declare_view(nb):
@@ -58,8 +74,7 @@ class OutputEntranceTests(unittest.TestCase):
         self.base = ('<a href="../downloads/example.ipynb">Notebook</a>'
                      '<img src="data:image/png;base64,AA==" alt="A saved figure">')
         self.href = '../downloads/figures/example/views/view.html'
-        self.anchors = (f'<a href="{self.href}" target="_blank">Open the viewer</a>'
-                        f'<a href="{self.href}" download>Download HTML</a>')
+        self.anchors = f'<a href="{self.href}" target="_blank">Explore the map</a>'
         self.frame = f'<iframe src="{self.href}" title="Explore the map"></iframe>'
 
     def check_page(self, content):
@@ -68,15 +83,27 @@ class OutputEntranceTests(unittest.TestCase):
         parsed.feed(content)
         check_notebooks(self.manifest, {self.page.resolve(): parsed}, self.root, self.docs)
 
-    def test_embed_does_not_substitute_for_a_separate_open_or_download_link(self):
-        self.check_page(self.base + self.anchors + self.frame)
-        with self.assertRaisesRegex(ValueError, 'Missing public-output link'):
-            self.check_page(self.base + self.frame)
+    def test_embed_is_the_entrance_without_an_extra_link(self):
+        self.check_page(self.base + self.frame)
 
-    def test_download_link_does_not_substitute_for_the_declared_embed(self):
-        self.check_page(self.base + self.anchors + self.frame)
+    def test_opening_link_does_not_substitute_for_the_declared_embed(self):
         with self.assertRaisesRegex(ValueError, 'Missing prepared-example embed'):
             self.check_page(self.base + self.anchors)
+
+    def test_standalone_view_requires_its_one_opening_link(self):
+        source = self.docs / 'tutorials/example.ipynb'
+        download = self.root / 'downloads/example.ipynb'
+        for path in (source, download):
+            nb = nbf.read(path, as_version=4)
+            nb.metadata.tamerop.public_outputs[0].embed = False
+            nbf.write(nb, path)
+        record_path = self.root / 'downloads/publication.json'
+        record = json.loads(record_path.read_text())
+        record['notebooks'][0].update(sha256=sha256(source), download_sha256=sha256(download))
+        record_path.write_text(json.dumps(record))
+        self.check_page(self.base + self.anchors)
+        with self.assertRaisesRegex(ValueError, 'Missing public-output link'):
+            self.check_page(self.base + self.frame)
 
 
 class NativeOutputFinalizationTests(unittest.TestCase):
@@ -127,6 +154,124 @@ class NativeOutputFinalizationTests(unittest.TestCase):
         self.assertEqual(self.page.read_text(), shell_fixtures.HTML)
 
 
+class LessonPresentationIntegrationTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.docs = Path(temporary.name)
+        self.capture = self.docs / '.build/src'
+        self.build = self.docs / 'build'
+        self.outputs = self.capture / 'downloads/figures/example'
+        self.view = self.outputs / 'views/view.html'
+        self.view.parent.mkdir(parents=True)
+        self.view.write_bytes(session_html())
+        self.fixed = self.outputs / 'views/composition.html'
+        self.fixed.write_bytes(NATIVE_HTML)
+        self.notebook = publication_fixtures.PublicationTests().fixture()
+        declare_view(self.notebook)
+        self.notebook.metadata.tamerop.public_outputs.append({
+            'path': 'views/composition.html', 'label': 'View the composition'})
+        self.notebook.cells[0].metadata.tamerop.show_outputs.append('views/composition.html')
+        self.record = {'notebooks': [{'source': 'tutorials/example.ipynb',
+            'public_outputs': output_records(self.notebook, self.outputs)}]}
+        self.record_path = self.capture / 'downloads/publication.json'
+        self.record_path.write_text(json.dumps(self.record))
+        self.published_outputs = self.build / 'downloads/figures/example'
+        self.published_record = self.build / 'downloads/publication.json'
+        self.copy_capture()
+
+    def copy_capture(self):
+        if self.build.exists():
+            shutil.rmtree(self.build)
+        shutil.copytree(self.capture, self.build)
+
+    def test_only_website_copy_changes_and_both_hash_contracts_remain_verifiable(self):
+        original_view = self.view.read_bytes()
+        original_record = self.record_path.read_bytes()
+        self.assertEqual(present_outputs(self.build), 1)
+        self.assertEqual(self.view.read_bytes(), original_view)
+        self.assertEqual(self.record_path.read_bytes(), original_record)
+        verify_outputs(self.notebook, self.outputs, self.record['notebooks'][0])
+        published = json.loads(self.published_record.read_text())['notebooks'][0]
+        public_view = self.published_outputs / 'views/view.html'
+        self.assertNotEqual(public_view.read_bytes(), original_view)
+        self.assertEqual((self.published_outputs / 'views/composition.html').read_bytes(), NATIVE_HTML)
+        expected = output_records(self.notebook, self.published_outputs)
+        self.assertEqual(verify_outputs(self.notebook, self.published_outputs, published, published=True), expected)
+        raw_record = self.record['notebooks'][0]['public_outputs'][0]
+        item = published['public_outputs'][0]
+        self.assertEqual({key: item[key] for key in ('path', 'sha256', 'bytes')}, raw_record)
+        self.assertEqual(item['presentation'], {'kind': 'lesson-viewer',
+            'sha256': sha256(public_view), 'bytes': public_view.stat().st_size})
+        self.assertNotIn('presentation', published['public_outputs'][1])
+        with self.assertRaisesRegex(ValueError, 'differ'):
+            verify_outputs(self.notebook, self.published_outputs, self.record['notebooks'][0])
+
+    def test_missing_or_changed_presentation_file_fails_published_verification(self):
+        present_outputs(self.build)
+        published = json.loads(self.published_record.read_text())['notebooks'][0]
+        view = self.published_outputs / 'views/view.html'
+        good = view.read_bytes()
+        for changed, message in ((None, 'Missing'), (good + b'<!-- changed -->', 'differ'),
+                                 (session_html(), 'differ')):
+            with self.subTest(mutation=message):
+                if changed is None:
+                    view.unlink()
+                else:
+                    view.write_bytes(changed)
+                with self.assertRaisesRegex(ValueError, message):
+                    verify_outputs(self.notebook, self.published_outputs, published, published=True)
+                view.write_bytes(good)
+
+    def test_missing_or_unknown_presentation_record_fails_verification(self):
+        present_outputs(self.build)
+        published = json.loads(self.published_record.read_text())['notebooks'][0]
+        for replacement in (None, {'kind': 'unknown', 'sha256': '0' * 64, 'bytes': 1}):
+            broken = copy.deepcopy(published)
+            item = broken['public_outputs'][0]
+            if replacement is None:
+                del item['presentation']
+            else:
+                item['presentation'] = replacement
+            with self.subTest(record=replacement), self.assertRaises(ValueError):
+                verify_outputs(self.notebook, self.published_outputs, broken, published=True)
+
+    def test_published_verification_rejects_an_unpresented_native_session(self):
+        # A valid raw capture is not yet the lesson's reader-facing presentation.
+        verify_outputs(self.notebook, self.outputs, self.record['notebooks'][0])
+        with self.assertRaisesRegex(ValueError, 'Unprepared native viewer'):
+            verify_outputs(self.notebook, self.published_outputs,
+                           self.record['notebooks'][0], published=True)
+
+    def test_invalid_later_session_leaves_every_file_and_manifest_untouched(self):
+        # This is a captured, hash-consistent file whose bundle cannot be shown.
+        self.fixed.write_bytes(b'<header><h1>Broken view</h1><p>Explanation</p></header>'
+                               b'<script id="portable-visual-data" type="application/json">'
+                               b'{"initial":"absent","states":[]}</script>')
+        self.record['notebooks'][0]['public_outputs'] = output_records(self.notebook, self.outputs)
+        self.record_path.write_text(json.dumps(self.record))
+        self.copy_capture()
+        before = {path: path.read_bytes() for path in self.build.rglob('*') if path.is_file()}
+        with self.assertRaisesRegex(ValueError, 'prepared states'):
+            present_outputs(self.build)
+        self.assertEqual({path: path.read_bytes() for path in before}, before)
+
+    def test_repeated_presentation_requires_a_fresh_copy_of_the_capture(self):
+        present_outputs(self.build)
+        before = {path: path.read_bytes() for path in self.build.rglob('*') if path.is_file()}
+        with self.assertRaisesRegex(ValueError, 'original execution capture'):
+            present_outputs(self.build)
+        self.assertEqual({path: path.read_bytes() for path in before}, before)
+
+    def test_tampered_capture_is_rejected_before_any_presentation_is_written(self):
+        view = self.published_outputs / 'views/view.html'
+        view.write_bytes(view.read_bytes() + b'changed')
+        before = {path: path.read_bytes() for path in self.build.rglob('*') if path.is_file()}
+        with self.assertRaisesRegex(ValueError, 'differs from the execution record'):
+            present_outputs(self.build)
+        self.assertEqual({path: path.read_bytes() for path in before}, before)
+
+
 class OutputReuseIntegrationTests(unittest.TestCase):
     def setUp(self):
         # Reuse the isolated publisher fixture, including its simulated Julia
@@ -144,7 +289,8 @@ class OutputReuseIntegrationTests(unittest.TestCase):
         exports = self.fixture.previous / 'figures/one'
         self.view = exports / 'views/view.html'
         self.view.parent.mkdir()
-        self.view.write_bytes(NATIVE_HTML)
+        self.raw_view = session_html()
+        self.view.write_bytes(self.raw_view)
         evidence.update(sha256=sha256(source), download_sha256=sha256(saved),
                         public_outputs=output_records(nb, exports))
         self.fixture.save_record()
@@ -154,11 +300,17 @@ class OutputReuseIntegrationTests(unittest.TestCase):
         record = self.fixture.build(reuse_unchanged=True)
         self.assertEqual(self.fixture.executed, [])
         self.assertEqual(record['notebooks'][0]['public_outputs'], previous)
-        self.assertEqual(self.view.read_bytes(), NATIVE_HTML)
+        self.assertEqual(self.view.read_bytes(), self.raw_view)
+        published_record = json.loads((self.fixture.docs / 'build/downloads/publication.json').read_text())
+        published_outputs = self.fixture.docs / 'build/downloads/figures/one'
+        self.assertNotEqual((published_outputs / 'views/view.html').read_bytes(), self.raw_view)
+        notebook = nbf.read(self.fixture.previous / 'one.ipynb', as_version=4)
+        verify_outputs(notebook, published_outputs, published_record['notebooks'][0], published=True)
         page = self.fixture.docs / '.build/src/tutorials/one.md'
         text = page.read_text()
         self.assertIn('src="../downloads/figures/one/views/view.html"', text)
-        self.assertIn('download>Download HTML', text)
+        self.assertIn('sandbox="allow-scripts"', text)
+        self.assertNotIn('Download HTML', text)
 
     def test_missing_or_tampered_output_rejects_both_reuse_modes_before_execution(self):
         publication = self.fixture.previous / 'publication.json'
@@ -175,7 +327,7 @@ class OutputReuseIntegrationTests(unittest.TestCase):
                         self.fixture.build(**{mode: True})
                     self.assertEqual(self.fixture.executed, [])
                     self.assertEqual(publication.read_bytes(), original_record)
-                    self.view.write_bytes(NATIVE_HTML)
+                    self.view.write_bytes(self.raw_view)
 
 
 if __name__ == '__main__':

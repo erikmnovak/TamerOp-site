@@ -502,19 +502,21 @@ Declare the files offered to readers in notebook metadata:
 {"tamerop": {"public_outputs": [
   {"path": "square/views.html", "label": "Compare the square selections",
    "embed": true, "height": 800},
-  {"path": "square/data.json", "label": "Download the recorded selections"}
+  {"path": "square/data.json", "label": "Download the encoding to reopen in Julia"}
 ]}}
 ```
 
 The paths are relative to `tamerop_outputs`, so the first file is written to
 `tamerop_outputs/square/views.html`. On the Markdown or code cell after which
 the output belongs, add `tamerop.show_outputs` with a list of those paths.
-The publisher places the links and, for `embed: true`, a titled HTML frame
-after that cell. Its height is in CSS pixels, with 720 as the default. Choose
-the height after reviewing the actual figure and controls. An embedded view
-also has links to open separately and download, which are useful when its
-panels need more room. Nonembedded HTML receives open and download links;
-other declared files receive download links.
+The publisher places a titled HTML frame after that cell when `embed: true`;
+the frame is the entrance to the example, so it needs no separate opening or
+download link. Its height is in CSS pixels, with 720 as the default. Choose
+the height after reviewing the actual figure and controls. For a wider view,
+leave `embed` false to provide one link to its own page. Other declared files
+receive download links. Declare those downloads only when a reader has a use
+for the file, such as reopening an encoding in Julia or exporting a figure
+for a paper.
 
 Use the notebook's existing mathematical objects to prepare a small collection
 with `save_visual_session`. The browser selects among the stored answers, so
@@ -523,12 +525,23 @@ and explain what the selections reveal. Export code can live in an optional
 section while its viewer appears beside the main explanation. There is no
 requirement to make every lesson interactive.
 
+For a native saved session, the publisher prepares a website viewer with its
+title, caption, selection control, Previous and Next buttons, and figure. It
+preserves the computed drawings while omitting raw selections, provenance and
+type records, serialized values, export buttons and links to saved states.
+These records may be useful in the original session file, but the lesson
+viewer should keep the reader's attention on the mathematical choices.
+An ordinary HTML figure composition is copied unchanged. Neither kind of
+standalone figure page receives the article sidebar. Keep them self contained;
+embedded frames allow scripts without access to the parent page.
+
 Every declared output must have a `show_outputs` entrance. The build rejects
-missing, empty or oversized files, records their sizes and hashes, and checks
-them again when reusing an execution. Site checks verify their delivered bytes,
-page links and declared embeds. Standalone HTML exports retain their own
-controls and do not receive the article sidebar. Keep them self contained;
-the frames allow scripts and downloads without access to the parent page.
+missing, empty or oversized files and records their sizes and hashes. Original
+executed exports remain in the capture and are checked when an execution is
+reused. The website presentation has its own size and hash in the publication
+record, so site checks can verify the delivered bytes as well as the page's
+links and declared embeds. Transforming the website copy must not alter the
+saved execution or its original exports.
 Browser review must still check the mathematical selections, readable labels,
 keyboard use and narrow layouts with the producing Julia process stopped.
 Run `python docs/build_scripts/check_site.py` on the built site and verify

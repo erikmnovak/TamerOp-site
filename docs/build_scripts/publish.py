@@ -30,7 +30,7 @@ from navigation import validate_continuations
 from site_catalog import prepare_catalog
 from source_paths import package_root, source_path, source_name, source_url
 from visualization_support import render_selected
-from public_outputs import declarations, output_records, verify_outputs, render_outputs
+from public_outputs import declarations, output_records, verify_outputs, render_outputs, present_outputs
 
 DOCS = Path(__file__).resolve().parents[1]
 ROOT = DOCS.parent
@@ -576,6 +576,8 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
             target = DOCS / "build" / asset.relative_to(DOCS)
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(asset, target)
+    viewers = present_outputs(DOCS / 'build')
+    print(f"Prepared {viewers} lesson viewers from the captured figures", flush=True)
     print(f"Open {DOCS / 'build' / 'index.html'}", flush=True)
 
 

@@ -73,7 +73,8 @@ def check_notebooks(manifest, html, root, docs=DOCS):
         if sha256(source) != lesson['sha256'] or sha256(download) != lesson['download_sha256']:
             raise ValueError(f'Stale source or modified download: {source.name}')
         notebook = nbformat.read(download, as_version=4)
-        outputs = verify_outputs(notebook, root / 'downloads/figures' / source.stem, lesson)
+        outputs = verify_outputs(notebook, root / 'downloads/figures' / source.stem, lesson,
+                                 published=True)
         figures = validate_outputs(notebook)
         if sum(cell.cell_type == 'code' for cell in notebook.cells) != lesson['code_cells']:
             raise ValueError(f'Incorrect executed-cell record: {source.name}')
@@ -92,10 +93,11 @@ def check_notebooks(manifest, html, root, docs=DOCS):
         declared = declarations(notebook)
         for output in outputs:
             target = (root / 'downloads/figures' / source.stem / output['path']).resolve()
-            if target not in download_links:
+            if declared[output['path']].get('embed'):
+                if target not in frame_paths:
+                    raise ValueError(f'Missing prepared-example embed: {output["path"]}')
+            elif target not in download_links:
                 raise ValueError(f'Missing public-output link: {output["path"]}')
-            if declared[output['path']].get('embed') and target not in frame_paths:
-                raise ValueError(f'Missing prepared-example embed: {output["path"]}')
         sections = [cell.metadata.get('tamerop', {}).get('optional_section') for cell in notebook.cells]
         groups = sum(section is not None and (i == 0 or section != sections[i-1])
                      for i, section in enumerate(sections))
