@@ -239,3 +239,46 @@ html.theme--documenter-dark #documenter-page {
   }
 
 }
+
+/* Keep each benchmark comparison readable without narrow prose columns. */
+@media screen and (max-width: 640px) {
+  #documenter-page:has(h1#benchmark-results) table,
+  #documenter-page:has(h1#benchmark-results) tbody {
+    display: block;
+    width: 100%;
+  }
+  #documenter-page:has(h1#benchmark-results) tr:first-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  #documenter-page:has(h1#benchmark-results) tr:not(:first-child) {
+    display: grid;
+    gap: .65rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--reading-map-border);
+  }
+  #documenter-page:has(h1#benchmark-results) td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+  #documenter-page:has(h1#benchmark-results) td:first-child {
+    font-weight: 600;
+  }
+  #documenter-page:has(h1#benchmark-results) td:nth-child(2)::before,
+  #documenter-page:has(h1#benchmark-results) td:nth-child(3)::before {
+    display: block;
+    margin-bottom: .15rem;
+    font-size: .85rem;
+    color: var(--reading-map-muted);
+  }
+  #documenter-page:has(h1#benchmark-results) td:nth-child(2)::before {
+    content: "Main result";
+  }
+  #documenter-page:has(h1#benchmark-results) td:nth-child(3)::before {
+    content: "What it computes";
+  }
+}

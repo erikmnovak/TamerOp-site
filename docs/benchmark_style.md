@@ -61,6 +61,16 @@ unexplained blank.
 
 ## Choose the detail that belongs in a report
 
+The benchmark overview uses one table with Comparison, Main result and What
+it computes columns. Link each report from its comparison title, give a short
+finding with its meaningful scope, and describe the input and computation in
+the third column. Keep substantial contrary results or incomplete comparisons
+briefly visible. Put the detailed breakdown in the report, and avoid repeating
+the same report links in a separate selection section beneath the table.
+On phones, show the three entries for each comparison vertically with their
+labels, so readers can follow the prose without narrow columns or sideways
+scrolling.
+
 Benchmark reports explain a performance comparison. Before retaining a
 technical detail, ask what the reader needs it for: does it explain the size
 of the difference, the work each program performed, or a condition that changes
