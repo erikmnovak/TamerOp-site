@@ -5,6 +5,20 @@ This website hosts the documentation for
 the API, recipes, and a didactic, pedagogically minded overview of
 multiparameter persistence. The published site is [tamerop.com](https://tamerop.com).
 
+## Questions and contributions
+
+We keep issues and discussions for the library, website and benchmarks together
+in the main TamerOp.jl repository. Report problems and propose changes in the
+[issue tracker](https://github.com/erikmnovak/TamerOp.jl/issues), including a
+link to the affected page for documentation issues. For usage questions,
+mathematical questions and ideas, use
+[Discussions](https://github.com/erikmnovak/TamerOp.jl/discussions).
+
+Pull requests that change the website belong in this repository. Link the
+corresponding issue in TamerOp.jl when there is one.
+
+## Build the website
+
 Keep the projects in separate folders:
 
 ```text
