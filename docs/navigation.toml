@@ -69,7 +69,7 @@ id = "benchmarks"
 title = "Benchmark results"
 page = "benchmarks/index.html"
 types = ["benchmark_report"]
-order = ["C01", "C18", "C14", "C14_cpp", "C22", "visual_interaction", "benchmarking", "benchmark_reproduction"]
+order = ["benchmarking", "benchmark_reproduction", "C01", "C18", "C14", "C14_cpp", "C22", "visual_interaction"]
 
 [[collections]]
 id = "contributing"

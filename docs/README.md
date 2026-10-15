@@ -211,7 +211,8 @@ Collections use article types by default; `[article_collections]` assigns an
 existing article ID to one collection when its reader purpose calls for a
 different menu home. This moves the article instead of adding a second entrance.
 The measurement account and reproduction guide both belong under Benchmark
-results, after the individual reports. The catalog builder
+results, immediately after Overview: the measurement account first, then the
+reproduction guide, followed by the individual reports. The catalog builder
 joins these sources to generate collection listings, the topic map, topic
 landings and metadata for navigation and search. Do not add article-source
 lists to `navigation.toml`, `make.jl` or hand-authored topic pages.
