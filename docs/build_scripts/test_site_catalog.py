@@ -101,57 +101,51 @@ order = []
         data = self.stage_catalog()
         math, using = data["collections"]
         self.assertEqual([a["id"] for a in math["items"]], ["second", "first"])
-        self.assertEqual(math["topic_groups"], [])
+        self.assertFalse(any(group["page"] for group in math["topic_groups"]))
         self.assertFalse(math["grouped_sidebar"])
         self.assertTrue(using["grouped_sidebar"])
         grouped = [a["id"] for group in using["topic_groups"] for a in group["items"]]
         self.assertCountEqual(grouped, ["a", "b", "c"])
         self.assertEqual(len(grouped), len(set(grouped)))
-        group_page = "collections/using/topics/geometry.html"
-        self.assertEqual(data["pages"][group_page]["collection"], "using")
-        content = (self.stage / group_page.replace(".html", ".md")).read_text()
-        self.assertIn("../../../guides/a.md", content)
-        self.assertIn("../../../topics/geometry.md", content)
+        self.assertFalse(any(group["page"] for group in using["topic_groups"]))
+        self.assertFalse((self.stage / "collections/using/topics/geometry.md").exists())
+        self.assertNotIn("collections/using/topics/geometry.html", data["pages"])
         overview = (self.stage / "collections/using.md").read_text()
-        self.assertIn("using/topics/geometry.md", overview)
-        self.assertIn("2 articles.", overview)
-        self.assertNotIn("guides/a.md", overview)
+        self.assertIn("## Geometry", overview)
+        self.assertIn("[A](../guides/a.md)", overview)
         self.assertIn("[Second](../second.md)", (self.stage / "collections/mathematics.md").read_text())
 
-    def test_published_subject_routes_survive_collection_shrinking_below_sidebar_threshold(self):
-        self.navigation += 'topic_pages = true\n'
-        for identity, topic in (("a", "geometry"), ("b", "algebra"), ("c", "geometry")):
-            self.article(identity, f"docs/{identity}.md", "library_guide", [topic])
+    def test_authored_topic_overview_has_one_route_and_survives_small_collection(self):
+        for identity in ("a", "b", "c"):
+            self.article(identity, f"docs/{identity}.md", "library_guide", ["geometry"])
             self.guides[f"{identity}.md"] = f"guides/{identity}.md"
-        large = self.stage_catalog()["collections"][1]
-        self.assertTrue(large["grouped_sidebar"])
-        published_subjects = {group["page"] for group in large["topic_groups"]}
-
-        # A reclassified or unpublished article reduces the collection size.
+        self.article("choosing_geometry", "docs/src/collections/using/topics/geometry.md", "resource",
+                     ["geometry"], content="# Choosing geometry\n\nExplain the different questions.\n")
+        data = self.stage_catalog()
+        group = data["collections"][1]["topic_groups"][0]
+        page = "collections/using/topics/geometry.html"
+        self.assertEqual(group["page"], page)
+        self.assertEqual(group["overview_title"], "Choosing Geometry")
+        self.assertEqual(data["pages"][page]["collection"], "using")
+        self.assertEqual(data["pages"][page]["canonical_source"], "docs/src/collections/using/topics/geometry.md")
+        self.assertIn("Explain the different questions.", (self.stage / page.replace(".html", ".md")).read_text())
         del self.guides["c.md"]
         shutil.rmtree(self.stage)
-        data = self.stage_catalog()
-        small = data["collections"][1]
-        self.assertFalse(small["grouped_sidebar"])
-        self.assertEqual({group["page"] for group in small["topic_groups"]}, published_subjects)
-        self.assertTrue(published_subjects <= data["pages"].keys())
-        overview = (self.stage / "collections/using.md").read_text()
-        self.assertIn("[A](../guides/a.md)", overview)
-        self.assertIn("[B](../guides/b.md)", overview)
-        self.assertIn('<details class="collection-subjects"><summary>Browse by subject</summary>', overview)
-        self.assertIn('href="using/topics/geometry.html"', overview)
-        self.assertNotIn("Choose a subject", overview)
-        for page in published_subjects:
-            self.assertTrue((self.stage / page.replace(".html", ".md")).is_file())
-        self.assertNotIn("guides/c.md", (self.stage / "collections/using/topics/geometry.md").read_text())
+        small = self.stage_catalog()
+        self.assertFalse(small["collections"][1]["grouped_sidebar"])
+        self.assertIn(page, small["pages"])
+        self.assertIn("[Choosing Geometry](using/topics/geometry.md)", (self.stage / "collections/using.md").read_text())
 
-    def test_topic_page_display_setting_requires_a_boolean(self):
-        self.navigation += 'topic_pages = "true"\n'
-        with self.assertRaisesRegex(ValueError, "topic_pages must be a boolean"):
+    def test_authored_overview_requires_the_right_resource_and_topic(self):
+        self.article("guide", "docs/guide.md", "library_guide", ["geometry"])
+        self.guides["guide.md"] = "guides/guide.md"
+        self.article("wrong_topic", "docs/src/collections/using/topics/geometry.md", "resource", ["algebra"])
+        with self.assertRaisesRegex(ValueError, "overview must be an inventoried resource"):
             self.stage_catalog()
 
-    def test_related_subject_page_links_to_recipes_under_their_current_editorial_type(self):
-        self.navigation += 'topic_pages = true\nrelated_topics = ["geometry"]\n'
+    def test_related_group_links_to_recipes_without_a_redundant_page(self):
+        self.navigation = self.navigation.replace('order = []', 'order = ["export", "another"]')
+        self.navigation += 'related_topics = ["geometry"]\n'
         self.navigation += '''[[collections]]
 id = "recipes"
 title = "Task recipes"
@@ -161,17 +155,20 @@ types = ["recipe"]
         self.article("recipes", "docs/src/collections/recipes.md", "resource")
         self.article("guide", "docs/guide.md", "library_guide", ["algebra"])
         self.article("export", "docs/export.md", "recipe", ["geometry"])
-        self.guides.update({"guide.md": "guides/guide.md", "export.md": "guides/export.md"})
+        self.article("another", "docs/another.md", "recipe", ["geometry"])
+        self.guides.update({"guide.md": "guides/guide.md", "export.md": "guides/export.md", "another.md": "guides/another.md"})
         data = self.stage_catalog()
         using, recipes = data["collections"][1:]
         self.assertEqual([item["id"] for item in using["items"]], ["guide"])
-        self.assertEqual([item["id"] for item in recipes["items"]], ["export"])
+        self.assertEqual([item["id"] for item in recipes["items"]], ["another", "export"])
         self.assertEqual(data["pages"]["guides/export.html"]["collection"], "recipes")
-        content = (self.stage / "collections/using/topics/geometry.md").read_text()
-        self.assertIn("Related treatments from other collections.", content)
-        self.assertIn("[Export](../../../guides/export.md) — Task recipe.", content)
-        self.assertNotIn("Using TamerOp articles in this area.", content)
-        self.assertIn('href="using/topics/geometry.html"', (self.stage / "collections/using.md").read_text())
+        self.assertFalse((self.stage / "collections/using/topics/geometry.md").exists())
+        content = (self.stage / "collections/using.md").read_text()
+        self.assertIn("## Geometry", content)
+        self.assertIn("[Export](../guides/export.md) — Task recipe.", content)
+        group = next(group for group in using["topic_groups"] if group["id"] == "geometry")
+        self.assertTrue(group["related"])
+        self.assertEqual([item["id"] for item in group["items"]], ["export", "another"])
 
     def test_related_subjects_require_known_topic_ids(self):
         self.navigation += 'related_topics = ["unknown"]\n'

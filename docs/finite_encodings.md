@@ -16,8 +16,8 @@ what they recover. You need the notions of a poset, a structure map, and
 composition, together with basic linear algebra. The short bridge
 [why two parameters change the problem](two_parameters.md) introduces these
 ideas; [persistence modules](persistence_modules.md) develops the definitions
-in detail. Either route leads here. No Julia installation is needed; the
-final sections connect the mathematics to TamerOp's result objects.
+in detail. Either route leads here. The final sections connect the mathematics
+to TamerOp's result objects.
 
 ## Specify the module before encoding it
 
@@ -106,9 +106,7 @@ here the fibers are exactly the nine regions specified by the band pairs.
 beyond the displayed window. Coordinates equal to 0 or 2 belong to band C.
 The lower panel is the finite poset of labels, with spaces attached. Arrows
 show its immediate comparisons, called covers; longer comparisons follow
-by composition.
-This is an authored schematic, not a claim about the number or numbering of
-labels returned by the package.*
+by composition.*
 
 Define a module $N_9$ on this finite poset by placing $\mathbb{k}$ at
 $(C,C)$ and zero at the other eight labels. Every map between distinct
@@ -517,8 +515,6 @@ Grouping all exterior zero spaces above illustrates why order compatibility
 is an additional requirement on the labels. The
 [tameness and scope chapter](tameness.md) develops the hypotheses and
 the connections to presentations and resolutions.
-The theorem's generality does not imply an implemented encoder for every
-abstract input.
 
 For the square, the construction already supplies the required finiteness.
 Filtrations of a fixed finite complex also supply it automatically. The

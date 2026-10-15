@@ -1,7 +1,6 @@
 # Install and open a lesson notebook
 
-The lessons include saved figures, so you can read them before installing
-anything. To run their computations, you need Julia 1.12 or a compatible newer
+To run the lesson computations, you need Julia 1.12 or a compatible newer
 Julia 1.x release; follow the
 [official Julia installation instructions](https://julialang.org/install/)
 if needed. The blocks labelled `julia` below belong at the Julia prompt,
@@ -46,8 +45,7 @@ develops the interpretation with figures.
 Download the [executed ring notebook](../downloads/ring.ipynb), the
 [square inspection notebook](../downloads/inspect_encoding.ipynb), or the
 [guide from inputs to computed objects](../downloads/inputs_to_objects.ipynb).
-Each already contains its static figures, which you can read without running
-the code. Save the notebook in your `tamerop-work` folder.
+Save the notebook in your `tamerop-work` folder.
 
 Add the plotting and notebook packages to that environment:
 
@@ -68,8 +66,7 @@ compiles them.
 
 CairoMakie draws the static figures used in the main lesson. The square
 lesson has an optional section explaining how to add WGLMakie and inspect
-the example in a live Julia session. You can follow the main computation
-and read its saved figures with the packages installed above.
+the example in a live Julia session.
 
 If the kernel cannot find a package, activate your work folder in a cell
 before the lesson's imports:

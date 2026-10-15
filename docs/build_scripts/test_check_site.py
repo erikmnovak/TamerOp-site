@@ -365,7 +365,16 @@ class CatalogSiteTests(unittest.TestCase):
                     self.check()
             page.write_text(original)
 
-    def test_collection_topic_groups_require_their_published_listing(self):
+    def test_collection_topic_groups_do_not_require_a_separate_index(self):
+        changed = copy.deepcopy(self.catalog)
+        changed['collections'][0]['topic_groups'] = [
+            {'page': None, 'items': [{'page': 'lessons/module.html'}]}]
+        overview = self.root / 'collections/mathematics.html'
+        overview.write_text(overview.read_text().replace('<h1>Article</h1>',
+            '<h1>Article</h1><a href="../lessons/module.html">Module</a>'))
+        self.check(changed)
+
+    def test_authored_topic_overview_must_be_published(self):
         changed = copy.deepcopy(self.catalog)
         changed['collections'][0]['topic_groups'] = [
             {'page': 'collections/mathematics/topics/encodings.html',

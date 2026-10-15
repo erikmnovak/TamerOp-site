@@ -216,9 +216,7 @@ def export_lesson(nb, source: Path, page: Path, pages: dict, stage: Path) -> Non
     download = Path(os.path.relpath(stage / "downloads" / source.name, page.parent)).as_posix()
     record = Path(os.path.relpath(stage / "downloads" / "publication.json", page.parent)).as_posix()
     notice = (f"[Download the executed notebook]({download}) · "
-              f"[Build and environment record]({record})\n\n"
-              "All figures below are saved results; reading this page needs no Julia session. "
-              "Select a figure to view it at full size.\n\n")
+              f"[Build and environment record]({record})\n\n")
     # Keep the lesson's title first, followed by its generated download notice.
     title, rest = body.lstrip().split("\n", 1)
     page.write_text(f'```@meta\nEditURL = "{source_url(source)}"\n```\n\n'

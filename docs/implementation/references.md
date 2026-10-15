@@ -27,9 +27,8 @@ matrices](https://flintlib.org/doc/fmpq_mat.html) · [Rational
 reconstruction](https://flintlib.org/doc/fmpq.html#modular-reduction-and-rational-reconstruction).
 
 FLINT supplies exact arithmetic through Nemo and documents the bounds used in
-rational reconstruction. The online matrix manual describes multiple solving
-algorithms; listing them is not a claim about which one a particular TamerOp
-request invokes. [Use in the coordinate
+rational reconstruction. The online matrix manual describes its solving
+algorithms. [Use in the coordinate
 account](qq_coordinates.md#where-native-exact-arithmetic-earns-its-conversion-cost).
 
 ## Rational reconstruction
@@ -129,8 +128,7 @@ This is the mathematical reference for limits, colimits, natural
 transformations, adjunctions and Kan extensions. Chapter 6, including the
 pointwise colimit formula in Theorem 6.2.1, supplies the categorical setting.
 TamerOp's finite relation matrices, coordinate choices and verification are
-local implementations. The categorical reference does not assert independence
-from the chosen encoding. [Use in the transport
+local implementations on the chosen finite encoding. [Use in the transport
 account](change_of_posets.md#kan-extensions-retain-chosen-limit-and-colimit-coordinates).
 
 ## Yoneda composition and differential graded products

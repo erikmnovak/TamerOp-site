@@ -42,11 +42,8 @@ connected; the [visualization guide](visualization.md) explains those
 distinctions. A missing renderer or a failed export raises an error, so a saved
 summary cannot be mistaken for the requested rendered figure.
 
-Selecting among prepared figures needs no running Julia session. With
-CairoMakie loaded, `save_visual_session` can put named SVG views in one HTML
-file for a browser to display. The website uses a smaller interface around
-these figures, keeping the selections and explanations relevant to each
-example. The [saved session guide](tutorials/live_inspection.ipynb) explains
+With CairoMakie loaded, `save_visual_session` can put named SVG views in one
+HTML file for a browser to display. The [saved session guide](tutorials/live_inspection.ipynb) explains
 how to prepare the views and when reopening in Julia is needed for a new query.
 
 ## Choose the integrations for your task

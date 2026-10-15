@@ -188,13 +188,13 @@ maps, relations, coefficient sizes, and the requested output also matter.
 These are finite, bounded examples, not evidence of asymptotic scaling on
 arbitrarily large modules.
 
-![Construction-plus-query times against input size, separated by request and coefficient field.](qpa_v1/input_sizes.svg)
+[![Construction-plus-query times against input size, separated by request and coefficient field.](qpa_v1/input_sizes.svg)](qpa_v1/input_sizes.svg)
 
 Each panel shows one request variant. Both axes are logarithmic. Blue points
 are TamerOp and orange points are QPA; circles, squares, triangles, and diamonds
 denote QQ, F₂, F₃, and F₁₀₁. The horizontal axis sums vector-space dimensions
 over the supplied module records. Different families are not joined
-into a single scaling curve. Open the figure to inspect the panels at full size.
+into a single scaling curve.
 
 The source and suite were frozen before confirmation. Of 36 requests reserved
 for evaluation after that freeze, 32 have matched answers and a weighted

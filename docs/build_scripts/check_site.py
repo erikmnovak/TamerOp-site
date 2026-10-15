@@ -179,6 +179,47 @@ def check_catalog(catalog, root):
         current_links = []
         for branch, collection in zip(branches, collections):
             branch_links = links(parsed, branch)
+            if collection.get('grouped_sidebar'):
+                groups = collection['topic_groups']
+                disclosures = [node for node in parsed.elements if node.tag == 'details'
+                               and 'data-topic' in node.attrs and inside(node, branch)]
+                if [node.attrs['data-topic'] for node in disclosures] != [group['id'] for group in groups]:
+                    raise ValueError(f'{route}: missing or reordered sidebar topics')
+                for disclosure, group in zip(disclosures, groups):
+                    entry = disclosure.parent
+                    if entry is None or 'site-topic-entry' not in entry.attrs.get('class', '').split():
+                        raise ValueError(f'{route}: topic must have a separate heading and disclosure')
+                    heading = next((n for n in parsed.elements if n.parent is entry
+                                    and 'site-topic-heading' in n.attrs.get('class', '').split()), None)
+                    buttons = [n for n in parsed.elements if n.tag == 'button' and n.parent is heading]
+                    if heading is None or len(buttons) != 1:
+                        raise ValueError(f'{route}: topic needs one separate expansion button')
+                    button = buttons[0]
+                    controlled = next((n for n in parsed.elements
+                                       if n.attrs.get('id') == button.attrs.get('aria-controls')), None)
+                    if controlled is None or controlled.parent is not disclosure or controlled.tag != 'ul':
+                        raise ValueError(f'{route}: topic button does not control its article list')
+                    if button.attrs.get('aria-expanded') != str('open' in disclosure.attrs).lower():
+                        raise ValueError(f'{route}: topic button has an incorrect expanded state')
+                    title_links = links(parsed, heading)
+                    title_destinations = [target(page, n.attrs['href']) for n in title_links]
+                    expected_title = [(published(group['page']), '')] if group.get('page') else []
+                    if title_destinations != expected_title or any(n.parent is not heading for n in title_links):
+                        raise ValueError(f'{route}: topic title must link directly to its overview beside the button')
+                    if expected_title and expected_title[0] in [target(page, n.attrs['href'])
+                                                               for n in links(parsed, disclosure)]:
+                        raise ValueError(f'{route}: overview is repeated inside its article list')
+                    destinations = {target(page, node.attrs['href']) for node in links(parsed, entry)}
+                    expected = [item['page'] for item in group['items']]
+                    if group.get('page'):
+                        expected.append(group['page'])
+                    if not {(published(item), '') for item in expected} <= destinations:
+                        raise ValueError(f'{route}: a topic hides its article or overview links')
+                    chosen = collection['id'] in active and route in expected
+                    if ('open' in disclosure.attrs) != chosen:
+                        raise ValueError(f'{route}: only the current topic may start open')
+                    if any(node.tag == 'details' and inside(node, disclosure) for node in parsed.elements):
+                        raise ValueError(f'{route}: sidebar exceeds two expandable levels')
             if [target(page, node.attrs['href']) for node in branch_links].count(
                     (published(collection['page']), '')) != 1:
                 raise ValueError(f'{route}: missing or duplicated collection overview link')
@@ -229,7 +270,9 @@ def check_catalog(catalog, root):
         topic_links(topic['page'], [item['page'] for item in topic['articles']])
     for collection in collections:
         for group in collection.get('topic_groups', []):
-            topic_links(group['page'], [item['page'] for item in group['items']])
+            if group.get('page'):
+                topic_links(group['page'], [])
+            topic_links(collection['page'], [item['page'] for item in group['items']])
 
     # An orphan group can link to itself and back to the site without giving
     # readers any path into it. Follow actual anchors from the home page.

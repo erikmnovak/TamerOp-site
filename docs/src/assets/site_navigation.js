@@ -8,6 +8,70 @@
         const source = document.getElementById("site-catalog");
         if (!sidebar || !trigger || !main || !source) return;
         const catalog = JSON.parse(source.textContent);
+        const siteRoot = new URL(catalog.root, document.baseURI);
+        const menu = sidebar.querySelector(".site-collections");
+        const branches = [...menu.querySelectorAll("details")];
+        const storageKey = "tamerop-navigation-v1:" + siteRoot.pathname;
+        const branchKey = node => {
+            const collection = node.closest("[data-collection]").dataset.collection;
+            return node.dataset.topic ? collection + "/" + node.dataset.topic : collection;
+        };
+        let saved = null;
+        try { saved = JSON.parse(sessionStorage.getItem(storageKey)); } catch (_) { /* Storage is optional. */ }
+        // Native HTML already opens the current path without JavaScript. Restore
+        // other choices too; never let a saved closed branch hide this page.
+        for (const branch of branches) {
+            const context = branch.matches('.site-topic') ? branch.parentElement : branch;
+            branch.open = Boolean(context.querySelector('[aria-current="page"]')) ||
+                (typeof saved?.branches?.[branchKey(branch)] === "boolean"
+                    ? saved.branches[branchKey(branch)] : branch.open);
+        }
+        for (const entry of menu.querySelectorAll('.site-topic-entry')) {
+            const branch = entry.querySelector('.site-topic');
+            const button = entry.querySelector('.site-topic-toggle');
+            function syncTopicButton() {
+                button.setAttribute('aria-expanded', String(branch.open));
+                button.setAttribute('aria-label',
+                    `${branch.open ? 'Collapse' : 'Expand'} articles under ${button.dataset.title}`);
+            }
+            button.addEventListener('click', () => {
+                branch.open = !branch.open;
+                syncTopicButton();
+                rememberNavigation();
+            });
+            branch.addEventListener('toggle', syncTopicButton);
+            syncTopicButton();
+            button.hidden = false;
+            entry.dataset.enhanced = 'true';
+        }
+        function rememberNavigation() {
+            try {
+                sessionStorage.setItem(storageKey, JSON.stringify({
+                    branches: Object.fromEntries(branches.map(node => [branchKey(node), node.open])),
+                    scroll: menu.scrollTop, sidebarScroll: sidebar.scrollTop,
+                    page: location.pathname
+                }));
+            } catch (_) { /* Private browsing or blocked storage must not break navigation. */ }
+        }
+        // Restore after layout, including the short-screen sidebar scroll area.
+        // On a new page, move only as far as needed to reveal its active link.
+        requestAnimationFrame(() => {
+            if (Number.isFinite(saved?.scroll)) menu.scrollTop = Math.max(0, saved.scroll);
+            if (Number.isFinite(saved?.sidebarScroll)) sidebar.scrollTop = Math.max(0, saved.sidebarScroll);
+            const active = menu.querySelector('[aria-current="page"]');
+            if (active && saved?.page !== location.pathname) {
+                const scroller = getComputedStyle(menu).overflowY === "auto" ? menu : sidebar;
+                const bounds = scroller.getBoundingClientRect(), item = active.getBoundingClientRect();
+                if (item.bottom > bounds.bottom) scroller.scrollTop += item.bottom - bounds.bottom + 8;
+                else if (item.top < bounds.top) scroller.scrollTop -= bounds.top - item.top + 8;
+            }
+            for (const branch of branches) branch.addEventListener("toggle", rememberNavigation);
+        });
+        // Capture before the mobile drawer closes and page navigation begins.
+        sidebar.addEventListener("click", event => {
+            if (event.target.closest("a[href]")) rememberNavigation();
+        }, true);
+        window.addEventListener("pagehide", rememberNavigation);
         document.body.classList.add("site-js");
         const narrow = window.matchMedia("(max-width: 1055px)");
         const wideOutline = window.matchMedia("(min-width: 1440px)");
@@ -99,7 +163,6 @@
             });
         }
 
-        const siteRoot = new URL(catalog.root, document.baseURI);
         function annotateSearch() {
             for (const result of document.querySelectorAll(".search-result-link")) {
                 if (result.querySelector(".site-result-context")) continue;

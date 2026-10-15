@@ -2619,6 +2619,17 @@ related = ["recipes_collection"]
 migration = "retain"
 
 [[articles]]
+id = "using_invariants_overview"
+title = "Invariants, slices and distances"
+type = "resource"
+topics = ["invariants"]
+question = "When should I explore slices, compare modules by matching distance, or query a branching region?"
+state = "existing"
+source = "docs/src/collections/using/topics/invariants.md"
+migration = "retain"
+scope = "Orientation among the existing slice, exact matching and generalized rank guides, with distinct entry questions and mathematical scope. Replaces the generated article-list index at the same route."
+
+[[articles]]
 id = "recipes_collection"
 title = "Task recipes"
 type = "resource"

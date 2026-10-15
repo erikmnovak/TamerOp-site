@@ -41,7 +41,6 @@ modulo a prime does not change that basis.
 
 The cycle and filling follow $i$ toward the source. A cocycle follows the
 transpose of $p$, because it evaluates chains arriving from the source.
-[Open the diagram at full size.](../assets/implementation/source_representatives.svg)
 
 An ordinary diagram stores the correspondence when the caller supplies one or
 requests `source=true`. The flags `representatives=true` and `cocycles=true`

@@ -87,9 +87,11 @@ def relative_url(current: str, target: str) -> str:
     return link + ("#" + quote(fragment) if separator else "")
 
 
-def link(current, target, title, *, css="", description=None):
-    active = target == current
-    classes = " ".join(filter(None, [css, "is-active" if active else ""]))
+def link(current, target, title, *, css="", description=None, mark_current=True):
+    active = mark_current and target == current
+    # aria-current owns highlighting. Documenter uses .is-active to force its
+    # own sidebar scroll after startup, which would undo our restored position.
+    classes = css
     attr = ' aria-current="page"' if active else ""
     detail = f'<span class="site-link-detail">{html.escape(description)}</span>' if description else ""
     return (f'<a href="{html.escape(relative_url(current, target), quote=True)}"'
@@ -123,10 +125,47 @@ def sidebar(catalog: dict, current: str, brand: str, search: str, version: str) 
                 pieces.append('<li>' + link(current, item["page"], item["title"]) + '</li>')
             visible_pages = {item["page"] for item in items}
         else:
-            # Large collections use their topic index, not a seventy-item tree.
+            # Topic rows disclose actual articles without requiring a page visit.
+            # Only the canonical collection opens for the current article;
+            # related treatments can also be reached from another collection.
+            visible_pages = set()
+            own_pages = {item["page"] for item in items}
             for topic in collection["topic_groups"]:
-                pieces.append('<li>' + link(current, topic["page"], topic["title"]) + '</li>')
-            visible_pages = {topic["page"] for topic in collection["topic_groups"]}
+                selected = chosen and (current == topic["page"] or
+                    any(item["page"] == current for item in topic["items"]))
+                title = html.escape(topic["title"])
+                controls = html.escape(f'site-articles-{collection["id"]}-{topic["id"]}', quote=True)
+                action = "Collapse" if selected else "Expand"
+                pieces.append('<li class="site-topic-entry"><div class="site-topic-heading">'
+                              '<button type="button" class="site-topic-toggle" hidden '
+                              f'aria-controls="{controls}" aria-expanded="{str(selected).lower()}" '
+                              f'aria-label="{action} articles under {html.escape(topic["title"], quote=True)}" '
+                              f'data-title="{html.escape(topic["title"], quote=True)}">'
+                              '<span aria-hidden="true"></span></button>')
+                if topic.get("overview_title"):
+                    pieces.append(link(current, topic["page"], topic["title"], css="site-topic-link"))
+                    visible_pages.add(topic["page"])
+                else:
+                    pieces.append('<span class="site-topic-label">' + title + '</span>')
+                pieces.append('</div><details class="site-topic" data-topic="'
+                              + html.escape(topic["id"], quote=True) + '"'
+                              + (' open' if selected else '') + '>')
+                # The title and enhanced button are siblings, never nested
+                # interactive controls. Native disclosure remains without JS.
+                pieces.append('<summary aria-label="Articles under '
+                              + html.escape(topic["title"], quote=True) + '">Articles</summary>'
+                              f'<ul id="{controls}">')
+                for item in topic["items"]:
+                    pieces.append('<li>' + link(current, item["page"], item["title"],
+                        mark_current=chosen,
+                        description=item.get("type_label") if item["page"] not in own_pages else None) + '</li>')
+                    visible_pages.add(item["page"])
+                pieces.append('</ul></details></li>')
+            # A usable article must remain reachable even without a home topic.
+            for item in items:
+                if item["page"] not in visible_pages:
+                    pieces.append('<li>' + link(current, item["page"], item["title"]) + '</li>')
+                    visible_pages.add(item["page"])
         if chosen and current != collection["page"] and current not in visible_pages:
             record = catalog["pages"][current]
             pieces.append('<li class="site-current-article">'

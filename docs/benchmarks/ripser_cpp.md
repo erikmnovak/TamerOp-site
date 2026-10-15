@@ -95,17 +95,16 @@ band is 1/1.10-1.10.
 | sparse sphere | 640 | F2 / H2 | 816 | 49.8 | 28 | 0.57 (0.55-0.58) |
 | sparse sphere | 704 | F2 / H2 | 895 | 69.7 | 43.7 | 0.62 (0.59-0.66) |
 
-![Complete file-to-barcode runtimes against vertex count, separated by input family and coefficient field.](ripser_cpp_v1/presentation/runtime_sizes.svg)
+[![Complete file-to-barcode runtimes against vertex count, separated by input family and coefficient field.](ripser_cpp_v1/presentation/runtime_sizes.svg)](ripser_cpp_v1/presentation/runtime_sizes.svg)
 
 Lines connect the two measured sizes within the same family and field; they
 are guides to the eye, not fitted scaling laws. Vertical marks show the range
-of process medians. [Full-size figure](ripser_cpp_v1/presentation/runtime_sizes.svg).
+of process medians.
 
-![Every measured C++ Ripser to TamerOp time ratio, with paired-process ranges and the declared practical-similarity band.](ripser_cpp_v1/presentation/ratios.svg)
+[![Every measured C++ Ripser to TamerOp time ratio, with paired-process ranges and the declared practical-similarity band.](ripser_cpp_v1/presentation/ratios.svg)](ripser_cpp_v1/presentation/ratios.svg)
 
 The diamond marks each geometric ratio; the gray segment retains process
 variation. All requests, including material losses, remain visible.
-[Full-size figure](ripser_cpp_v1/presentation/ratios.svg).
 
 ## Timing and fresh computations
 

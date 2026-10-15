@@ -41,7 +41,7 @@ html.theme--catppuccin-mocha {
 .site-entry-links { display: grid; gap: .1rem; }
 .site-sidebar a { display: block; color: var(--site-nav-text); border-radius: .25rem; padding: .4rem .55rem; line-height: 1.4; overflow-wrap: anywhere; }
 .site-sidebar a:hover { color: var(--site-nav-accent); background: var(--site-nav-active); }
-.site-sidebar a[aria-current="page"] { background: var(--site-nav-active); font-weight: 650; color: var(--site-nav-accent); border-left: 3px solid var(--site-nav-accent); }
+.site-sidebar [aria-current="page"] { background: var(--site-nav-active); font-weight: 650; color: var(--site-nav-accent); border-left: 3px solid var(--site-nav-accent); }
 #documenter:has(> #site-navigation) .site-sidebar #documenter-search-query {
     width: 100%;
     margin: .7rem 0 .15rem !important;
@@ -64,15 +64,36 @@ html.theme--catppuccin-mocha {
     border-block: 1px solid var(--site-nav-line);
 }
 .site-collection { margin: 0 0 .45rem; }
-.site-collection > summary {
+.site-collection > summary, .site-topic > summary {
     padding: .55rem .35rem;
     cursor: pointer;
     font-weight: 650;
     line-height: 1.3;
     overflow-wrap: anywhere;
 }
-.site-collection > summary::marker { color: var(--site-nav-muted); font-size: .8em; }
-.site-collection > ul { margin: .1rem 0 .7rem .5rem; padding: 0 0 0 .45rem; border-left: 1px solid var(--site-nav-line); list-style: none; }
+.site-collection > summary::marker, .site-topic > summary::marker { color: var(--site-nav-muted); font-size: .8em; }
+.site-collection > ul, .site-topic > ul { margin: .1rem 0 .7rem .5rem; padding: 0 0 0 .45rem; border-left: 1px solid var(--site-nav-line); list-style: none; }
+.site-topic > summary { font-weight: 500; padding-block: .5rem; }
+.site-topic > summary:hover { background: var(--site-nav-active); color: var(--site-nav-accent); border-radius: .25rem; }
+.site-topic > ul { margin-left: .3rem; padding-left: .3rem; }
+.site-topic-heading { display: flex; align-items: flex-start; gap: .1rem; }
+.site-topic-heading > .site-topic-link, .site-topic-label {
+    flex: 1 1 auto; min-width: 0; min-height: 2.75rem; box-sizing: border-box;
+    padding: .65rem .35rem; line-height: 1.4; overflow-wrap: anywhere; font-weight: 500;
+}
+.site-sidebar .site-topic-link { color: var(--site-nav-accent); text-decoration: underline; text-underline-offset: .18em; }
+.site-topic-toggle[hidden] { display: none; }
+.site-topic-toggle:not([hidden]) {
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: 0 0 2.75rem; width: 2.75rem; height: 2.75rem; padding: 0;
+    border: 1px solid transparent; border-radius: .25rem; background: transparent;
+    color: var(--site-nav-muted); cursor: pointer;
+}
+.site-topic-toggle:hover { background: var(--site-nav-active); color: var(--site-nav-accent); border-color: var(--site-nav-line); }
+.site-topic-toggle > span { width: 0; height: 0; border-top: .3rem solid transparent; border-bottom: .3rem solid transparent; border-left: .4rem solid currentColor; }
+.site-topic-toggle[aria-expanded="true"] > span { transform: rotate(90deg); }
+.site-topic-entry[data-enhanced] > .site-topic > summary { display: none; }
+.site-topic-entry[data-enhanced] > .site-topic > ul { margin-left: 1.4rem; padding-left: 1.2rem; }
 .site-collection li { margin: .1rem 0; padding: 0; }
 .site-current-article { border-top: 1px solid var(--site-nav-line); padding-top: .4rem !important; margin-top: .5rem !important; }
 .site-link-detail { display: block; margin-top: .25rem; font-size: .75rem; font-weight: 400; color: var(--site-nav-muted); }
@@ -82,7 +103,7 @@ html.theme--catppuccin-mocha {
 @media (min-width: 1056px) {
     #documenter:has(> #site-navigation) .docs-main header.docs-navbar .site-nav-toggle { display: none; }
 }
-.site-sidebar a:focus-visible, .site-sidebar summary:focus-visible,
+.site-sidebar a:focus-visible, .site-sidebar summary:focus-visible, .site-topic-toggle:focus-visible,
 .site-outline a:focus-visible, .site-outline summary:focus-visible,
 .site-nav-close:focus-visible, #documenter:has(> #site-navigation) .site-nav-toggle:focus-visible {
     outline: 3px solid var(--site-nav-accent);

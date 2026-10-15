@@ -213,7 +213,6 @@ Twelve further small controls independently checked the compressed-input harness
 across both dimensions, V/T conventions and all three structures. Negative tests
 check malformed grades, multiplicities and corrupted protocol evidence. Every
 formal result then matched exactly across tools, samples and process passes.
-These checks provide evidence of correctness, not a proof for all inputs.
 
 Optional contracts were examined separately. Twelve of 24 representative controls
 passed the stronger interval-generator lifetime check; the others did not establish

@@ -111,16 +111,13 @@ All ratios divide Ripser.py time by TamerOp time; values above one favor TamerOp
 | Complete query | 1.32 | 1.18–1.49 |
 | Construction plus query | 1.79 | 1.58–2 |
 
-The family-balanced query aggregate is **1.32**. It summarizes
-this declared development suite; it does not establish a universal speedup or
-give the reserved cases the status of an independent replication of that aggregate.
+The family-balanced query aggregate for this development suite is **1.32**.
 
-![Individual development request ratios and family geometric ratios, with ranges across four paired process passes.](ripser_v1/presentation/family_ratios.svg)
+[![Individual development request ratios and family geometric ratios, with ranges across four paired process passes.](ripser_v1/presentation/family_ratios.svg)](ripser_v1/presentation/family_ratios.svg)
 
 Gray points retain individual requests, including losses. Blue diamonds show
 family ratios; bars show paired-pass ranges. The shaded band marks practical
 similarity, not statistical equivalence. The horizontal scale is logarithmic.
-[Full-size figure](ripser_v1/presentation/family_ratios.svg).
 
 ## Development requests
 
@@ -163,13 +160,12 @@ zero-length intervals. Retained cocycles are computed inside the query timer.
 | Planar points (distances) | 384 | F101 / H2 | No | 477 | 663 | 4,400 | 5.91 |
 | Greedy landmarks | 4,096 / 2,048 landmarks | F2 / H1 | No | 3071 | 1,160 | 3,070 | 2.47 |
 
-![Complete-query times across fixed planar and landmark size sequences, with TamerOp in blue and Ripser.py in orange.](ripser_v1/presentation/bounded_sizes.svg)
+[![Complete-query times across fixed planar and landmark size sequences, with TamerOp in blue and Ripser.py in orange.](ripser_v1/presentation/bounded_sizes.svg)](ripser_v1/presentation/bounded_sizes.svg)
 
 Bands show the range of four process medians. Lines connect the declared
 instances; they do not predict unmeasured sizes. The planar instances also
 differ in geometry. The landmark sequence uses the same 4,096-point metric.
 Vertical scales are logarithmic to keep both short and long requests visible.
-[Full-size figure](ripser_v1/presentation/bounded_sizes.svg).
 
 The small-subset landmark request takes **13.9 ms versus
 7.66 ms** at 2,048 points and 128 landmarks. The 3,072-landmark
@@ -187,7 +183,6 @@ after the candidate was frozen. They include a jittered circle, new planar and
 spherical samples, relabeled grid and octahedral graphs, and a new dyadic
 landmark metric. No code was tuned after seeing their outcomes. Relabeling
 tests sensitivity to vertex order; it does not introduce a new module type.
-They are a small separate generalization check, not evidence about all inputs.
 
 | Request | Input size | Field / through | Cocycles | Intervals | TamerOp (ms) | Ripser.py (ms) | Ripser.py/TamerOp |
 | :--- | ---: | :--- | :--- | ---: | ---: | ---: | ---: |
@@ -220,12 +215,6 @@ examples, a separate exact sparse linear-system test proves that the sampled
 cochain is not a coboundary. This closes the earlier sampled nontriviality gap;
 it does **not** certify every returned cochain or identify all large-output
 bases across tools. Small controls also compare complete class spaces.
-
-The frozen mathematical implementation matches the one that passed 1,147,270
-focused Rips, A115 and A117 assertions. Its only subsequent source difference
-is a visualization builder outside these calls. That owner-level evidence and
-the final cross-tool checks are not a claim that the entire package test suite
-was rerun. The strengthened verifier also passes its independent test set.
 
 ## Machine and versions
 
@@ -289,11 +278,6 @@ are intentionally excluded from Git; this download is **not yet a portable
 bundle for rerunning the computations**. A later reproduction release must
 include the inputs and pinned environments. No previous development times are
 pooled into this final study.
-
-This closes the fixed Ripser.py v1 comparison. It establishes the reported
-workload-specific performance and correctness evidence; it does not assert
-that every possible optimization is exhausted or rank TamerOp's broader
-finite-encoding functionality against a Rips persistence engine.
 
 The [benchmarking manual](../benchmarking.md) explains the shared protocol.
 Comparator references: [Ripser.py interface](https://ripser.scikit-tda.org/en/latest/reference/stubs/ripser.ripser.html),

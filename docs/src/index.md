@@ -32,8 +32,7 @@ lets us recover the original spaces and maps.
     <strong>Persistence modules <span aria-hidden="true">↗</span></strong>
     <span>Build the idea from spaces and the maps between them.</span>
   </a>
-  <p class="home-setup">Read the lessons and saved figures without Julia.
-    To run them, <a href="start/install.html">install and open a notebook</a>.</p>
+  <p class="home-setup">To run the lessons, <a href="start/install.html">install and open a notebook</a>.</p>
 </nav>
 </div>
 <p class="home-returning">If you already have an input in mind,

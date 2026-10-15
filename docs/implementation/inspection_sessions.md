@@ -210,8 +210,7 @@ keyboard entry, pointer events, message delivery and closing a browser involve
 additional behavior. The [support matrix](../visualization_support.md) records
 the supported display paths, and the
 [browser checking guide](https://github.com/erikmnovak/TamerOp.jl/blob/main/test/browser/README.md) describes how those
-interactions are exercised. A static notebook figure does not establish that
-an embedded live client works in the same notebook host.
+interactions are exercised.
 
 ## Move a control while a query is running
 
@@ -331,8 +330,7 @@ Hover reads the prepared labels and dimensions without requesting new work.
 A saved atlas selection retains its grid of pictures, selected matrix, source
 cell records and witness coefficients. It has no request for reconstructing
 the live atlas input. The offline viewer can select another saved answer, but
-a new parameter query requires the original computation. Declaring several
-states does not claim they exhaust all events in the filtration.
+a new parameter query requires the original computation.
 
 ## [Editing and checking a mathematical draft](@id keep-a-draft-distinct-from-a-mathematical-object)
 

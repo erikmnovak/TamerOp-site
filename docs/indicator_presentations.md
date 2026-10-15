@@ -16,7 +16,7 @@ You need the previous chapters' notions of a poset, a module, and compatible
 structure maps, together with matrix multiplication. We continue with
 $Q=\mathbb{R}^2$, coordinatewise order, and coefficient field
 $\mathbb{k}=\mathbb{Q}$. Parameters are real pairs; matrix entries are
-rational numbers. No Julia installation is needed to follow the chapter.
+rational numbers.
 
 ## Separate the square's lower and upper bounds
 

@@ -11,8 +11,7 @@ answers we can interpret.
 The [reading map](../reading_map.md) offers a starting example and a route
 through the definitions, with continuations for both. You can also open a
 lesson directly from this collection. [Install TamerOp](../start/install.md) when you want to
-run a lesson; the mathematical explanations and saved figures can be read
-without a Julia session.
+run a lesson.
 
 <!-- COLLECTION: mathematics -->
 

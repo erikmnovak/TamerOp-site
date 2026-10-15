@@ -213,8 +213,6 @@ OP.visualize(map_view)
 </figure>
 ```
 
-Select either figure in this guide to open it at full size.
-
 The window makes unbounded regions drawable. It does not restrict the module
 queried by this inspector. Solid poset arrows are cover relations; a selected
 comparable pair beyond a cover receives an additional dashed arrow. The

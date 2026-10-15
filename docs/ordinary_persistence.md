@@ -570,8 +570,7 @@ record array shape, periodicity and input convention. A generic ingestion build
 does not carry execution provenance, so its effective construction
 and any substitution are reported as `:not_recorded`, rather than inferred from
 the requested filtration name. A hand-built `PersistenceDiagram` likewise
-reports its computation history as `:not_recorded` unless metadata was supplied;
-constructing stored intervals does not claim that the reducer ran.
+reports its computation history as `:not_recorded` unless metadata was supplied.
 
 ## Computing a barcode without retaining chains
 

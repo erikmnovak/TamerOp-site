@@ -21,7 +21,7 @@ spaces, structure maps, and
 [recovery by pullback](finite_encodings.md#what-the-definition-requires).
 The preceding chapter supplies the full equivalence theorem; here, remember
 that “tame” means admitting a finite encoding with finite-dimensional spaces.
-No Julia session or prior category theory is required.
+No prior category theory is required.
 
 ## A finite filtration supplies its own encoding
 
@@ -214,10 +214,9 @@ The relevant starting point determines where the guarantee comes from.
 | A filtration by subcomplexes of one fixed finite complex | The subcomplex argument gives a finite encoding of its homology module. |
 | A module morphism or complex retained on a common finite base | Kernels, images, quotients, and homology pull back to the corresponding operations on the represented objects. |
 
-The package's [construction and geometry contracts](tameness.md#from-an-existence-theorem-to-an-implemented-construction)
-still determine which inputs it can process. Waas's general refinement
-theorem is not a claim that TamerOp accepts arbitrary symbolic regions or
-constructs a fully faithful common encoding for every such input.
+The [construction and geometry guide](tameness.md#from-an-existence-theorem-to-an-implemented-construction)
+explains which input regions TamerOp accepts and the hypotheses its encoders
+use.
 
 There is also a separate modeling question. A finite image, a truncated
 complex, or a chosen grid defines the module being computed. Its tameness

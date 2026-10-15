@@ -22,9 +22,20 @@ id = "using"
 title = "Using TamerOp"
 page = "collections/using.html"
 types = ["library_guide"]
-topic_pages = true
-related_topics = ["getting_started", "performance"]
-order = ["guide_inputs", "guide_spaces_maps", "ordinary_persistence", "visualization", "lazy_inspection"]
+# Within each topic, introduce the object before deeper queries or comparisons.
+# A topic title links to its authored overview; its arrow opens these articles.
+# Give each article one menu home. Cross-collection entrances require a specific
+# reader benefit, recorded beside their configuration; topical overlap is not enough.
+order = [
+    "ordinary_persistence", "guide_representatives",
+    "guide_inputs", "guide_presentations", "guide_spaces_maps", "lazy_inspection", "compare_encodings",
+    "guide_generated_submodules", "guide_decomposition", "guide_complexes", "guide_resolutions", "guide_derived",
+    "ingestion_options", "multicover", "exact_grades", "rhomboid_depth",
+    "guide_slices_diagrams", "exact_matching", "guide_generalized_rank",
+    "guide_features", "guide_uncertainty",
+    "visualization", "guide_live_inspection", "guide_comparisons", "guide_visualize_share",
+    "numerical_algebra",
+]
 
 [[collections]]
 id = "recipes"

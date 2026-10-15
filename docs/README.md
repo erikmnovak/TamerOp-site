@@ -170,8 +170,16 @@ package's individual source hashes; the commit alone does not identify it.
 
 The sidebar keeps Introduction, Installation, Learning map and Topic map above
 six collections: Mathematics, Using TamerOp, Task recipes, API reference,
-Implementation and Benchmarks. Only the current collection's branch starts expanded. Contributor
-guidance is available from the sidebar footer. A separate local outline follows each
+Implementation and Benchmarks. Large collections expose topic disclosures with
+article links inside, using at most two expandable levels. A topic title links
+to its explanatory overview when one exists; an adjacent arrow button toggles
+the article list. The overview has the topic's name as its page title and is
+not repeated in the list. There is no additional index that merely repeats those
+articles. Redundant collection topic indexes are not generated. An
+overview should be offered in the menu only when it explains relationships,
+starting points or choices between treatments. Small collections keep
+direct article lists. The current collection and topic start expanded, and the
+current title is highlighted. Contributor guidance is available from the sidebar footer. A separate local outline follows each
 article's H2/H3 headings; it must not inflate the collection hierarchy.
 
 Maintain one article record in [the inventory](article_inventory.md), with its
@@ -184,20 +192,59 @@ lists to `navigation.toml`, `make.jl` or hand-authored topic pages.
 
 Public listings contain authored, usable pages. Keep planned articles and
 migration notes in the inventory. An article appearing under several subjects
-still has one canonical source and destination. Use shallow topic groups and
-landing pages as a collection grows; do not solve growth by exposing every
-article and section at once. Relevant guides can also be linked thematically
+still has one canonical source and destination. Group articles by recognizable
+subjects as a collection grows, keeping their links inside the sidebar instead
+of replacing them with topic-index links. Review a crowded group editorially;
+do not add a third expandable level or split it just to meet a numerical quota.
+Relevant guides can also be linked thematically
 from the page that needs them.
 
-Sidebar grouping must not determine whether a published URL continues to exist.
-Set `topic_pages = true` on a collection with published subject landings to keep
-those pages when its article count falls below `sidebar_threshold`. The smaller
-collection keeps its direct article list and offers its subject indexes under
-a collapsed “Browse by subject” section. If a subject's articles move to another
-collection, `related_topics` can retain an index pointing to those treatments
-with their current editorial labels. Both options use inventory topics, never
-another list of article sources. Keep the pages useful and reachable, without
-duplicate articles or empty placeholders.
+A topic group comes from the articles' home-topic membership and does not need
+its own page. Give each article one collection-menu home under its primary
+topic. Avoid second entrances; topical overlap alone does not justify one.
+The optional `related_topics` setting can expose articles from another
+collection, but use it only for a specific reader need, with the reason stated
+beside the configuration. Explain why the canonical menu location or a link
+within an article would be insufficient. Keep the destination's article type
+and canonical home clear. Using TamerOp lists its own guides; reports stay in
+Benchmarks, and benchmark methodology stays under contributor guidance.
+The topic map still supports discovery across article families by subject.
+Installation has its permanent upper home because setup must be readily
+accessible from anywhere in the documentation; it is not repeated in the
+recipe menu.
+
+To write an explanatory overview, author
+`docs/src/collections/<collection>/topics/<topic>.md` and register it as an
+existing `resource` in the article inventory with the corresponding topic.
+Give it the same title as the topic. The catalog attaches this authored page
+to the group's title link. It preserves the prose instead of generating a
+second article list. Keep choices and relationships in this overview; article
+membership still comes from the catalog. The invariants overview is the first
+example of this approach.
+
+The collection's `order` in `navigation.toml` governs the relative order of
+articles within its topic groups, including related articles from other
+collections. Put introductory constructions and questions before the operations
+that build on them. Keep the overview's discussion and the displayed progression consistent, while preserving
+independent entry points and the separate learning-route manifest.
+
+Redundant pages can be removed entirely. Update their internal links and search
+entries in the same build; do not keep unused pages or redirects solely because
+their URLs previously existed during testing.
+
+Collections use native `details` and `summary`. Each topic has a heading with
+an overview link, or a plain label when no overview exists, beside its own
+expansion button. The button controls a native `details` article list; without
+JavaScript, its `summary` provides the expansion control. Never nest the link
+inside the button or make one click both expand and navigate. Keep the arrow's
+clickable area generous, its accessible name specific and its expanded state
+synchronized. Keep topics independent so readers can open several branches. The navigation
+script remembers expanded branches and both sidebar scroll areas in
+`sessionStorage`, scoped to the site's base path and the current browser tab.
+On each page, open the current article's ancestors even if a previous choice
+closed them. Restore scrolling, moving only as needed to reveal the destination
+title. Storage failure must leave the native controls usable. The generated
+HTML supplies the current path and article links without JavaScript.
 
 Learning routes remain independent. `reading_map.toml` owns their arrows and
 lesson footer continuations; collection order and topic membership cannot
@@ -224,9 +271,14 @@ Review these behaviors in the browser:
 
 1. Follow all four permanent entrances and the sidebar's contributor footer link from a
    lesson, a guide and a deeply nested page.
-2. Check the six collection labels and initial disclosure state. Open other
-   branches with the keyboard and verify visible focus and the current-page
-   indication.
+2. Check the six collection labels and initial disclosure state in a fresh tab.
+   The current collection and topic should be open, with the article highlighted
+   inside its topic. Open several branches with the keyboard and follow an
+   article. Check that topic titles link to their authored overviews without a
+   duplicate list entry, and that arrow clicks do not navigate. Follow a title
+   with its list closed and check that arrival opens the topic. Check focus, retained branches and
+   scroll position, then arrive directly at a different topic. Repeat with
+   JavaScript disabled and with storage unavailable.
 3. Follow a subject from the topic overview to treatments of different types.
    Confirm the question, type and canonical destination agree with the inventory;
    planned articles must not appear as empty destinations.

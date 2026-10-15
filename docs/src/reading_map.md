@@ -5,8 +5,6 @@ working through the definitions of a persistence module's spaces and maps.
 Both routes lead to finite encodings, which let us describe those spaces and
 maps using finite data.
 
-The saved figures let you follow the notebook without installing Julia.
-
 <!-- READING_MAP -->
 
 If you begin with the example, “Why two parameters?”

@@ -199,16 +199,62 @@ organize the usable articles by purpose:
 | Implementation | Accounts of how coherent computations work. |
 | Benchmarks | Completed comparisons and their evidence. |
 
-Only the current collection's branch starts open. Readers can open another
-branch deliberately; keep the hierarchy shallow and add a grouped landing
-page when a collection grows. Contributor guidance is reached through the
+Give each article one home in the collection menus, under its primary topic.
+Avoid second entrances unless they serve a specific reader need that the
+canonical location or a contextual link would serve poorly. Relevance to
+another subject is not sufficient justification. Record the reason for an
+exception alongside its navigation configuration and keep the article's
+canonical home clear. In particular, benchmark reports belong in Benchmarks;
+link a report from a usage guide when its measurements help explain a choice.
+Benchmark methodology and report-writing guidance belong under contributor
+guidance.
+
+Contextual links can connect an explanation to another article at the point
+where it becomes useful. The reading map and topic map also have distinct
+purposes: following a mathematical route and discovering treatments by subject.
+Those purposes do not justify copying their article groups into several
+collection menus.
+
+Use at most two expandable levels: collection, then topic, with ordinary
+article links inside. When a topic has an explanatory overview, its title links
+directly to that page; a separate arrow button expands or collapses its articles.
+Give the arrow a generous target and an accessible name, and make the title
+look like a link. Each control has one action and its own keyboard focus. The
+overview remains reachable when the list is closed, and arriving there opens
+the topic. Without JavaScript, retain the title link and a native disclosure
+for its articles. Topics without an overview keep a plain label and expansion
+control. An overview earns
+a place when it explains relationships, starting points or consequential choices
+between treatments. Redundant index pages may be removed altogether, with
+internal links updated; an old URL alone is not a reason to retain a page.
+Readers should be able to
+discover the articles without leaving the page they are reading. Small
+collections can list their articles directly.
+
+Give an overview the same page title as its topic, such as **Modules, maps and
+derived algebra**. Do not repeat it as an “Overview and choices” entry inside
+the article list. Order the articles by a useful teaching progression: introduce the
+object and its basic questions before the more involved constructions and
+comparisons. Match the overview's discussion to that order. This suggests a
+way through the material without making every earlier article a prerequisite.
+Review the order when adding an article rather than leaving it alphabetical.
+
+On a first visit, open the current article's collection and topic and highlight
+its title. Readers may open several branches at once. Remember their choices
+and sidebar scroll position as they move between pages in the same tab, while
+opening the destination's path and bringing its title into view when needed.
+Use click, tap and keyboard controls; essential browsing must also work without
+JavaScript. Review topic groups as they grow, using recognizable subjects
+rather than adding deeper menus or dividing them mechanically by article count.
+Contributor guidance is reached through the
 persistent sidebar footer link. Link a relevant testing or authoring guide within an
 article when the reader needs it, without making contributor procedures part
 of the main learning sequence.
 
-Installation stays permanently above the collections even though its editorial
-family is `recipe`. Its upper link and recipe listing resolve to the same
-canonical article. The six collections express purpose; their display order
+Installation has its permanent home above the collections because setup should
+remain immediately reachable from anywhere in the documentation. Its editorial
+family remains `recipe`, without repeating it in the recipe menu. The six
+collections express purpose; their display order
 does not impose a reading sequence.
 
 The local page outline contains that article's H2 and H3 headings. Keep it
@@ -225,11 +271,14 @@ source even when an article appears through several topic links. The
 [site maintenance guide](README.md#maintain-site-navigation) explains the build
 and review responsibilities.
 
-Simplifying a sidebar should not remove a published subject index. Keep useful
-subject landings reachable through the collection even when a shorter article
-list no longer needs grouped navigation. If their articles move to a different
-editorial family, make that distinction clear in the links. Each index continues
-to point to the canonical articles; there is no need to duplicate their content.
+Keep an overview when it helps readers choose a starting point or understand
+how treatments relate. A generated list does not need a separate page when
+menus and collection listings already expose its contents. Remove such redundant
+pages and their internal links rather than retaining empty destinations or
+redirects by default. The site is still being reviewed with test users; evaluate
+any future need for URL compatibility from actual readership and external use.
+The topic map remains a useful view across article families, independent of
+collection menus.
 
 ## Separate learning routes from topic exploration
 
@@ -373,11 +422,32 @@ hierarchy teaches those choices. Use the
 
 ## Keep lessons about the reader's task
 
-Describe the mathematics and the available workflow directly. Lessons do not
-need implementation status, release chronology, dated validation reports,
-assertion counts, or general feature roadmaps. Keep development plans in the
-backlog and verification evidence in contributor or testing material. This
-applies to current status claims as well as stale ones.
+Never mix developer concerns with reader concerns. A beginner learning the
+mathematics needs a clear explanation of the objects and reasoning. Build
+status, implementation progress, release chronology, validation reports,
+assertion counts and feature roadmaps belong in authoring, backlog or testing
+material.
+
+Write the intended finished explanation directly, including in local previews
+and drafts of future overviews. Affirm what the reasoning establishes. Leave
+unfinished parts unfinished; keep the remaining work in authoring records.
+Do not interrupt the explanation with planning banners, apologies for missing
+articles or disclaimers about what a draft does not certify. Every visible
+sentence should help the reader understand the subject or carry out the task.
+
+Omit routine notices that figures are saved, a page can be read without Julia,
+or an image can be opened at full size. Let ordinary links and controls work
+without a prose explanation. Describe an interaction when its mathematical
+meaning or an unfamiliar action needs explaining.
+
+Remove disclaimers unless they prevent a consequential misunderstanding or
+explain a requirement for the reader's task. State the example, hypotheses and
+measurement scope precisely; avoid generic reminders that examples are not
+universal guarantees or tests are not proofs. Keep conditions that affect the
+answer, such as boundary conventions, approximation errors and censored
+intervals, beside the result they qualify. Explain runtime requirements where
+someone runs or reopens a computation. Make these edits surgically, preserving
+the surrounding explanation and useful instructions.
 
 A brief **figure placeholder** is an exception while the intended visual is
 missing. Put it where the figure will support the argument, label it clearly,
@@ -386,11 +456,12 @@ Avoid implementation dates, progress reports, or claims that its interaction
 already works. Keep the surrounding explanation understandable without it;
 replace the placeholder with the figure and an interpretive caption when ready.
 
-Keep qualifications that affect interpretation or use: the supported inputs,
-mathematical assumptions, approximation or censoring, and requirements such as
-a live Julia session. Distinguish a mathematical schematic from a computed
-plot. Omitting development status must never imply that an unsupported operation
-exists or that an unproved claim holds.
+Explain conditions through their consequences: what inputs a computation
+accepts, where a hypothesis enters the reasoning, what an approximation retains,
+or why a particular interaction needs a live Julia session. Identify schematics
+and computed plots so the reader can interpret them. Check mathematical and
+software claims during authoring; present the resulting explanation without
+defensive commentary about that review.
 
 ## Explain implementation rather than its development history
 
@@ -550,7 +621,11 @@ out. Avoid using “obvious,” “trivial,” or “simply” in place of an ex
 Advanced mathematics deserves the same care as introductory material.
 
 Use accepted mathematical terminology, defining it where it first matters.
-Keep the chosen terms consistent. Explain unfamiliar software vocabulary
+Keep the chosen terms consistent, and repeat foundational names deliberately
+across prose, diagrams and captions. A reader following a finite encoding into
+several computations benefits from seeing “finite encoding” at each connection;
+varying the name for stylistic variety makes that connection harder to follow.
+Explain unfamiliar software vocabulary
 when it is necessary for a task; avoid borrowing specialist language to give
 an ordinary mathematical idea a new label. A coined term needs an exceptional
 explanatory benefit that established terms cannot supply.

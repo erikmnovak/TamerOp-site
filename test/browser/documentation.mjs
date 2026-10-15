@@ -52,7 +52,8 @@ try {
   const routes = ['index.html', 'reading_map.html', 'topic_map.html',
     'topics/encodings.html', 'collections/mathematics.html', 'collections/using.html',
     'collections/recipes.html', 'start/install.html', 'guides/optional_integrations.html',
-    'collections/api.html', 'guides/inputs_to_objects.html', 'guides/spaces_and_maps.html',
+    'collections/api.html', 'collections/using/topics/invariants.html',
+    'guides/inputs_to_objects.html', 'guides/spaces_and_maps.html',
     'implementation/qq_coordinates.html', 'benchmarks/phat.html',
     'contributing/index.html', 'tutorials/ring.html'];
   async function checkPageRendering(label) {
@@ -101,7 +102,7 @@ try {
 
   // Direct entry into an article retains collection context and separates its outline.
   await page.goto(base + 'guides/spaces_and_maps.html');
-  assert.equal(await page.locator('.site-collection[open]').count(), 1);
+  assert.notEqual(await page.locator('.site-collection[data-collection="using"]').getAttribute('open'), null);
   assert.equal(await page.locator('.site-collection a[aria-current="page"]').count(), 1);
   assert.ok(await page.locator('.site-outline a').count() > 3);
   assert.equal(await page.locator('.docs-footer-nextpage').count(), 0);
@@ -213,7 +214,7 @@ try {
       assert.equal(page.url(), base + 'guides/inputs_to_objects.html');
       await page.locator('.katex').first().waitFor();
       await checkPageRendering(`inputs guide ${themeName} ${width}`);
-      assert.equal(await page.locator('.site-collection[open]').getAttribute('data-collection'), 'using');
+      assert.notEqual(await page.locator('.site-collection[data-collection="using"]').getAttribute('open'), null);
       await page.screenshot({ path: path.join(output, `inputs-${themeName}-${width}.png`) });
       const figures = page.locator('article img');
       assert.ok(await figures.count() >= 2, 'Both input routes have a saved visual result');
@@ -254,6 +255,83 @@ try {
   assert.ok(await fallback.locator('article a[href*="finite_encodings.html"]').count());
   await fallback.screenshot({ path: path.join(output, 'no-javascript.png') });
   await plain.close();
+
+  // Article discovery, independent branches and retained scrolling across pages.
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 },
+                          { width: 320, height: 844 }, { width: 844, height: 390 }]) {
+    const navigation = await browser.newContext({ viewport });
+    const tab = await navigation.newPage();
+    await tab.goto(base + 'guides/exact_grades.html');
+    await tab.waitForFunction(() => document.body.classList.contains('site-js'));
+    assert.equal(await tab.locator('.site-collection[open]').count(), 1);
+    assert.equal(await tab.locator('.site-topic[open] a[aria-current="page"]').count(), 1);
+    const mobile = viewport.width < 1056;
+    if (mobile) await tab.locator('#documenter-sidebar-button').click();
+    const using = tab.locator('[data-collection="using"]');
+    const invariant = using.locator('.site-topic-entry:has(> [data-topic="invariants"])');
+    const algebra = using.locator('.site-topic-entry:has(> [data-topic="algebra"])');
+    const priorURL = tab.url();
+    await invariant.locator('button').focus(); await tab.keyboard.press('Enter');
+    await algebra.locator('button').focus(); await tab.keyboard.press('Space');
+    assert.equal(tab.url(), priorURL, 'Arrows expand without navigating');
+    assert.notEqual(await invariant.locator('details').getAttribute('open'), null);
+    assert.notEqual(await algebra.locator('details').getAttribute('open'), null);
+    const destination = invariant.locator('a[href*="exact_matching.html"]');
+    await destination.scrollIntoViewIfNeeded();
+    const menuScroll = await tab.locator('.site-collections').evaluate(el => el.scrollTop);
+    const outerScroll = await tab.locator('#site-navigation').evaluate(el => el.scrollTop);
+    await tab.screenshot({ path: path.join(output, `topics-${viewport.width}x${viewport.height}.png`) });
+    await destination.click();
+    await tab.waitForLoadState('load');
+    if (mobile) await tab.locator('#documenter-sidebar-button').click();
+    assert.notEqual(await algebra.locator('details').getAttribute('open'), null, 'Another topic stays open');
+    assert.equal(await invariant.locator('a[aria-current="page"]').count(), 1);
+    assert.ok(Math.abs(await tab.locator('.site-collections').evaluate(el => el.scrollTop) - menuScroll) < 3,
+      'Article navigation retains the inner scroll position');
+    assert.ok(Math.abs(await tab.locator('#site-navigation').evaluate(el => el.scrollTop) - outerScroll) < 3,
+      'Article navigation retains the short-screen sidebar scroll position');
+    await invariant.locator('button').click();
+    await tab.reload();
+    if (mobile) await tab.locator('#documenter-sidebar-button').click();
+    assert.notEqual(await invariant.locator('details').getAttribute('open'), null, 'The current path overrides a saved closed branch');
+    // The topic title remains reachable when its article list is collapsed.
+    await invariant.locator('button').click();
+    assert.equal(await invariant.locator('button').getAttribute('aria-expanded'), 'false');
+    await invariant.locator('button').focus(); await tab.keyboard.press('Tab');
+    assert.equal(await invariant.locator('.site-topic-link').evaluate(el => el === document.activeElement), true);
+    await tab.keyboard.press('Enter');
+    await tab.waitForURL('**/collections/using/topics/invariants.html');
+    await tab.waitForLoadState('load');
+    assert.equal(await tab.locator('article h1').innerText(), 'Invariants, slices and distances');
+    assert.equal(await tab.locator('.site-topic-link[aria-current="page"]').count(), 1);
+    assert.equal(await invariant.locator('button').getAttribute('aria-expanded'), 'true');
+    assert.equal(await invariant.locator('details a[href*="topics/invariants.html"]').count(), 0);
+    assert.equal(await tab.locator('.site-topic a').filter({ hasText: /^(Topic overview|Overview and choices)$/ }).count(), 0);
+    assert.equal(await tab.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
+    await navigation.close();
+  }
+  for (const javaScriptEnabled of [false, true]) {
+    const fallbackContext = await browser.newContext({ javaScriptEnabled, viewport: { width: 390, height: 844 } });
+    if (javaScriptEnabled) await fallbackContext.addInitScript(() => {
+      Object.defineProperty(window, 'sessionStorage', { get() { throw new Error('Storage unavailable'); } });
+    });
+    const tab = await fallbackContext.newPage();
+    await tab.goto(base + 'guides/exact_grades.html');
+    if (javaScriptEnabled) await tab.locator('#documenter-sidebar-button').click();
+    const topic = tab.locator('[data-collection="using"] .site-topic-entry:has(> [data-topic="invariants"])');
+    await topic.locator(javaScriptEnabled ? 'button' : 'summary').click();
+    await topic.locator('a[href*="exact_matching.html"]').click();
+    await tab.waitForLoadState('load');
+    assert.match(tab.url(), /guides\/exact_matching\.html$/);
+    assert.equal(await tab.locator('.site-topic[open] a[aria-current="page"]').count(), 1);
+    if (javaScriptEnabled) await tab.locator('#documenter-sidebar-button').click();
+    await topic.locator(javaScriptEnabled ? 'button' : 'summary').click();
+    await topic.locator('.site-topic-link').click();
+    await tab.waitForLoadState('load');
+    assert.match(tab.url(), /collections\/using\/topics\/invariants\.html$/);
+    assert.notEqual(await topic.locator('details').getAttribute('open'), null);
+    await fallbackContext.close();
+  }
   await browser.close(); browser = null;
 
   // Use Chrome's tab zoom API: reducing viewport width alone is not browser zoom.

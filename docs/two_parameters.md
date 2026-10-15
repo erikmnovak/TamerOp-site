@@ -11,7 +11,7 @@ The ring example, together with some familiarity with vectors and linear
 maps, gives us enough to work this out on paper. Along the way we will see
 why counting holes leaves part of the story unresolved, and how linear maps
 keep the information we need. The [chapter on persistence modules](persistence_modules.md)
-develops the definitions and arguments further; no Julia session is needed here.
+develops the definitions and arguments further.
 
 ## From one threshold to two
 
@@ -28,9 +28,7 @@ $$
 
 called **coordinatewise order**: we compare each threshold with its
 counterpart, requiring neither to decrease. It guarantees the inclusion
-$X_{(a,b)}\subseteq X_{(a',b')}$. We are imagining a second measurement here;
-the earlier ring computation supplied only one, so constructing this new
-family would require choosing that additional measurement.
+$X_{(a,b)}\subseteq X_{(a',b')}$.
 
 The direction of each comparison comes from the rule for including squares.
 If a measurement retains cells above a threshold, raising that threshold

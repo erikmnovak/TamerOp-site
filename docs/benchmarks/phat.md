@@ -106,16 +106,15 @@ The smallest takes about 0.049 ms in PHAT and 0.087 ms in TamerOp, with a paired
 ratio of 0.559. That absolute difference is small for one request but may matter
 across frequent batches.
 
-![Individual PHAT/TamerOp time ratios in gray and family aggregates as blue diamonds with 95% intervals. Ratios above one favor TamerOp; the algebraic aggregate is near parity.](phat_v2/presentation/family_ratios.svg)
+[![Individual PHAT/TamerOp time ratios in gray and family aggregates as blue diamonds with 95% intervals. Ratios above one favor TamerOp; the algebraic aggregate is near parity.](phat_v2/presentation/family_ratios.svg)](phat_v2/presentation/family_ratios.svg)
 
 The blue diamonds summarize ratios, not standalone TamerOp runtimes. Gray points
 retain all twelve cases per family. The vertical line marks equal time; the pale
 band spans the declared practical range from 1/1.10 to 1.10. It indicates similar
 point estimates, not statistical equivalence. The spread of algebraic cases
 explains why its aggregate alone is insufficient.
-[Open the full-size figure](phat_v2/presentation/family_ratios.svg).
 
-![Step performance profile for all 48 complete requests, with solid blue TamerOp and dashed orange PHAT curves. Both curves reach full coverage.](phat_v2/presentation/performance_profile.svg)
+[![Step performance profile for all 48 complete requests, with solid blue TamerOp and dashed orange PHAT curves. Both curves reach full coverage.](phat_v2/presentation/performance_profile.svg)](phat_v2/presentation/performance_profile.svg)
 
 The horizontal axis allows a larger factor of the fastest paired-case time;
 the vertical axis is the fraction of all 48 requests within that factor.
@@ -123,7 +122,6 @@ The profile uses the same paired geometric case ratios as the family comparison,
 with equal weight for each case. TamerOp reaches full coverage at a smaller
 factor, while both programs complete every request. This describes relative
 time and coverage; the tables below show the actual waiting times.
-[Open the full-size figure](phat_v2/presentation/performance_profile.svg).
 
 ## Actual runtimes and input sizes
 
@@ -191,43 +189,39 @@ barcode query. The [per-case data](phat_v2/timings.csv) provide the exact values
 
 ### Graphs
 
-![Four graph variants at three sizes. Solid blue circles show TamerOp and dashed orange squares show PHAT; all graph cases favor TamerOp, with the largest separation for graphs with extra edges.](phat_v2/presentation/graph_scaling.svg)
+[![Four graph variants at three sizes. Solid blue circles show TamerOp and dashed orange squares show PHAT; all graph cases favor TamerOp, with the largest separation for graphs with extra edges.](phat_v2/presentation/graph_scaling.svg)](phat_v2/presentation/graph_scaling.svg)
 
 Every graph case favors TamerOp beyond the practical band. The largest relative
 separation occurs for graphs with extra edges: at the largest size, the programs
 take about 26.87 ms and 246.67 ms, respectively. The simpler graph variants have
 smaller but consistent advantages.
-[Open the full-size figure](phat_v2/presentation/graph_scaling.svg).
 
 ### Simplicial inputs
 
-![Runtime curves for complete two-skeleta, triangulated disks, joined sphere boundaries and complete three-skeleta. The three-skeleton has the largest absolute time difference; the largest disk and joined-sphere cases are close.](phat_v2/presentation/simplicial_scaling.svg)
+[![Runtime curves for complete two-skeleta, triangulated disks, joined sphere boundaries and complete three-skeleta. The three-skeleton has the largest absolute time difference; the largest disk and joined-sphere cases are close.](phat_v2/presentation/simplicial_scaling.svg)](phat_v2/presentation/simplicial_scaling.svg)
 
 The complete 3-skeleton accounts for the largest absolute saving in the suite.
 The largest disk and joined-sphere inputs have similar runtimes instead, and
 the middle-sized joined-sphere input favors PHAT. These differences would be
 lost in a single curve joining all simplicial inputs.
-[Open the full-size figure](phat_v2/presentation/simplicial_scaling.svg).
 
 ### Cubical grids
 
-![Open and periodic grids in two and three dimensions. Blue TamerOp and orange PHAT curves separate more for the two-dimensional grids; the largest three-dimensional cases have similar times.](phat_v2/presentation/cubical_scaling.svg)
+[![Open and periodic grids in two and three dimensions. Blue TamerOp and orange PHAT curves separate more for the two-dimensional grids; the largest three-dimensional cases have similar times.](phat_v2/presentation/cubical_scaling.svg)](phat_v2/presentation/cubical_scaling.svg)
 
 The two-dimensional grids show a larger separation than the three-dimensional
 grids. At the largest sizes, TamerOp uses about 99–101 ms for the two-dimensional
 grids and PHAT about 145–154 ms. The largest three-dimensional cases fall
 within the practical band, with TamerOp's measured times slightly lower.
-[Open the full-size figure](phat_v2/presentation/cubical_scaling.svg).
 
 ### Algebraic controls
 
-![Four densities of filtered basis changes at three sizes each. PHAT is faster on the lowest-density controls, while TamerOp gains an advantage on the larger, denser cases.](phat_v2/presentation/algebraic_scaling.svg)
+[![Four densities of filtered basis changes at three sizes each. PHAT is faster on the lowest-density controls, while TamerOp gains an advantage on the larger, denser cases.](phat_v2/presentation/algebraic_scaling.svg)](phat_v2/presentation/algebraic_scaling.svg)
 
 These controls change the density of the boundary matrices while retaining a
 known barcode. PHAT is faster on all three lowest-density inputs. With eight
 or sixteen transvections per cell, the larger inputs favor TamerOp instead.
 Cell count alone does not explain the computational difficulty.
-[Open the full-size figure](phat_v2/presentation/algebraic_scaling.svg).
 
 ## How were answers and aggregates checked?
 

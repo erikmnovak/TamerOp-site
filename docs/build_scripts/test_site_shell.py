@@ -63,6 +63,7 @@ class ShellTests(unittest.TestCase):
         current = [n for n in structure.elements if n.attrs.get("aria-current") == "page"]
         self.assertEqual(len(current), 1)
         self.assertEqual(current[0].attrs["href"], "current.html")
+        self.assertNotIn("is-active", current[0].attrs.get("class", "").split())
         groups = [n for n in structure.elements if n.tag == "details" and "data-collection" in n.attrs]
         self.assertEqual([n.attrs["data-collection"] for n in groups], ["using", "implementation"])
         self.assertIn("open", groups[0].attrs)
@@ -86,27 +87,76 @@ class ShellTests(unittest.TestCase):
         no_headings = HTML.replace(ARTICLE, '<article class="content" id="documenter-page"><h1>Only a title</h1></article>')
         self.assertNotIn('class="site-outline"', transform(no_headings, "guides/current.html", catalog()))
 
-    def test_large_catalog_uses_scoped_topics_not_an_unbounded_sidebar(self):
+    def test_grouped_catalog_exposes_articles_and_opens_only_the_current_topic(self):
         config = catalog()
         group = config["collections"][0]
         group["grouped_sidebar"] = True
         group["items"].extend(dict(page=f"guides/extra{i}.html", title=f"Other article {i}", topics=["encodings"])
                               for i in range(70))
         group["topic_groups"] = [dict(id="encodings", title="Finite encodings",
-                                      page="collections/using/topics/encodings.html", items=group["items"])]
+                                      page="collections/using/topics/encodings.html", overview_title="Choosing a guide", items=group["items"]),
+                                 dict(id="algebra", title="Modules & maps",
+                                      page=None,
+                                      items=[dict(page="guides/maps.html", title="Inspecting maps")])]
         output = transform(HTML, "guides/current.html", config)
         parsed = Structure(output)
         menu = parsed.one(class_name="site-collections")
         contents = output[menu.start:menu.end]
         self.assertIn('href="../collections/using/topics/encodings.html"', contents)
         self.assertIn('aria-current="page"', contents)
-        self.assertIn("Current page", contents)
-        self.assertNotIn("Other article", contents)
+        self.assertNotIn("Current page", contents)
+        self.assertIn("Other article 69", contents)
+        topics = [n for n in parsed.elements if "data-topic" in n.attrs]
+        self.assertEqual(len(topics), 2)
+        self.assertIn("open", topics[0].attrs)
+        self.assertNotIn("open", topics[1].attrs)
+        for topic in topics:
+            summary = next(n for n in parsed.elements if n.parent is topic and n.tag == "summary")
+            self.assertNotIn("<a", output[summary.inner:summary.stop])
+            self.assertNotIn("Topic overview", output[topic.inner:topic.stop])
+            entry = topic.parent
+            heading = next(n for n in parsed.elements if n.parent is entry
+                           and 'site-topic-heading' in n.attrs.get('class', '').split())
+            button = next(n for n in parsed.elements if n.parent is heading and n.tag == 'button')
+            self.assertIn('hidden', button.attrs, 'Native disclosure is the no-JS fallback')
+            self.assertEqual(button.attrs['aria-expanded'], str('open' in topic.attrs).lower())
+            self.assertIs(parsed.one(id=button.attrs['aria-controls']).parent, topic)
+        title_link = next(n for n in parsed.elements if 'site-topic-link' in n.attrs.get('class', '').split())
+        self.assertEqual(output[title_link.inner:title_link.stop], 'Finite encodings')
+        self.assertFalse(topics[0].start < title_link.start < topics[0].end,
+                         'The overview link stays outside the collapsible content')
+        self.assertNotIn('Choosing a guide', contents)
+        self.assertEqual(contents.count('href="../collections/using/topics/encodings.html"'), 1)
+        current = [n for n in parsed.elements if n.attrs.get("aria-current") == "page"]
+        self.assertEqual(len(current), 1)
+        self.assertTrue(topics[0].start < current[0].start < topics[0].end)
         group_page = group["topic_groups"][0]["page"]
         config["pages"][group_page] = dict(title="Finite encodings", collection="using", type="resource")
         topic_output = transform(HTML, group_page, config)
         topic_structure = Structure(topic_output)
         self.assertEqual(len([n for n in topic_structure.elements if n.attrs.get("aria-current") == "page"]), 1)
+        self.assertEqual(next(n for n in topic_structure.elements if n.attrs.get("aria-current") == "page").tag, "a")
+        self.assertIn("open", next(n for n in topic_structure.elements if n.attrs.get("data-topic") == "encodings").attrs)
+        active_title = next(n for n in topic_structure.elements if n.attrs.get('aria-current') == 'page')
+        self.assertIn('site-topic-link', active_title.attrs.get('class', '').split())
+
+    def test_grouped_catalog_keeps_articles_without_a_topic_and_related_links(self):
+        config = catalog()
+        group = config["collections"][0]
+        group["grouped_sidebar"] = True
+        external = dict(page="implementation/method.html", title="How it works", type_label="Implementation account")
+        group["topic_groups"] = [dict(id="related", title="Related methods",
+                                      page=None, items=[external])]
+        config["collections"][1]["items"] = [external]
+        config["pages"][external["page"]] = dict(title=external["title"], collection="implementation")
+        output = transform(HTML, "guides/current.html", config)
+        self.assertIn('href="current.html"', output)
+        external_output = transform(HTML, external["page"], config)
+        parsed = Structure(external_output)
+        active = [n for n in parsed.elements if n.attrs.get("aria-current") == "page"]
+        self.assertEqual(len(active), 1)
+        self.assertIn("Implementation account", external_output)
+        self.assertNotIn("open", next(n for n in parsed.elements if n.attrs.get("data-topic") == "related").attrs)
 
     def test_retained_subject_pages_do_not_force_a_small_collection_into_groups(self):
         config = catalog()

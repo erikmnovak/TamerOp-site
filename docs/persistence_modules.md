@@ -16,7 +16,7 @@ description.
 
 Some familiarity with vectors, linear maps and matrix multiplication is enough
 to follow the examples; we will introduce the homology needed for the ring
-as we go. The argument can be read without a Julia installation.
+as we go.
 
 If you have just finished the [ring notebook](tutorials/ring.ipynb),
 [why two parameters change the problem](two_parameters.md) offers a shorter

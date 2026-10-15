@@ -35,8 +35,6 @@ maps, this separation is compatible across the whole diagram.
 </div>
 ```
 
-[Open the diagram at full size.](assets/decomposition/splitting.svg)
-
 *The two pieces are modules, not just separate subspaces at each vertex.
 Every displayed map must commute with the structure maps of the finite poset.*
 
