@@ -77,6 +77,33 @@ image coordinate is $2$, not $3$: the new vector is outside the subspace. A
 cached inverse without the membership check would silently return coordinates
 for the wrong vector.
 
+Change the second coordinate below while keeping the selected rows fixed.
+The candidate does not move, but the complete equation can cease to hold.
+This illustration follows the same rational calculation as the code that
+follows.
+
+```@raw html
+<link rel="stylesheet" href="../assets/arithmetic/choices.css">
+<figure class="arithmetic-example" id="certificate-explorer" data-arithmetic-example="certificate">
+<div class="choice-control"><label for="certificate-choice">Second coordinate of y</label>
+<select id="certificate-choice" aria-describedby="certificate-explanation" disabled>
+<option value="lower">y₂ = 1</option>
+<option value="member" selected>y₂ = 2</option>
+<option value="upper">y₂ = 3</option>
+</select></div>
+<div class="choice-drawing"><svg viewBox="0 0 250 230" role="img" aria-label="y₂ = 2. The selected rows give x = (3, −1), and the second row agrees too. All three coordinates of Bx equal those of y, so these are the exact coordinates of y in the image of B."><text x="4" y="25" text-anchor="start" class="">Row</text><text x="115" y="25" text-anchor="middle" class="">Supplied y</text><text x="200" y="25" text-anchor="middle" class="">Bx</text><text x="8" y="68" text-anchor="start" class="">1</text><text x="115" y="68" text-anchor="middle" class="">1</text><text x="200" y="68" text-anchor="middle" class="">1</text><text x="157.5" y="68" text-anchor="middle" class="">=</text><line x1="3" y1="78" x2="247" y2="78" class="axis"></line><text x="8" y="122" text-anchor="start" class="">2</text><text x="115" y="122" text-anchor="middle" class="">2</text><text x="200" y="122" text-anchor="middle" class="">2</text><text x="157.5" y="122" text-anchor="middle" class="">=</text><line x1="3" y1="132" x2="247" y2="132" class="axis"></line><text x="8" y="176" text-anchor="start" class="">3</text><text x="115" y="176" text-anchor="middle" class="">-1</text><text x="200" y="176" text-anchor="middle" class="">-1</text><text x="157.5" y="176" text-anchor="middle" class="">=</text><line x1="3" y1="186" x2="247" y2="186" class="axis"></line><text x="125" y="218" text-anchor="middle" class="small">Rows 1 and 3 determine the candidate.</text></svg></div>
+<dl class="choice-values">
+<dt>Candidate x</dt><dd>(3, −1)</dd>
+<dt>Residual Bx − y</dt><dd data-value="residual">(0, 0, 0)</dd>
+<dt>Does y belong to the image?</dt><dd data-value="accepted">Yes, Bx = y</dd>
+</dl>
+<p class="choice-convention">The first and third coordinates stay fixed at 1 and −1. All arithmetic is rational.</p>
+<figcaption id="certificate-explanation" data-choice-explanation aria-live="polite">The selected rows give x = (3, −1), and the second row agrees too. All three coordinates of Bx equal those of y, so these are the exact coordinates of y in the image of B.</figcaption>
+<noscript><p>The displayed case remains available; enable JavaScript to change the selection.</p></noscript>
+</figure>
+<script src="../assets/arithmetic/choices.js"></script>
+```
+
 The linear algebra owner, `TamerOp.FieldLinAlg`, exposes the operation
 directly:
 

@@ -9,6 +9,8 @@ identification with an ambient derived functor. The
 [category discussion](../../math_categories.md) explains the comparison, and
 the [worked guide](../../tutorials/derived.ipynb) follows the classes and
 products on a diamond.
+Its [prepared product comparison](../../tutorials/derived.ipynb#compare-the-products-in-one-target-basis)
+keeps one target basis while changing the route or setting one factor to zero.
 
 ## Compute and inspect a graded space
 

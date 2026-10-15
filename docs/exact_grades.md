@@ -33,6 +33,37 @@ it before construction begins. Exactness always refers to the coordinates
 supplied: if a coordinate arrives as a floating number, its represented binary
 value is the input, even if a different decimal value was intended.
 
+At depth one, the two gaps close at radii $\rho_1=1$ and
+$\rho_2=1+2^{-71}$. Degree zero homology counts connected components, so a
+radius between these events gives two components. Explore the exact queries
+below. At and between the two events, a floating display of 1 conceals
+different answers. The
+spacing in the illustration is enlarged so that the two events can be seen.
+
+```@raw html
+<link rel="stylesheet" href="../assets/arithmetic/choices.css">
+<figure class="arithmetic-example" id="grades-explorer" data-arithmetic-example="grades">
+<div class="choice-control"><label for="grades-choice">Exact radius r</label>
+<select id="grades-choice" aria-describedby="grades-explanation" disabled>
+<option value="before">r = 1/2</option>
+<option value="first">r = 1</option>
+<option value="between" selected>r = 1 + 2⁻⁷²</option>
+<option value="second">r = 1 + 2⁻⁷¹</option>
+</select></div>
+<div class="choice-drawing"><svg viewBox="0 0 250 230" role="img" aria-label="r = 1 + 2⁻⁷²: between the mergers. The first two points remain in one component, and the third has not joined them. This exact radius lies strictly between the two events, although all three radii have Float64 display 1."><line x1="36" y1="63" x2="119" y2="63" class="retained"></line><line x1="131" y1="63" x2="214" y2="63" class="omitted"></line><circle cx="30" cy="63" r="5" class="retained"></circle><text x="30" y="45" text-anchor="start" class="">0</text><circle cx="125" cy="63" r="5" class="retained"></circle><text x="125" y="45" text-anchor="middle" class="">2</text><circle cx="220" cy="63" r="5" class="retained"></circle><text x="220" y="45" text-anchor="end" class="">4 + δ</text><text x="125" y="96" text-anchor="middle" class="small">Joined points lie in one component.</text><line x1="25" y1="160" x2="225" y2="160" class="axis"></line><line x1="85" y1="150" x2="85" y2="167" class="axis"></line><text x="85" y="189" text-anchor="middle" class="">ρ₁</text><line x1="165" y1="150" x2="165" y2="167" class="axis"></line><text x="165" y="189" text-anchor="middle" class="">ρ₂</text><circle cx="125" cy="142" r="6" class="query"></circle><line x1="125" y1="149" x2="125" y2="160" class="cutoff"></line><text x="135" y="139" text-anchor="start" class="">r</text><text x="125" y="219" text-anchor="middle" class="small">The gap between the radii is enlarged.</text></svg></div>
+<dl class="choice-values">
+<dt>First critical radius ρ₁</dt><dd>1</dd>
+<dt>Second critical radius ρ₂</dt><dd>1 + 2⁻⁷¹</dd>
+<dt>Float64 display of the selected radius</dt><dd data-value="floating">1</dd>
+<dt>Connected components</dt><dd data-value="components">2</dd>
+</dl>
+<p class="choice-convention">This is a schematic of connectivity at depth 1, with δ = 2⁻⁷⁰. Solid edges join points in one component; dashed gaps separate components. The exact query coordinates are not replaced by their floating displays.</p>
+<figcaption id="grades-explanation" data-choice-explanation aria-live="polite">The first two points remain in one component, and the third has not joined them. This exact radius lies strictly between the two events, although all three radii have Float64 display 1.</figcaption>
+<noscript><p>The displayed case remains available; enable JavaScript to change the selection.</p></noscript>
+</figure>
+<script src="../assets/arithmetic/choices.js"></script>
+```
+
 An exact cutoff such as
 `OP.RhomboidFiltration(radius=sqrt(OP.AlgebraicReal(2)))` includes cells born
 at that radius. Finite grades smaller or larger than the `Float64` range remain

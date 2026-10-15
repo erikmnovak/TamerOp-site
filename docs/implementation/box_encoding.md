@@ -58,6 +58,35 @@ singleton cell; the lower one needs that cell along one axis and an interval
 along the other. Zero length or area in the ambient space does not imply a zero
 vector space.*
 
+Compare points on the segment with its neighboring open regions. The
+classifier has to distinguish them even though a drawing gives the segment
+no area. The choices below also include both closed endpoints.
+
+```@raw html
+<link rel="stylesheet" href="../assets/arithmetic/choices.css">
+<figure class="arithmetic-example" id="boundary-explorer" data-arithmetic-example="boundary">
+<div class="choice-control"><label for="boundary-choice">Query point q</label>
+<select id="boundary-choice" aria-describedby="boundary-explanation" disabled>
+<option value="below">(0, −1)</option>
+<option value="lower">(0, 0)</option>
+<option value="middle" selected>(0, 1)</option>
+<option value="upper">(0, 2)</option>
+<option value="above">(0, 3)</option>
+<option value="left">(−1, 1)</option>
+<option value="right">(1, 1)</option>
+</select></div>
+<div class="choice-drawing"><svg viewBox="0 0 250 230" role="img" aria-label="(0, 1): inside the segment. The point belongs to both indicators, so the active block is [1] and its image is Q. Along this segment the nonzero structure maps are identities."><line x1="35" y1="155.5" x2="220" y2="155.5" class="axis"></line><line x1="127.5" y1="211" x2="127.5" y2="19" class="axis"></line><text x="238" y="147.5" text-anchor="end" class="">x₁</text><text x="137.5" y="22" text-anchor="start" class="">x₂</text><line x1="123.5" y1="194" x2="131.5" y2="194" class="axis"></line><text x="116.5" y="199" text-anchor="end" class="small">-1</text><line x1="123.5" y1="155.5" x2="131.5" y2="155.5" class="axis"></line><text x="116.5" y="160.5" text-anchor="end" class="small">0</text><line x1="123.5" y1="117" x2="131.5" y2="117" class="axis"></line><text x="116.5" y="122" text-anchor="end" class="small">1</text><line x1="123.5" y1="78.5" x2="131.5" y2="78.5" class="axis"></line><text x="116.5" y="83.5" text-anchor="end" class="small">2</text><line x1="123.5" y1="40" x2="131.5" y2="40" class="axis"></line><text x="116.5" y="45" text-anchor="end" class="small">3</text><line x1="127.5" y1="155.5" x2="127.5" y2="78.5" class="retained"></line><circle cx="127.5" cy="155.5" r="5" class="retained"></circle><circle cx="127.5" cy="78.5" r="5" class="retained"></circle><text x="65.83333333333333" y="174.5" text-anchor="middle" class="small">-1</text><text x="189.16666666666666" y="174.5" text-anchor="middle" class="small">1</text><circle cx="127.5" cy="117" r="9" class="query"></circle><text x="141.5" y="108" text-anchor="start" class="">q</text><text x="125" y="225" text-anchor="middle" class="small">Filled endpoints belong to the segment.</text></svg></div>
+<dl class="choice-values">
+<dt>Signature (y, z)</dt><dd data-value="signature">(1, 0)</dd>
+<dt>Represented vector space</dt><dd data-value="space">Q (dimension 1)</dd>
+</dl>
+<p class="choice-convention">The solid blue segment is the support. The outlined orange circle marks the query. Here y records membership in the upset and z records being outside the downset, as above.</p>
+<figcaption id="boundary-explanation" data-choice-explanation aria-live="polite">The point belongs to both indicators, so the active block is [1] and its image is Q. Along this segment the nonzero structure maps are identities.</figcaption>
+<noscript><p>The displayed case remains available; enable JavaScript to change the selection.</p></noscript>
+</figure>
+<script src="../assets/arithmetic/choices.js"></script>
+```
+
 ## Traverse events, then identify equal signatures
 
 The encoder visits the cell product with its first axis varying fastest. For

@@ -788,3 +788,13 @@ and information than a teaching page needs; review its website presentation
 before publishing it. Exercise every retained control and check the result at
 ordinary and narrow widths, asking what each visible element helps the reader
 understand or do.
+
+When comparing prepared choices, keep axes, scales and bases fixed where that
+lets the reader follow the change. Explain any change of coordinates. A small
+readout can connect a drawing to an exact value or equation; use it for that
+purpose rather than reproducing the inspector's entire record. Label authored
+schematics as such and check their answers against the computation they explain.
+Distinguish a selected observation from a mean or other computed summary when
+they share a drawing. Let embedded views grow with their captions and controls
+at narrow widths. Keep an understandable initial figure available when scripts
+cannot run.

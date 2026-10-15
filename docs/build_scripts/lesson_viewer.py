@@ -40,6 +40,42 @@ _SCRIPT = """
   const status = document.getElementById('view-status');
   const previous = document.getElementById('previous-state');
   const next = document.getElementById('next-state');
+  let scheduleHeight = () => {};
+  if (window.parent !== window) {
+    const parentOrigin = new URL(document.referrer || location.href).origin;
+    // Local file previews have an opaque origin, which cannot be a targetOrigin.
+    const parentTarget = parentOrigin === 'null' ? '*' : parentOrigin;
+    let pending = false;
+    let forceReport = false;
+    let previousHeight = 0;
+    scheduleHeight = (force = false) => {
+      forceReport = forceReport || force;
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(() => {
+        pending = false;
+        const body = document.body;
+        const style = getComputedStyle(body);
+        // Document scrollHeight includes the iframe viewport and cannot shrink.
+        const height = Math.ceil(body.getBoundingClientRect().height +
+          parseFloat(style.marginTop) + parseFloat(style.marginBottom));
+        if (Number.isFinite(height) && height >= 100 && height <= 20000 &&
+            (forceReport || height !== previousHeight)) {
+          window.parent.postMessage({type: 'tamerop:prepared-viewer-height', height}, parentTarget);
+          previousHeight = height;
+        }
+        forceReport = false;
+      });
+    };
+    window.addEventListener('message', event => {
+      if (event.source === window.parent && event.origin === parentOrigin &&
+          event.data && event.data.type === 'tamerop:prepared-viewer-measure') scheduleHeight(true);
+    });
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => scheduleHeight()).observe(document.body);
+    image.addEventListener('load', () => scheduleHeight());
+    window.addEventListener('resize', () => scheduleHeight());
+    window.addEventListener('load', () => scheduleHeight(true));
+  }
   let current = byId.get(bundle.initial);
   function requestedState() {
     return location.hash ? new URLSearchParams(location.hash.slice(1)).get('state') : bundle.initial;
@@ -60,6 +96,7 @@ _SCRIPT = """
     const hash = '#state=' + encodeURIComponent(state.id);
     if (updateHash && location.hash !== hash) location.hash = hash;
     document.documentElement.dataset.selectedState = state.id;
+    scheduleHeight();
   }
   chooser.addEventListener('change', () => display(chooser.value, true));
   previous.addEventListener('click', () => {

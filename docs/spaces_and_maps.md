@@ -423,5 +423,8 @@ follow the [saved inspection recipe](tutorials/live_inspection.ipynb).
 
 A selected vector gives another way to explore these maps: the
 [generated submodule guide](tutorials/generated_submodules.ipynb) follows its
-images and constructs the submodule they span. To compare descriptions with
+images and constructs the submodule they span. Its
+[prepared comparison](tutorials/generated_submodules.ipynb#compare-the-vectors-at-one-target)
+lets us change the chosen columns while keeping the target map fixed.
+To compare descriptions with
 different finite labels, use [refinement and transport](tutorials/compare_encodings.ipynb).

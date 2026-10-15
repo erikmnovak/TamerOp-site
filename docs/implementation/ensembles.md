@@ -174,6 +174,13 @@ axes, the picture preserves nonuniform physical coordinates and masks missing
 values. Mean and replicate values share a scale in the same units; frequency
 has a separate scale from zero to one.
 
+The [guide's prepared views](../tutorials/uncertainty.ipynb) follow individual
+rows through one descriptive summary and compare two thresholds on the same
+frequency scale. Their hand chosen intervals make the selected values
+checkable without introducing a sampling claim. Changing a browser choice
+selects one of those prepared figures; it does not rerun a summary or draw a
+new sample.
+
 A selected observation retains its original coordinates and value beside the
 numerical summary. Optional source figures follow the supplied replicate IDs.
 The caller establishes those associations; the display does not prove a new

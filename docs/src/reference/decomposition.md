@@ -150,7 +150,8 @@ Retained modules and maps are references and must remain read-only during use.
 `visualize(c)` and `visualize(r)` draw the static `:summand_gallery` recipe.
 `summand_session(c; kwargs...)` prepares an `Advanced.SummandInspectionSession`
 with the same options. The [worked guide](../../tutorials/decomposition.ipynb)
-explains the panels; shared lifecycle and saved-state operations are described
+explains the panels and offers prepared block selections for comparison;
+shared lifecycle and saved-state operations are described
 in [visual sessions](visual_sessions.md).
 
 | Option | Meaning |

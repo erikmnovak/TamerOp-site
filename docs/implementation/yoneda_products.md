@@ -106,6 +106,8 @@ opposite coefficients of the final differential in the bottom simple's
 projective resolution. Over characteristic 2 those opposite coefficients
 are equal. This provides a small calculation in which keeping the maps and
 signs reveals something that the dimensions alone leave undetermined.
+The [prepared product comparison](../tutorials/derived.ipynb#compare-the-products-in-one-target-basis)
+keeps this common target basis while selecting either route or a zero factor.
 
 The representative view retains a further check. For the composite cocycle
 $z$ and its quotient coordinates $c$, write $h(c)$ for the representative

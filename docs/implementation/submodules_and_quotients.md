@@ -47,6 +47,9 @@ For example, take $M(u)=\mathbb Q^2$, $M(v)=\mathbb Q$, and cover matrix
 $M_{uv}=[0\;1]$. Selecting $e_1$ gives zero at $v$; selecting $e_2$ or
 $e_1+e_2$ gives the scalar 1. All three selections see the same rank-one
 ambient map, yet they answer different questions about individual vectors.
+The [prepared vector comparison](../tutorials/generated_submodules.ipynb#compare-the-vectors-at-one-target)
+lets us follow these choices through the two square supports and compare their
+generated spaces away from the selected target too.
 
 The generated spaces are
 

@@ -62,8 +62,10 @@ only in zero, so the rank on the whole region becomes zero.
 *The upper plane is the supplied example. Replacing the second column by
 `QQ[0,1]` produces the lower plane and changes the common rank to zero.*
 
-The [usage guide](../tutorials/generalized_rank_queries.ipynb) adds signed
-reconstruction, grid boundary barcodes and continuous worms. The
+The [usage guide](../tutorials/generalized_rank_queries.ipynb#follow-both-branches-into-the-same-plane)
+lets you compare these two forks and select one branch, keeping the matrices
+beside the chosen region. It then develops signed reconstruction, grid boundary
+barcodes and continuous worms. The
 [implementation account](../implementation/generalized_rank.md) explains the
 exact comparison; the [region-view
 reference](../src/reference/visual_sessions.md#query-generalized-rank-regions)

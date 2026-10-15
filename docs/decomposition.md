@@ -101,6 +101,12 @@ selection a submodule with a complement.
 *The dimension equality holds at every vertex. The inclusion and projection
 supply the compatible maps needed to turn these equalities into a splitting.*
 
+The [prepared comparison in the guide](tutorials/decomposition.ipynb#put-the-pieces-beside-the-whole-module)
+lets you change the selected blocks while keeping the full module fixed.
+Follow the top vertex as the selection changes: the edge contributes one
+coordinate, the two copies at the top contribute two, and their complement
+accounts for the remaining coordinates.
+
 If the module has an encoding map, assigning each original parameter its
 finite label, the preimage of a selected support gives the region where the
 piece is present. We can draw that region directly from the encoding. A support

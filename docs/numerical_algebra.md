@@ -63,6 +63,34 @@ matrix itself is small. Entries and tolerances must be finite, and both
 tolerances must be nonnegative; rescale the data if forming the cutoff or
 factorizing the matrix would overflow.
 
+For the diagonal matrix $A=\operatorname{diag}(1,10^{-14})$, the singular
+values measure how much its two coordinate directions are stretched: they are
+$1$ and $10^{-14}$. Compare three cutoffs while keeping the matrix fixed. This
+example uses the singular value decomposition (SVD) rule, which retains singular values strictly greater than
+$\tau$; the exact matrix remains invertible throughout.
+
+```@raw html
+<link rel="stylesheet" href="../assets/arithmetic/choices.css">
+<figure class="arithmetic-example" id="cutoff-explorer" data-arithmetic-example="cutoff">
+<div class="choice-control"><label for="cutoff-choice">Absolute cutoff τ</label>
+<select id="cutoff-choice" aria-describedby="cutoff-explanation" disabled>
+<option value="fine">τ = 10⁻¹⁶</option>
+<option value="equal">τ = 10⁻¹⁴</option>
+<option value="coarse" selected>τ = 10⁻¹²</option>
+</select></div>
+<div class="choice-drawing"><svg viewBox="0 0 250 230" role="img" aria-label="τ = 10⁻¹². The second direction lies below the cutoff. The numerical image keeps the first coordinate, while the second coordinate enters the numerical kernel. The underlying matrix is still invertible."><line x1="22" y1="167" x2="228" y2="167" class="axis"></line><line x1="22" y1="164" x2="22" y2="171" class="axis"></line><text x="22" y="191" text-anchor="middle" class="small">10⁻¹⁶</text><line x1="73.5" y1="164" x2="73.5" y2="171" class="axis"></line><text x="73.5" y="191" text-anchor="middle" class="small">10⁻¹²</text><line x1="125" y1="164" x2="125" y2="171" class="axis"></line><text x="125" y="191" text-anchor="middle" class="small">10⁻⁸</text><line x1="176.5" y1="164" x2="176.5" y2="171" class="axis"></line><text x="176.5" y="191" text-anchor="middle" class="small">10⁻⁴</text><line x1="228" y1="164" x2="228" y2="171" class="axis"></line><text x="228" y="191" text-anchor="middle" class="small">1</text><text x="125" y="218" text-anchor="middle" class="small">Singular value (logarithmic scale)</text><line x1="73.5" y1="40" x2="73.5" y2="163" class="cutoff"></line><text x="73.5" y="25" text-anchor="middle" class="">τ</text><circle cx="228" cy="65" r="5" class="retained"></circle><text x="216" y="70" text-anchor="end" class="">σ₁ = 1</text><circle cx="47.75" cy="118" r="5" class="omitted"></circle><text x="137.5" y="123" text-anchor="start" class="">σ₂ = 10⁻¹⁴</text></svg></div>
+<dl class="choice-values">
+<dt>Exact rank</dt><dd>2</dd>
+<dt>Numerical image dimension</dt><dd data-value="rank">1</dd>
+<dt>Numerical kernel dimension</dt><dd data-value="nullity">1</dd>
+</dl>
+<p class="choice-convention">Filled dots are retained; hollow dots are discarded. The dashed line marks τ. Here rtol = 0, so τ = atol.</p>
+<figcaption id="cutoff-explanation" data-choice-explanation aria-live="polite">The second direction lies below the cutoff. The numerical image keeps the first coordinate, while the second coordinate enters the numerical kernel. The underlying matrix is still invertible.</figcaption>
+<noscript><p>The displayed case remains available; enable JavaScript to change the selection.</p></noscript>
+</figure>
+<script src="../assets/arithmetic/choices.js"></script>
+```
+
 The linear algebra owner, `OP.FieldLinAlg`, offers several implementations
 through the `backend` keyword:
 

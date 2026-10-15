@@ -179,6 +179,11 @@ when every component is invertible, so the additional component ranks determine
 the finite natural isomorphism result. A comparison in the opposite direction
 exchanges $L$ and $R$.
 
+The [prepared square comparison](../tutorials/compare_encodings.ipynb#compare-the-three-pairs)
+changes the selected pair while retaining the identity comparison between two
+descriptions of a square. It displays both products for comparable pairs and
+the order obstruction when there is no forward square.
+
 Matrices of the wrong shape or belonging to incompatible endpoints are
 rejected. A comparison with suitable shapes but failed naturality equations
 can be drawn with those failures visible. Reversed or incomparable pairs

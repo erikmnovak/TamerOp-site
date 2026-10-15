@@ -67,8 +67,9 @@ diagonal at half its finite interval length. The figure retains separate member
 IDs for repeated intervals. Equal members and tied costs can leave more than
 one optimal assignment; the returned deterministic choice does not establish
 uniqueness or identify source cycles. For a small calculation with a predicted
-answer, use [Explain a distance through its
-matching](tutorials/distance_witness.ipynb).
+answer, [follow the individual interval assignments](tutorials/distance_witness.ipynb#follow-each-member-of-the-assignment)
+in the matching recipe. Its prepared comparison distinguishes repeated copies,
+a deletion to the diagonal and an essential pair.
 
 ```@raw html
 <div class="notebook-figure-scroll" style="--notebook-figure-min-width: 1100px" tabindex="0" role="region" aria-label="Scrollable figure: optimizing slice and interval assignment">

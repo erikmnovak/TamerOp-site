@@ -6,7 +6,9 @@ location of each sample and the units in which its height was measured.
 The line's basepoint and direction provide both pieces of information. This
 account explains that step and the numerical information it preserves. The [features guide](../tutorials/features.ipynb)
 works through a finite module supported on a square before using the same display
-contract for other scalar fields.
+contract for other scalar fields. Its prepared viewers for landscape layers and coordinate sections
+keep the samples fixed while the selected scalar function or drawing plane
+changes.
 
 ## Preserve the line parameter before placing a height
 

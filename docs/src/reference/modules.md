@@ -9,6 +9,9 @@ classifier that assigns original parameters to finite vertices.
 This reference describes how to follow selected vectors, construct the
 submodule they generate and inspect the result. For a worked calculation on
 two overlapping squares, use the [generated submodule guide](../../tutorials/generated_submodules.ipynb).
+Its [prepared vector comparison](../../tutorials/generated_submodules.ipynb#compare-the-vectors-at-one-target)
+shows how different source columns can have the same image rank at one target
+while generating different submodules.
 The [implementation account](../../implementation/submodules_and_quotients.md)
 explains how the image spaces acquire their own bases and structure maps.
 To enter or repair a small diagram, see the [construction guide](../../tutorials/presentations.ipynb)

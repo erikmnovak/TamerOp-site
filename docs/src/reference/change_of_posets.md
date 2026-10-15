@@ -8,6 +8,9 @@ the data their viewers inspect.
 
 The [comparison notebook](../../tutorials/compare_encodings.ipynb) works through
 two descriptions of a square and a Kan comparison. The
+[prepared squares](../../tutorials/compare_encodings.ipynb#compare-the-three-pairs)
+let us compare the two naturality composites for an interior pair, a zero
+target and a pair with no forward map. The
 [implementation account](../../implementation/change_of_posets.md) develops the
 limit and colimit constructions and explains how the comparison equations
 are checked. Code names below assume `import TamerOp as OP`; `Advanced` names

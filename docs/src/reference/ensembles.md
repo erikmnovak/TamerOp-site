@@ -123,6 +123,12 @@ statistical recomputation. See the [support matrix](../../visualization_support.
 for the rendering and control behavior verified in native, browser and
 notebook environments.
 
+For a finite set of choices, `save_visual_session` can store named snapshots
+whose figures remain selectable in a browser after Julia closes. The
+[guide](../../tutorials/uncertainty.ipynb) uses this to compare prepared
+replicate and threshold views. Such selection reads saved answers; a new
+threshold, probe or sampling calculation must first be prepared in Julia.
+
 Statistical arithmetic is numerical. Known bounds are converted outward to
 Float64, with their original declarations retained; an outward endpoint adjustment
 prevents a positive interval from disappearing through display rounding.
