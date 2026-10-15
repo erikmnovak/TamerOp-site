@@ -13,9 +13,8 @@ interpretation. To run a study yourself, follow
 
 ## The benchmark computer
 
-The reports use one workstation. Its physical hardware is shared across the
-studies; software versions, process limits and other running work are recorded
-for each study because those conditions can change between runs.
+The reports use the same workstation. Each study's records identify its
+software versions and operating conditions.
 
 | Component | Configuration |
 | :--- | :--- |

@@ -11,9 +11,9 @@ a module to a line.
 **Updating the 49-cell ring took 274 ms at the median** after first browser
 use. A new line restriction of the two-square module took **582 ms**. The
 larger image, with 2,601 cells, took **4.97 s**, and its slower updates reached
-**13.3 s at the 95th percentile**. These are input-to-picture times from the
-12 October 2026 run, using Chromium's software renderer on the shared
-benchmark computer.
+**13.3 s at the 95th percentile**. These times measure the wait from a browser
+input to the updated picture in the 12 October 2026 run. Chromium drew the
+figures in software, without graphics acceleration.
 
 ```@raw html
 <a href="presentation/visual_interaction_times.svg"><picture>
@@ -62,62 +62,47 @@ cells with identical styling are drawn together, while their identities
 remain available for selection and boundary queries. Compatible updates keep
 the figure and axes and replace the drawing commands that have changed.
 
-The line-restriction example starts with the direct sum of the closed square
+The example of restriction to a line starts with the direct sum of the closed square
 modules supported on `[0,2]²` and `[1,3]²`, over the rational numbers. Its
 finite encoding has nine labels. Changing the line computes a new
-one-parameter restriction and displays its intervals. Every measured line is
+restriction to that line and displays its intervals. Every measured line is
 new, so the answer is recomputed while the figure and axes are retained.
 The [inspection-session account](../implementation/inspection_sessions.md#keep-drawing-objects-when-the-selection-changes)
 explains how the mathematical selection and the retained drawing fit together.
 
-During an update, the viewer keeps the displayed answer until its replacement
-is ready. One calculation can run while one pending request is retained;
-later input can replace that pending request. Obsolete results cannot replace
-the displayed answer, and an already running Julia calculation finishes
-before the next one starts. The
-[session reference](../src/reference/visual_sessions.md#continuous-browser-requests)
-describes these controls in detail.
-
 ## How the measurements were taken
 
-The study used the shared [benchmark computer](../benchmarking.md#the-benchmark-computer).
-The browser conditions matter here because the measured delay includes
-transport and drawing as well as Julia's computation.
+The study used the [benchmark computer](../benchmarking.md#the-benchmark-computer),
+with other Julia computations running at the same time. The measured wait
+includes Julia's calculation, sending the result to the browser and drawing
+it on screen.
 
 | Component | Recorded version or setting |
 | :--- | :--- |
 | Date | 12 October 2026 |
 | TamerOp | Development source identified by the [source hashes](visual_interaction_v1/source_sha256.json) |
-| Julia | 1.12.1; one thread; one BLAS thread; 2400 MB heap hint |
+| Julia | 1.12.1, using one computation thread |
 | Plotting packages | Makie 0.24.15; WGLMakie 0.13.15; Bonito 5.2.0 |
 | Browser | Chromium 153.0.8010.12, driven by Playwright 1.63.0 |
-| Renderer | ANGLE with SwiftShader, a software renderer |
-| Viewport and workers | 1,440 × 1,050 pixels; one browser worker |
-| Host conditions | Shared desktop with concurrent Julia work; CPU affinity and frequency uncontrolled |
-| Repetitions | One first interaction, then 20 image selections or 12 new line restrictions |
+| Drawing | SwiftShader, which draws the figures in software |
+| Browser viewing area | 1,440 × 1,050 pixels |
 
-The image measurements alternate slider endpoint selections through browser
-input events; the line measurements use successive angle-key inputs. Timing
-starts at the actual input event and ends after the corresponding committed
-readout, a renderer frame following the input, and two animation frames. This
-observes completion through the browser rather than a hardware GPU timing
-signal. The same interaction checks verify the selected parameter, active
-cells, retained figure and successful closure.
+After the first interaction, we recorded 20 successive selections for each
+image and 12 new line restrictions. Image selections alternate between the
+slider's endpoints; line selections change the angle. Timing starts at the
+input event and ends after the updated values and drawing reach the browser,
+allowing two additional animation frames. The browser's recording tools
+were enabled during these measurements, so their overhead is included.
 
-Native mathematical and rendering checks ran in the Julia process before
-the browser fixtures. The first browser interaction can therefore compile
-previously unused browser paths, but package loading and some compilation
-have already occurred. The line series followed additional native checks
-and used fresh fixture sessions. Subsequent image queries scan the retained
-grades anew; subsequent line queries have no previously stored answer for
-the requested line.
+Julia had already loaded the packages and run preliminary computations before
+the browser measurements. The first browser interaction may still compile
+code needed for that interaction, which is why it appears separately in the
+table. Later interactions recompute the selection or line restriction while
+keeping the existing figure.
 
-Playwright action and document tracing were enabled, continuous screenshot
-recording was disabled, and the fixture published state information every
-200 ms. Their overhead is included. The samples are consecutive interactions
-within one process, so the reported percentiles describe this run. Because
-the timing combines computation, transport and drawing, it does not isolate
-the cause of the larger image's directional difference.
+The measurements follow successive interactions in one session. They show
+the total wait, including the larger image's slower updates toward grade
+zero; they do not identify which part of the update causes that difference.
 
 ## Reproduce the results
 

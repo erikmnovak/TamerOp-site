@@ -11,7 +11,7 @@ maps and extension classes.
 ## Results
 
 **TamerOp was 135.7× as fast across the 200 completed comparisons**, measuring
-native input construction and the complete requested answer together. The
+the time to build each program's input objects and compute the complete answer. The
 weighted ratio has an approximate 95% interval of 134.6–136.8×. QPA's other
 20 requests failed while evaluating elementary tensors, so those requests
 have no speed ratio. TamerOp completed them.
@@ -20,7 +20,7 @@ The size of the difference depends strongly on the operation. A Hom basis,
 which describes all compatible maps between two modules, has a 3.60× aggregate
 advantage for TamerOp. Resolutions and operations on extension classes show
 larger differences. Across all completed requests, the smallest measured
-ratio was 1.76×; every paired pass favored TamerOp.
+ratio was 1.76×; every round of measurements favored TamerOp.
 
 ```@raw html
 <a href="presentation/qpa_ratios.svg"><picture>
@@ -32,7 +32,7 @@ ratio was 1.76×; every paired pass favored TamerOp.
 The horizontal axis is **QPA time / TamerOp time**: a value of 10 means that
 TamerOp took one tenth of QPA's time for that comparison. Points summarize
 paired measurements, and the bars show approximate 95% intervals calculated
-from five paired process passes.
+from five rounds of measurements.
 The logarithmic scale keeps the smaller and larger ratios visible together.
 
 | Requested answer | Completed pairs | QPA time / TamerOp time |
@@ -51,7 +51,7 @@ The logarithmic scale keeps the smaller and larger ratios visible together.
 Ext describes extension classes, and the Yoneda product composes such classes;
 the product request returns their coordinates in a basis of Ext². These
 requests compare actual maps, representatives and coordinates wherever they
-are part of the requested answer. The dimension-only Ext¹ request is listed
+are part of the requested answer. The request for the dimension of Ext¹ is listed
 separately because it asks for less output.
 
 ### Actual runtimes and input sizes
@@ -72,9 +72,10 @@ the table includes the combined Hom/Ext and tensor requests as well.
 
 All table times are **milliseconds** (1,000 ms = 1 second). Each entry gives
 the median across the indicated inputs, followed by their minimum and maximum
-in parentheses. Each input's time is the median of five process medians.
+in parentheses. For each input, we take the middle time from each round of
+measurements, then the middle of those five times.
 These ranges describe different inputs. They are not confidence intervals.
-“Input dimension sum” adds the vector-space dimensions in every supplied
+“Input dimension sum” adds the vector space dimensions in every supplied
 module record; several modules contribute to a map or diagram request.
 
 | Request | Inputs | Input dimension sum | TamerOp ms: median (min–max) | QPA ms: median (min–max) |
@@ -96,7 +97,7 @@ module record; several modules contribute to a map or diagram request.
 The ratios compare the same input in each paired pass before aggregation.
 Dividing the two medians in this table would instead compare summaries across
 different inputs, so it need not reproduce the reported ratio. The
-[per-case CSV](qpa_v1/timings.csv) gives every input's times, dimensions and field.
+[complete CSV table](qpa_v1/timings.csv) gives every input's times, dimensions and field.
 
 ## What the comparison computes
 
@@ -137,17 +138,17 @@ identical bases.
 
 ## How the measurements were taken
 
-The main timer starts from a prepared finite category and decoded scalar data.
-It includes native module construction and the complete requested computation,
-including access to the requested maps and coordinates. Loading packages,
-compilation, category preparation, scalar decoding, answer serialization and
-independent checking are outside the timer.
+The main timer starts with the finite category and the matrix entries already
+prepared. It measures building each program's modules and computing the
+requested answer, including its maps and coordinates. Loading and compiling
+the software, reading the input files, checking the answer and writing it to
+disk happen outside the timer.
 
 Separate measurements locate the difference between construction and query:
 
 | Phase | QPA time / TamerOp time |
 | :--- | ---: |
-| Native construction | 3.94× |
+| Building the input objects | 3.94× |
 | Complete query | 201.6× |
 | Construction plus query, measured together | 135.7× |
 
@@ -156,11 +157,10 @@ favor QPA on some inputs; the complete query accounts for most of TamerOp's
 advantage. The combined time is measured directly, rather than obtained by
 adding independently measured medians.
 
-Each of five paired process passes uses three fresh measurements per tool,
-input and phase. Warmup compiles the code before measurement; previous
-mathematical answers and caches are then discarded and the reset checked.
-Accepted Julia measurements record no compilation. Tools may reuse intermediate
-work within a request, and their execution order reverses between passes.
+We ran five rounds of measurements, taking three timings for each program,
+input and phase in every round. A preliminary run compiles the code before
+timing begins. Each measured request then computes its answer afresh, and the
+programs take turns going first between rounds.
 
 The original weighting gives equal weight to five mathematical areas, then to
 request variants, fields and cases within them. Completed pairs retain 90% of
@@ -173,36 +173,21 @@ explain the aggregation and missing-result conventions.
 
 ### Computer, versions and memory
 
-The study ran on the [shared benchmark computer](../benchmarking.md#the-benchmark-computer)
-on 3 October 2026, with one computation thread and serial workers.
+The study ran on the [benchmark computer](../benchmarking.md#the-benchmark-computer)
+on 3 October 2026. Each program used one computation thread, with one program
+running at a time.
 
 | Component | Recorded version or setting |
 | :--- | :--- |
 | TamerOp snapshot | `qpa-v1-529681519b5d1b40` |
 | Julia | 1.12.1 |
 | GAP / QPA | 4.16.1 / 1.37 |
-| Nemo / AbstractAlgebra | 0.54.1 / 0.48.2 |
-| FLINT_jll | 301.400.1+0 |
-| Limits | 60 s per operation, 900 s per worker, 4 GiB sampled process memory |
 
-GAP was built with its monotonic `clock_gettime` timer enabled
-(`CPPFLAGS=-D_GNU_SOURCE -include time.h`); QPA's algorithms were unchanged.
-The [provenance JSON](qpa_v1/provenance.json) identifies the complete frozen
-TamerOp source and dependency manifest by hash. Those hashes identify the
-measured code, including changes beyond its base Git commit.
-
-TamerOp's lower computation times came with greater process memory:
-
-| Measurement | TamerOp | QPA |
-| :--- | ---: | ---: |
-| Peak sampled resident process memory | 1494.5 MiB | 138.7 MiB |
-
-Resident process memory includes the language runtime, compiled code and
-temporary storage as well as the mathematical objects. Per-request allocation
-counters are supplied separately; Julia's counter omits native FLINT
-allocations. The shared computer's sampled one-minute load ranged from 1.14
-to 3.26 during this study. No worker reached an operation, worker or memory
-limit.
+TamerOp's faster computations used more RAM: the largest recorded amounts
+were **1.57 GB for TamerOp and 145 MB for QPA**, measured for each program
+as a whole. The [data dictionary](qpa_data.md#read-the-memory-and-verification-records)
+explains the memory measurements, and the [software record](qpa_v1/provenance.json)
+gives the full versions and build settings.
 
 ## Reproduce the results
 

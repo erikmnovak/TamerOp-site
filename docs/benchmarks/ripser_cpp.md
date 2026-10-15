@@ -28,14 +28,14 @@ and emitting its intervals; Julia methods are already compiled.
 ```
 
 A ratio above one favors TamerOp: a value of 2 means it takes half as long.
-A ratio below one favors C++ Ripser. Markers are geometric means of paired
-process ratios, and lines show their minimum and maximum across three passes.
-These ranges describe the repetitions on a shared workstation; they are not
-confidence intervals.
+A ratio below one favors C++ Ripser. Markers average the ratios from three
+rounds of measurements using a geometric mean; lines span the smallest and
+largest ratio. These ranges show the observed variation between rounds.
 
 ### Actual runtimes and input sizes
 
-Times are medians of three process medians, in seconds. F₂, F₃ and F₁₀₁ denote
+Times are in seconds. For each input, we average the two timings in each
+round, then take the middle of those three averages. F₂, F₃ and F₁₀₁ denote
 arithmetic modulo 2, 3 and 101. A degree label H₂ includes H₀, H₁ and H₂.
 All ten measured inputs appear below.
 
@@ -60,7 +60,7 @@ All ten measured inputs appear below.
 ```
 
 The plot selects the larger input from each family and field. It shows how
-the ratio translates into elapsed time, including the sparse-sphere result
+the ratio translates into elapsed time, including the sparse sphere result
 favoring C++ Ripser. Reported ratios use the paired process medians. The time
 columns summarize each program separately, so dividing the displayed times
 need not give the reported ratio.
@@ -86,7 +86,8 @@ Sparse inputs retain only edges within the stated radius before either tool
 reads the graph. A class that remains at the end of such a filtration is
 essential in that restricted graph; later edges from the full point cloud
 could kill it. This common restriction matters because a separate small
-control exposed a cutoff error in the pinned upstream sparse CLI. The
+control exposed a cutoff error in this version of C++ Ripser's command line
+program. The
 [four-vertex example and expected answer](ripser_cpp_v1/sparse_threshold_limitation.json)
 record that behavior. It is excluded from speed comparisons.
 
@@ -96,25 +97,18 @@ the requested result is the barcode alone, from a supplied distance file.
 
 ## How the measurements were taken
 
-Both programs start from the same text file. C++ Ripser runs in a new process
-for each call, so its timer includes executable launch, input parsing and
-barcode printing. TamerOp runs in a loaded Julia process; its uninterrupted
-timer includes file reading, native construction, the checked public query
-and full barcode emission. The comparison measures complete requests with
-compiled Julia methods, including C++ executable launch.
+Both programs start from the same text file. The timer includes reading the
+distances, building the input objects, computing the barcode and printing its
+intervals. C++ Ripser is launched for every call, and its launch time is
+included. TamerOp runs in an already loaded Julia session with its code
+compiled.
 
-Each case starts a fresh Julia worker in each of three passes. A discarded
-warmup precedes two accepted samples per tool. Case order reverses in the
-second pass, and tool order alternates between samples. Every request rereads
-its input and creates new mathematical state. TamerOp uses `cache=nothing`;
-C++ process exit discards its graph and reduction. The accepted Julia samples
-record zero compilation and recompilation.
-
-Sizing used absolute runtimes and resource feasibility, after which inputs
-were frozen for confirmation. [The shared methodology](../benchmarking.md)
-explains the treatment of warmup, paired ratios and fresh computation.
-The [observation record](ripser_cpp_v1/observations.json) retains individual
-measurements and discarded warmups.
+We ran three rounds of measurements. Each input starts a new Julia session
+in each round, with a preliminary run followed by two timed computations
+per program. Every computation rereads its input and calculates the barcode
+afresh. Input order reverses in the second round, and the programs alternate
+going first. The [observation record](ripser_cpp_v1/observations.json) retains
+the individual timings.
 
 ### Matching the answers
 
@@ -129,35 +123,28 @@ sparse component. See the [verification record](ripser_cpp_v1/verification.json)
 ### Computer, versions and memory
 
 The study used [the benchmark computer](../benchmarking.md#the-benchmark-computer),
-with one numerical thread and serial workers pinned to logical CPU 0.
-Recorded one-minute load ranged from 1.59 to 18.11. The ranges beside the
-ratios show the timing variation observed on that shared workstation.
+with one computation thread per program and one program running at a time.
+Other work was running on the computer during this study; the plotted ranges
+show the variation between rounds.
 
 | Component | Recorded version or setting |
 | :--- | :--- |
 | TamerOp | The same [frozen source](ripser_cpp_v1/candidate_hashes.json) as the Ripser.py study |
-| Julia | 1.12.1 with `--heap-size-hint=4G` |
+| Julia | 1.12.1 |
 | C++ Ripser | Upstream commit `01add51ff64aaf40889483260cc5c3b7d0f2a1e7` |
-| Compiler | g++ 11.4.0; `-O3`, `NDEBUG`, Robin Hood hashing |
-| Coefficient builds | F₂ specialization; `USE_COEFFICIENTS` for odd primes |
-| Worker limits | 6 GiB resident memory; 240 s per request |
+| Compiler | g++ 11.4.0, with optimization enabled |
 
-The heap hint informs Julia's garbage collector of the memory budget.
-Natural garbage collection during a request remains timed. Earlier attempts
-with the default heap policy, and then with several cases sharing a Julia
-session, exceeded the memory limit. The reported measurements use a separate
-worker for each case and pass, with the stated heap hint. The
-[configuration record](ripser_cpp_v1/runtime_configuration_revision.json)
-retains those changes and links them to the excluded observations.
+Julia was configured to reclaim unused memory sooner, and each input ran in
+a separate Julia session. Earlier attempts without these changes exceeded
+the memory limit. The [configuration record](ripser_cpp_v1/runtime_configuration_revision.json)
+gives the settings and identifies the excluded runs.
 
-Across these cases, TamerOp's process peaks ranged from 2.90 to 5.28 GiB,
-while C++ invocation peaks ranged from 0.02 to 2.03 GiB. The Julia peak includes
-loading, compilation, warmup and repeated computations of that case; each C++
-call has its own process. Retained TamerOp barcode objects occupied
-11.2–48.8 KiB. These are different memory quantities: the small returned
-barcode does not account for the runtime and temporary reduction storage.
-Per-case resident memory, allocation traffic and retained sizes are separate
-columns in the [complete data table](ripser_cpp_v1/summary.csv).
+TamerOp used more RAM. The largest amount recorded for each input ranged
+from **3.11 to 5.67 GB for TamerOp**, compared with **about 25 MB to 2.17 GB for
+C++ Ripser**. These measurements cover the whole program: a Julia session
+includes setup and repeated computations of one input, while each C++ call
+runs separately. The [data dictionary](ripser_cpp_data.md#read-the-memory-and-verification-records)
+explains the measurements in the complete table.
 
 ## Reproduce the results
 

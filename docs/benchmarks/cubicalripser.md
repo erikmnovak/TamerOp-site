@@ -37,8 +37,9 @@ substantially to the overall 2.18 ratio, while most 2D differences are smaller.
 ### Actual runtimes and input sizes
 
 The table shows the largest regular array in each family. Each time is the
-median of three process medians, in seconds. Each ratio is the geometric mean
-of the three paired process ratios, so it need not equal the quotient of the
+median across three rounds of measurements, using the middle time from each
+round, in seconds. Each ratio is the geometric mean
+of the three paired ratios, so it need not equal the quotient of the
 two displayed times. The complete case table is available as
 [CSV](cubicalripser_v1/results.csv).
 
@@ -86,13 +87,14 @@ degrees H₀ and H₁; for 3D arrays it includes voids as well, in H₂. The arr
 dimension describes space, while the filtration has one persistence parameter.
 Every measured answer agreed exactly between the tools.
 
-The arrays contain eight-level random noise, two-level random binary data, or
-an integer-rounded radial quadratic field. Each combination of dimension,
+The arrays contain random noise with eight possible values, binary data with
+two possible values, or values that increase with squared distance from the
+center and are rounded to integers. Each combination of dimension,
 input convention and structure has three regular sizes and one reserved
 asymmetric array, giving twelve families of four requests. The reserved
 arrays use separate seeds; the reserved binary and smooth cases run in
 superlevel order, including cells from larger values downward. These are
-synthetic integer-grade inputs, whose repeated values make simultaneous cell
+synthetic inputs with integer grades, whose repeated values make simultaneous cell
 entries common.
 
 TamerOp uses its direct cubical barcode routine. The request does not retain
@@ -103,52 +105,40 @@ those columns is included in its measurement.
 
 ## How the measurements were taken
 
-The study used the shared [benchmark computer](../benchmarking.md#the-benchmark-computer).
+The study used the [benchmark computer](../benchmarking.md#the-benchmark-computer).
 The following settings identify this run:
 
 | Component | Recorded version or setting |
 | :--- | :--- |
 | Date | 11 October 2026 |
 | TamerOp | Frozen development source, identified by the [source hashes](cubicalripser_v1/candidate_hashes.json) |
-| Julia | 1.12.1; existing package images; 3 GiB garbage collection heap hint |
-| CubicalRipser | `cripser` 0.0.37, unchanged CMake Release build, `-O3 -DNDEBUG` |
+| Julia | 1.12.1 |
+| CubicalRipser | `cripser` 0.0.37, built with optimization enabled |
 | Python and NumPy | Python 3.12; NumPy 2.5.3 |
 | Compiler | GCC 11.4.0 |
-| Execution | Serial workers on logical CPU 0; one numerical thread |
-| Host conditions | `powersave` frequency policy; other heavy computations paused |
-| Repetitions | Three fresh processes per tool and request; three accepted samples per process |
 
-Each process first warms the same public route on a shifted array and discards
-the result. Timed requests then recompute the grid, reduction and barcode.
-Only the supplied input and input-independent package data remain available
-between requests. Tool order alternates between cases and process passes, and
-every accepted Julia sample records zero compilation and recompilation.
+Each program used one computation thread, with one program running at a time
+and other heavy computations paused. We ran three rounds, starting each input
+in a fresh session and taking three timings per program. A preliminary run
+compiles the code; each timed computation then builds the grid and calculates
+its barcode afresh. The programs alternate going first between inputs and
+rounds.
 
-Both tools receive the same column-major Float64 array. Loading and decompressing
-the input, checking its hash, comparing barcodes and writing result files are
-outside the timer. The timer includes native construction, required conversions,
-superlevel negation and creation of the complete native result. Exact interval
-counts verify births, deaths and multiplicities without expanding repeated
-intervals into millions of duplicate JSON rows.
+Both programs start from the same array, already loaded into memory. The
+timer includes building the cubical complex and returning the complete
+barcode. For a filtration that includes larger values first, it also includes
+negating the array values. Reading input files, checking answers and writing
+results to disk happen outside the timer.
 
-### Array construction and result checks
+### Matching the answers
 
-The generator uses NumPy PCG64 with UInt16 draws in blocks of 1,048,576 values.
-Noise takes values from zero through seven; binary data takes values zero and
-four. At zero-based coordinate `i`, the smooth value is
-`sum((2*i[j] - (shape[j]-1))^2) // maximum(shape)`. Arrays are generated in
-column-major order, stored losslessly, and converted to Float64 before timing.
-The [input manifest](cubicalripser_v1/formal_manifest.json) records the shapes,
-seeds, conventions and hashes.
-
-Independent small examples checked the barcode against a separate oracle
-before timing. CubicalRipser 0.0.37 returned an incorrect component count for
-vertex arrays shaped `1 × 3` in sublevel and superlevel order. The timed arrays
-have no singleton axes, and their corresponding controls passed. The
-[qualification record](cubicalripser_v1/qualification.json) retains these
-outcomes, along with separate checks of representative cycles and the
-top-degree shortcut. The timed requests use complete barcodes without either
-optional output.
+The complete barcodes agreed exactly on every measured array, including
+repeated intervals. Small examples were also checked with a separate barcode
+calculation. These exposed an incorrect component count in CubicalRipser
+0.0.37 for arrays shaped `1 × 3`, with values assigned to vertices, in both
+filtration directions. The timed arrays have at least two entries along every
+axis. The [verification record](cubicalripser_v1/qualification.json) gives the
+results of these checks.
 
 ### Larger binary arrays and memory
 
@@ -158,33 +148,22 @@ with matching barcodes. On the top-cell version, TamerOp took **1.31 s** and
 CubicalRipser reached the 180 s warmup limit before a measured query completed.
 These single calibration samples are retained in the
 [calibration data](cubicalripser_v1/calibration.json), separately from the
-three-process estimates in the main results. The final binary volume ladder
+repeated measurements in the main results. The final binary volume sequence
 uses smaller arrays.
 
-All formal runs stayed within the common 8 GiB process memory cap and 180 s
-phase limit. Each worker had a 30 minute limit, within a four hour campaign
-budget; the supervisor also required 2 GiB of available system memory.
-TamerOp's construction estimate was allowed up to 128 GiB because its general
-estimate exceeds the direct grid algorithm's actual storage. This allowance
-does not allocate that memory or change the observed 8 GiB cap.
+On the 2D arrays, CubicalRipser uses up to about 7.9 GB of RAM and TamerOp
+about 4.2 GB. The table gives the range of maximum
+RAM use across the inputs in each group, measured for the whole program.
 
-The following ranges span the requests in each group. Peak resident memory
-includes the runtime, input, compiled code, temporary storage and verification.
-Retained-result size measures the returned object using each runtime's own
-accounting; CubicalRipser's result includes its coordinate columns.
+| Input group | TamerOp RAM (GB) | CubicalRipser RAM (GB) |
+| :--- | ---: | ---: |
+| 2D vertices | 2.43–4.13 | 3.53–7.92 |
+| 2D top cells | 2.42–4.20 | 3.39–7.62 |
+| 3D vertices | 1.29–4.20 | 0.297–2.57 |
+| 3D top cells | 1.24–4.25 | 0.713–3.23 |
 
-| Input group | TamerOp peak memory (GiB) | CubicalRipser peak memory (GiB) | TamerOp result (MiB) | CubicalRipser result (MiB) |
-| :--- | ---: | ---: | ---: | ---: |
-| 2D vertices | 2.26–3.85 | 3.28–7.38 | 0.000465–189 | 0.000191–686 |
-| 2D top cells | 2.25–3.91 | 3.16–7.10 | 0.000465–189 | 0.000191–686 |
-| 3D vertices | 1.20–3.91 | 0.277–2.40 | 0.000542–31 | 0.000191–102 |
-| 3D top cells | 1.15–3.96 | 0.664–3.01 | 0.000542–31 | 0.000191–100 |
-
-Package import took a median of 2.33 s for TamerOp after SHA, JSON3 and
-LinearAlgebra were loaded, and 0.0771 s for NumPy and CubicalRipser together.
-Process launch and the later compilation warmup are separate from those
-diagnostic import times. The [sample records](cubicalripser_v1/samples.json)
-retain them alongside allocation traffic and compilation counters.
+The [data dictionary](cubicalripser_data.md#read-the-memory-and-verification-records)
+explains the memory records, including the size of the returned barcode.
 
 ## Reproduce the results
 
@@ -214,4 +193,4 @@ The SHA256 of `analysis.json` is:
 
 The [methods](../benchmarking.md) explain the shared timing and comparison
 rules. The [benchmark overview](index.md) places this image and volume result
-beside the comparisons of point-cloud persistence and finite-module algebra.
+beside the comparisons of persistence from point clouds and algebra on finite modules.

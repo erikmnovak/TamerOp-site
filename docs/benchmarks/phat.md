@@ -6,15 +6,16 @@ Its design separates the reduction algorithm from the representation of the
 matrix, making it possible to combine several algorithms and storage choices.
 That focus makes PHAT a useful comparison for TamerOp's ordinary persistence
 computation: both can start from the same boundary data and recover the same
-lifetimes of connected components, holes and higher-dimensional classes.
+lifetimes of connected components, holes and classes in higher dimensions.
 The [PHAT paper](https://www.geometrie.tugraz.at/kerber/kerber_papers/phat_jsc.pdf)
 describes this design.
 
 ## Results
 
 **TamerOp took about 25% less time across this ordinary persistence suite**,
-measuring native construction and the complete barcode together. The balanced
-aggregate is 1.33× as fast, with an approximate 95% ratio interval of
+including the time to build each program's input objects and compute the
+complete barcode. With equal weight for each of the four input families,
+TamerOp was 1.33× as fast, with an approximate 95% ratio interval of
 1.290–1.370×. Both programs completed all 48 inputs with matching barcodes.
 
 The largest aggregate advantage is on graphs, where TamerOp is 2.03× as fast.
@@ -33,7 +34,7 @@ its vertex set, the actual times are **3.86 seconds in TamerOp and
 
 The horizontal axis is **PHAT time / TamerOp time**. Values above one favor
 TamerOp; values below one favor PHAT. Each point is a geometric mean of paired
-ratios, with an approximate 95% interval from five process passes. Every family
+ratios, with an approximate 95% interval from five rounds of measurements. Every family
 contains four structural variants at three sizes and receives equal weight.
 
 | Input family | PHAT time / TamerOp time | 95% interval |
@@ -63,8 +64,9 @@ above compares paired observations before aggregation.
 ```
 
 The table gives the largest input in every structural variant. Times are
-**milliseconds** (1,000 ms = 1 second), with each time the median of five process
-medians. Cells count generators in all supplied degrees, and boundary entries
+**milliseconds** (1,000 ms = 1 second). For each input, we take the middle time
+from each round of measurements, then the middle of those five times.
+Cells count generators in all supplied degrees, and boundary entries
 count nonzero coefficients. These two measures distinguish a large sparse
 complex from a smaller complex with denser matrices.
 
@@ -114,10 +116,9 @@ survives to the end of the supplied filtration. Pairs born and killed at the
 same grade have zero length and are omitted in both answers.
 
 TamerOp uses the public `persistence_diagram(...; representatives=false)` call
-on a `GradedComplex`. PHAT v1.7 uses its default twist reduction with bit-tree
-pivot columns on one thread. PHAT's adapter converts cell pairs to intervals
-and recovers essential births; this work belongs to the complete query.
-TamerOp's normal public validation remains enabled.
+on a `GradedComplex`. PHAT v1.7 uses its default reduction settings. Its
+output identifies pairs of cells; converting these pairs to intervals and
+recovering the classes that survive to the end are included in PHAT's time.
 
 The supplied boundary data already describe the filtered complex. Constructing
 that complex from an image or point cloud is a different task, covered by the
@@ -141,66 +142,51 @@ an independent rank calculation to check every interval.
 
 ## How the measurements were taken
 
-The main timer includes converting decoded boundary data into each program's
-native representation, computing the barcode and materializing its sorted
-intervals. Parsing, input generation, loading packages, compilation, checking
-answers and serializing results are outside the timer. Separate timers show
-how construction and query contribute:
+The main timer starts with the boundary data already read from disk. It
+includes building each program's input objects and computing the complete,
+sorted barcode. Loading and compiling the software, generating the inputs,
+checking answers and writing results to disk happen outside the timer.
+Separate timers show how construction and query contribute:
 
 | Phase | PHAT time / TamerOp time | 95% interval |
 | :--- | ---: | ---: |
-| Native construction | 0.508× | 0.452–0.571× |
+| Building the input objects | 0.508× | 0.452–0.571× |
 | Complete barcode query | 1.63× | 1.57–1.69× |
 | Construction plus query, measured together | 1.33× | 1.29–1.37× |
 
-PHAT constructs its native representation sooner, while TamerOp's lower query
+PHAT builds its input objects sooner, while TamerOp's lower query
 times produce the combined advantage. The combined time is measured directly;
 adding separately measured medians would give a different statistic.
 
-Each of five paired process passes uses two fresh warmups and three accepted
-measurements per input and phase. A request starts with an unreduced PHAT
-matrix or a TamerOp complex containing only the input. Reset checks prevent
-reuse of a previous barcode, and accepted Julia measurements record no
-compilation. Both programs may reuse intermediate work within one request.
-Tool and input order reverse in alternating passes.
+We ran five rounds of measurements. In each round, every input and phase
+received two preliminary runs followed by three timed computations. Each
+computation starts afresh from the supplied boundary data, with the code
+already compiled. We reverse the program and input order between rounds.
 
 Ratios are PHAT time divided by TamerOp time, paired within each pass. Family
 and overall summaries use geometric means with equal weight for families,
 variants and sizes. The approximate 95% intervals describe variation across
-the five paired passes on this suite and computer. Inputs favoring PHAT stay
-in the calculation. The [measurement methods](../benchmarking.md) explain the
+the five rounds on this suite and computer. The [measurement methods](../benchmarking.md) explain the
 common statistical procedure.
 
 ### Computer, versions and memory
 
-The study ran on the [shared benchmark computer](../benchmarking.md#the-benchmark-computer)
-on 4 October 2026, with one computation thread and serial workers.
+The study ran on the [benchmark computer](../benchmarking.md#the-benchmark-computer)
+on 4 October 2026. Each program used one computation thread, with one program
+running at a time.
 
 | Component | Recorded version or setting |
 | :--- | :--- |
 | TamerOp implementation snapshot | `phat-2026-10-04` |
-| Comparison candidate | `phat-v2-2026-10-04` |
 | Julia | 1.12.1 |
 | PHAT | 1.7, commit `a74705e4628e447084d47dbf13a16dfb6d2ebd9a` |
-| C++ compiler | g++ 11.4.0; `-O3 -DNDEBUG -std=c++17` |
-| Limits | 60 s per operation, 900 s per worker, 4 GiB sampled process memory |
+| C++ compiler | g++ 11.4.0, with optimization enabled |
 
-The [provenance JSON](phat_v2/provenance.json) identifies the measured source,
-inputs and adapters by hash. The shared computer's sampled one-minute load
-ranged from 1.42 to 2.33, and available memory remained above 7.39 GiB.
-No worker reached a resource limit.
-
-TamerOp used more process memory despite its lower aggregate computation time:
-
-| Measurement | TamerOp | PHAT |
-| :--- | ---: | ---: |
-| Range of peak sampled resident process memory | 1392.1–1540.5 MiB | 155.8–155.8 MiB |
-
-The range covers the five workers for each tool. Resident process memory
-includes the runtime, compiled code, temporary storage and work outside the
-timer. Julia's per-request allocation and retained-object measurements are
-separate fields in the downloads; PHAT has no corresponding counters. A missing
-counter is left empty rather than treated as zero memory use.
+TamerOp used more RAM. The largest amount recorded in each of the five rounds
+was **1.46–1.62 GB for TamerOp and about 163 MB for PHAT**, measured for each
+program as a whole. The [data dictionary](phat_data.md#read-the-memory-and-verification-records)
+explains the memory measurements, and the [software record](phat_v2/provenance.json)
+gives the full versions and build settings.
 
 ## Reproduce the results
 

@@ -10,7 +10,7 @@ This report uses Ripser.py 0.6.15 and the measurements of 5 October 2026.
 
 ## Results
 
-**TamerOp was 5.05× as fast on the supplied dense-distance development family.**
+**TamerOp was 5.05× as fast on the supplied dense distances used during development.**
 Across all six development families, the equally weighted geometric mean of
 the query ratios was **1.32×**. Euclidean clouds and larger dense inputs favored
 TamerOp; sparse inputs and small controls favored Ripser.py in their family
@@ -19,7 +19,7 @@ summaries. Landmark performance depended on how many points were selected.
 The difference is substantial in elapsed time on the largest dense requests.
 The 1,024-point circle took **7.01 s in TamerOp and 30.4 s in Ripser.py**;
 the 512-point planar input took **2.15 s and 11.7 s**. These measurements cover
-a complete query from each program's native input, after compilation, with
+a complete query from each program's prepared input, after compilation, with
 fresh mathematical work on every call.
 
 ```@raw html
@@ -31,7 +31,8 @@ fresh mathematical work on every call.
 
 Each marker is a geometric mean of Ripser.py time divided by TamerOp time.
 A value of 2 means TamerOp took half as long; a value of 0.5 means Ripser.py
-took half as long. The lines show the range across four paired process passes.
+took half as long. The lines show the range across four rounds of measurements,
+called passes in the data tables.
 The 31 development requests were used during optimization; the six reserved
 evaluation requests are reported separately below.
 
@@ -53,8 +54,9 @@ confidence intervals.
 
 The examples below cover all six development families, including the largest
 dense requests, the largest grids, a landmark request favoring Ripser.py and
-a small higher-degree control. The [complete table](ripser_v1/summary.csv)
-contains every request. Times are medians of four process medians. A degree
+a small control in degree three. The [complete table](ripser_v1/summary.csv)
+contains every request. For each input, we take the middle time from each
+round of measurements, then the median of those four times. A degree
 label H₂ includes H₀, H₁ and H₂; F₂, F₃ and F₁₀₁ denote arithmetic modulo
 2, 3 and 101.
 
@@ -125,70 +127,52 @@ make it a separate comparison.
 
 ## How the measurements were taken
 
-The primary timer begins with a native input container and ends with the
-complete native result. Native construction is measured separately, starting
-from decoded JSON rows: typed Float64 row vectors in Julia and lists of
-numbers in Python. The construction-plus-query column in the downloads adds
-the two stages for each sample. Parsing, input generation, answer export and
-verification take place outside both timers.
+The main timer starts with each program's input objects already built and
+ends when the complete answer is ready. Building those objects is measured
+separately; the downloads also give the sum of the construction and query
+times. Generating and reading input files, checking answers and writing
+results to disk happen outside both timers.
 
-Four paired process passes reverse tool and case order on alternate passes.
-Each request receives a discarded warmup and three accepted computations on
-fresh inputs. TamerOp uses `cache=nothing`, and both programs build new graphs,
-reductions and results for each call. Julia's accepted measurements record
-zero compilation and recompilation. [The shared methodology](../benchmarking.md)
-explains why warming methods and discarding earlier mathematical answers are
-separate steps.
+We ran four rounds of measurements, reversing the program and input order
+between rounds. Each request receives a preliminary run followed by three
+timed computations. The code is already compiled, and each computation
+builds a new graph and calculates its answer afresh.
 
-Cocycle requests retain all native representatives inside the timer. TamerOp
-also retains H₀ cocycles, while Ripser.py returns positive-degree cocycles.
-Landmark outputs differ slightly too: TamerOp retains nearest-distance data
-whose maximum gives the covering radius; Ripser.py returns that radius
-directly. Computing the maximum for verification and exporting cocycles occur
-outside timing.
+Cocycle requests include the time to construct the representatives. TamerOp
+retains representatives in H₀ as well as higher degrees; Ripser.py returns
+them only in higher degrees. For landmark requests, TamerOp keeps the distance
+from every point to its nearest landmark, while Ripser.py returns the largest
+of those distances, called the covering radius. We compare that radius after
+timing.
 
 ### Matching the answers
 
-Complete interval multisets agree exactly on supplied distances, whose grades
-are exactly representable in Float32. Euclidean point clouds use each program's
-own distance calculation: Float64 in TamerOp and Float32 filtration grades in
-Ripser.py. Their endpoints are compared within eight Float32 epsilons times
-their scale, with tiny bars that collapse under rounding recorded separately.
+The complete barcodes agree exactly on supplied distances, including repeated
+intervals. For point clouds, each program calculates distances at its own
+numerical precision, so the comparison allows for rounding. Very short bars
+that disappear under rounding are recorded separately.
 
-Independent checks reconstruct landmark choices, distance tables and covering
-radii. Small controls use oriented boundary reduction; graph families use
-independent formulas or reduction on their connected components. Cocycle
-checks verify closure and nontriviality for up to six longest positive-degree
-representatives per degree. Large H₂ witnesses additionally use an exact
-sparse linear-system check that they are not coboundaries. The
-[verification record](ripser_v1/verification.json) identifies the checked
-outputs and numerical conditions.
+Independent checks reconstruct landmark choices and distances, compare small
+barcodes with a separate calculation, and check that selected cocycles
+represent nonzero classes. The [verification record](ripser_v1/verification.json)
+specifies the checked outputs and rounding tolerance.
 
-### Computer, versions and memory
+### Computer and versions
 
 The study ran on [the benchmark computer](../benchmarking.md#the-benchmark-computer)
-with one numerical thread and serial workers pinned to logical CPU 0.
-The recorded one-minute load ranged from 1.29 to 7.02. Four process passes
-capture the observed variation on that shared workstation.
+with one computation thread per program and one program running at a time.
+Other work was running on the computer during this study; the plotted ranges
+show the variation between rounds.
 
 | Component | Recorded version or setting |
 | :--- | :--- |
 | TamerOp | Frozen source identified by [source hashes](ripser_v1/candidate_hashes.json) |
 | Julia | 1.12.1 |
 | Python | 3.12.3 |
-| Ripser.py | 0.6.15; supported Robin Hood 3.11.5 source build with `-O3` |
-| Worker limits | 7 GiB resident memory; 180 s per measured phase |
+| Ripser.py | 0.6.15, built from source with optimization enabled |
 
-The optimized Ripser.py extension was checked against its recorded hash before
-launch. First-use diagnostics include development-snapshot loading flags;
-the query comparison measures already compiled computation.
-
-The largest monitored worker resident memory was 3.09 GiB. The downloads
-separate resident memory, Julia allocation traffic and retained output size.
-Resident memory includes the runtime and temporary working storage; allocation
-traffic counts bytes allocated during a call, including memory later freed.
-Python allocation traffic was not measured. These quantities answer different
-questions and are kept in separate columns.
+The [build record](ripser_v1/build_verified.json) gives the exact compiler
+settings and dependencies.
 
 ## Reproduce the results
 

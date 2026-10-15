@@ -26,6 +26,11 @@ using PHAT's results-first structure and the established QPA figure palette.
 Keep their headings, ratio direction, tables and reproduction sections
 consistent. Explain the performance finding before the detailed methodology;
 use the common computer reference and keep each study's exact evidence intact.
+Apply the report's [relevance check](benchmark_style.md#choose-the-detail-that-belongs-in-a-report)
+before expanding technical detail: benchmark readers need to understand the
+performance comparison, while exact operating settings and field definitions
+have their own linked records. This emphasis does not impose brevity on
+mathematical lessons or tutorials that need a fuller explanation.
 
 ## Choose an article's purpose before its format
 

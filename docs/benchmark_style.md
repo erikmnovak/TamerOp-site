@@ -36,8 +36,8 @@ number meaningful. Do not write “2.18× times faster”, treat a mean ratio as
 a universal factor, or invent an aggregate to fill a template slot.
 
 Keep methods, software and reproduction after the main results. Give the
-reader enough immediate context to understand the comparison, then develop
-the detailed conditions in their own sections. Remove authoring status,
+reader enough context to understand the comparison, with further explanation
+of consequential conditions in their own sections. Remove authoring status,
 future-page promises and generic defensive disclaimers. A substantive timing
 boundary or missing comparison still belongs wherever it changes the claim.
 
@@ -52,12 +52,43 @@ Put the request or family first in tables, then input sizes and measurements.
 Keep TamerOp before the comparator in time columns and legends. Left-align
 labels and prose, right-align numeric columns, put units in headers, and use
 consistent rounding within a column. Display roughly three significant figures
-for comparisons; fixed
-decimal places are useful for a runtime table when they retain meaningful
-small values. Give full precision in downloads. Define medians, ranges and
-intervals before the table. A range across different inputs must look and read
-differently from a confidence interval. Use explicit missing-result text such
-as “No verified completion”, never a zero or an unexplained blank.
+for comparisons; fixed decimal places are useful for a runtime table when they
+retain meaningful small values. Give full precision in downloads. Define
+medians, ranges and intervals before the table. A range across different inputs
+must look and read differently from a confidence interval. Use explicit
+missing-result text such as “No verified completion”, never a zero or an
+unexplained blank.
+
+## Choose the detail that belongs in a report
+
+Benchmark reports explain a performance comparison. Before retaining a
+technical detail, ask what the reader needs it for: does it explain the size
+of the difference, the work each program performed, or a condition that changes
+the conclusion? Accuracy alone does not make a detail useful here. An
+unfamiliar term may be a reason to omit an incidental sentence, rather than
+expand it into another explanation.
+
+Keep the workload, timing boundary, meaningful variation, incomplete answers
+and substantial disadvantages. For example, a faster program that used much
+more RAM presents a useful tradeoff. State it directly, in familiar units,
+with enough context to make the quantities comparable. A time or memory limit
+belongs in the account when it affected completion or the selection of inputs.
+Routine assurances that no limit was reached add nothing.
+
+Machine load readings, allocator internals, compiler flags, checking logs and
+lists of counters usually belong in the linked records. Do not reproduce them
+merely because a measurement script collected them. Define the terms needed
+to understand the report; leave detailed field explanations to the data
+dictionary and exact commands to the reproduction instructions. Moving an
+unhelpful paragraph below a heading or into a disclosure does not give it a
+purpose.
+
+Apply this relevance check to the methods and resource sections as carefully
+as to the opening. Ask whether each paragraph helps someone interpret the
+comparison, and remove unnecessary qualifications without hiding an adverse
+result. This emphasis is specific to benchmark reports. A mathematical lesson,
+implementation account or tutorial may need a sustained explanation of a
+detail that a performance report can leave to a link.
 
 ## Shared figure settings
 
@@ -106,7 +137,7 @@ labels to fit the page. QPA's full thirteen-panel sheet is not a required layout
 | How does runtime vary across heterogeneous inputs? | QPA-style scatter panels, grouped by meaningful request; show actual sizes and times without joining unrelated cases. |
 | How does one structural variant scale across measured sizes? | Connected points for that variant's ordered size ladder, with the same tool colors and a shared key. State that connecting lines guide the eye. |
 | Which families favor either tool, and by how much? | A horizontal ratio plot: subdued individual points, blue aggregate markers with labeled uncertainty, a gray parity line, and an optional neutral practical band. |
-| Where does the memory go? | A separate labeled memory figure or table. Distinguish process RSS, allocation traffic and retained objects; use the tool colors only for genuinely comparable measurements. |
+| How much RAM does the computation need? | A separate labeled memory figure or table when it reveals a meaningful tradeoff. Say what was measured and use comparable quantities. Put detailed accounting in the data dictionary. |
 
 PHAT's scaling and interval plots answer questions that QPA's scatter and
 profile do not. Keep those forms available within the shared style. For a
@@ -189,9 +220,10 @@ Define necessary terminology and why the outputs are comparable.
 
 ## How the measurements were taken
 
-State the timer boundary, preparation/reset, repetitions and aggregation.
-Explain how the answers were checked. Link the common computer specification.
-Give a consistent software/resource table and the meaningful memory results.
+State what the timer includes, how computations start afresh, and how repeated
+measurements are combined. Explain consequential answer checks in ordinary
+language. Link the common computer specification. Give the main software
+versions and meaningful memory results; link exact settings and field details.
 
 ## Reproduce the results
 
@@ -205,9 +237,12 @@ List the supporting observations, input/source records and checksum manifest.
 The [benchmark computer](benchmarking.md#the-benchmark-computer) is the
 canonical human-readable hardware description. The overview gives a brief
 processor/memory summary and links there. Individual reports link there too,
-then use a two-column Component / Recorded version or setting table for their
-software versions, source identity, thread or affinity choices, memory and
-time limits, and relevant environmental differences. Keep the original
+then use a two-column Component / Recorded version or setting table for the
+main software versions and source identity. Explain environmental differences
+when they affect interpretation. Exact compiler settings, dependency versions,
+CPU assignments and routine resource budgets belong in the linked study
+records; include a setting in the report when its consequence matters to the
+comparison. Keep the original
 machine JSON with each study; a common computer does not imply unchanged
 software or background activity.
 
