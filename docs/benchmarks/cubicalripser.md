@@ -197,7 +197,7 @@ Start with these evidence files:
 
 | File | What it contains |
 | :--- | :--- |
-| [Data dictionary](cubicalripser_v1/README.md) | File and field descriptions |
+| [Data dictionary](cubicalripser_data.md) | File and field descriptions |
 | [Results JSON](cubicalripser_v1/analysis.json) | Process medians, paired ratios, family summaries and memory measurements |
 | [Samples JSON](cubicalripser_v1/samples.json) | Individual measured calls and compilation counters |
 | [Input manifest](cubicalripser_v1/formal_manifest.json) | Array shapes, seeds, conventions and input hashes |

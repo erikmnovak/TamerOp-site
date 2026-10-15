@@ -537,7 +537,7 @@ type = "resource"
 topics = ["performance", "algebra"]
 question = "How are the QPA report’s released measurements and summaries organized?"
 state = "existing"
-source = "docs/benchmarks/qpa_v1/README.md"
+source = "docs/benchmarks/qpa_data.md"
 related = ["C01"]
 migration = "retain"
 
@@ -548,7 +548,7 @@ type = "resource"
 topics = ["performance", "persistence"]
 question = "How are the PHAT report’s released measurements and summaries organized?"
 state = "existing"
-source = "docs/benchmarks/phat_v2/README.md"
+source = "docs/benchmarks/phat_data.md"
 related = ["C18"]
 migration = "retain"
 
@@ -2604,7 +2604,7 @@ type = "resource"
 topics = ["performance", "persistence"]
 question = "Where are the CubicalRipser comparison's full times, barcodes and verification records?"
 state = "existing"
-source = "docs/benchmarks/cubicalripser_v1/README.md"
+source = "docs/benchmarks/cubicalripser_data.md"
 related = ["C22"]
 migration = "retain"
 
@@ -3501,7 +3501,7 @@ type = "resource"
 topics = ["performance", "persistence"]
 question = "How can the published Ripser comparison data be checked and interpreted?"
 state = "existing"
-source = "docs/benchmarks/ripser_v1/README.md"
+source = "docs/benchmarks/ripser_data.md"
 related = ["C14"]
 migration = "retain"
 
@@ -3538,7 +3538,7 @@ type = "resource"
 topics = ["performance", "persistence"]
 question = "Where are the original C++ Ripser comparison's timings, scope and verification data?"
 state = "existing"
-source = "docs/benchmarks/ripser_cpp_v1/README.md"
+source = "docs/benchmarks/ripser_cpp_data.md"
 related = ["C14_cpp"]
 migration = "retain"
 

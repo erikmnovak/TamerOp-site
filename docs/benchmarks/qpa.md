@@ -220,7 +220,7 @@ the downloads and recomputing the reported comparisons. Start with the
 | [Per-pass observations](qpa_v1/observations.json) | The paired process medians used in the aggregates |
 | [Provenance JSON](qpa_v1/provenance.json) | Machine, software and source identities |
 | [SHA-256 manifest](qpa_v1/SHA256SUMS) | Checksums of the original data and figures |
-| [Data dictionary](qpa_v1/README.md) | Units, phases and field meanings |
+| [Data dictionary](qpa_data.md) | Units, phases and field meanings |
 | [Figure record](presentation/presentation.json) and [checksums](presentation/SHA256SUMS) | Sources and integrity of the figures displayed here |
 
 The [QPA study](https://github.com/erikmnovak/TamerOp-benchmarks/tree/cc389ab410d3d3e6df163a6af6bef48c9cf7b1f1/studies/qpa-v1)

@@ -198,7 +198,7 @@ for this study are:
 
 | Record | Download |
 | :--- | :--- |
-| File and field descriptions | [Data dictionary](ripser_v1/README.md) |
+| File and field descriptions | [Data dictionary](ripser_data.md) |
 | Full summary and paired ratios | [summary.json](ripser_v1/summary.json) · [summary.csv](ripser_v1/summary.csv) |
 | Accepted timing samples | [accepted_samples.json](ripser_v1/accepted_samples.json) |
 | Mathematical checks | [verification.json](ripser_v1/verification.json) |

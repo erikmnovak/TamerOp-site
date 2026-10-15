@@ -218,7 +218,7 @@ the downloads and recomputing the reported comparisons. Start with the
 | [Per-pass observations](phat_v2/observations.json) | The paired process medians and memory measurements |
 | [Provenance JSON](phat_v2/provenance.json) | Machine, software and source identities |
 | [SHA-256 manifest](phat_v2/SHA256SUMS) | Checksums of the original data and figures |
-| [Data dictionary](phat_v2/README.md) | Units, phases and field meanings |
+| [Data dictionary](phat_data.md) | Units, phases and field meanings |
 | [Figure record](presentation/presentation.json) and [checksums](presentation/SHA256SUMS) | Sources and integrity of the common comparison figures |
 | [Scaling figure record](phat_v2/presentation/presentation.json) and [checksums](phat_v2/presentation/SHA256SUMS) | Sources and integrity of the size sequences |
 

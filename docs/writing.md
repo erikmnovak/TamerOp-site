@@ -795,6 +795,15 @@ well as the generated page; folding must never replace output capture.
 
 ## Review the reader's understanding
 
+For a review of a whole section, list its pages before editing, including
+supporting dictionaries, linked explanations and generated material through
+its authored sources. Compare the list with the current article inventory
+and publication routes. Record a review decision for each page, with a reason
+when retaining its prose, and identify any exclusions explicitly. Before
+calling the section complete, check that every listed source received the
+intended review. Link checks, checksum verification and a successful build
+do not establish editorial coverage.
+
 Before considering a page finished, check:
 
 1. What question brings the reader here, and does the article's family fit it?

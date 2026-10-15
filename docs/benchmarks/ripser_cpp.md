@@ -166,7 +166,7 @@ the records and regenerate the common figures. The study's principal files are:
 
 | Record | Download |
 | :--- | :--- |
-| File and field descriptions | [Data dictionary](ripser_cpp_v1/README.md) |
+| File and field descriptions | [Data dictionary](ripser_cpp_data.md) |
 | Full summary and paired ratios | [summary.json](ripser_cpp_v1/summary.json) · [summary.csv](ripser_cpp_v1/summary.csv) |
 | Individual observations | [observations.json](ripser_cpp_v1/observations.json) |
 | Mathematical checks | [verification.json](ripser_cpp_v1/verification.json) · [control checks](ripser_cpp_v1/control_verification.json) |

@@ -220,3 +220,22 @@ html.theme--documenter-dark #documenter-page {
     min-width: var(--notebook-figure-min-width);
     max-width: none;
 }
+/* The shared dictionary titles identify tables whose field names need room
+   to wrap on phones. Keep each explanation visible beside its field. */
+@media screen and (max-width: 640px) {
+  #documenter-page:has(h1[id^="reading-the-"][id$="-benchmark-data"]) table {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+  }
+  #documenter-page:has(h1[id^="reading-the-"][id$="-benchmark-data"]) th,
+  #documenter-page:has(h1[id^="reading-the-"][id$="-benchmark-data"]) td,
+  #documenter-page:has(h1[id^="reading-the-"][id$="-benchmark-data"]) td code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  #documenter-page:has(h1[id^="reading-the-"][id$="-benchmark-data"]) th:first-child {
+    width: 36%;
+  }
+
+}

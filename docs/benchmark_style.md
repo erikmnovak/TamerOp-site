@@ -227,6 +227,75 @@ an extra instruction or download button.
 Keep the evidence owned by TamerOp-benchmarks and the website's copies
 identical. The report records a benchmark commit or release, never just a
 moving branch for its reproducibility claim. Later data receive a new study
-version. Treat a sealed README like any other hashed archive file: improved
-current instructions belong in the report or reproduction guide, leaving the
-historical bytes intact. Presentation outputs have their own checksum manifest.
+version. When an archived README belongs to a checksum manifest, keep its
+historical bytes as a download and maintain the website's data dictionary in
+a separate authored source. Route that source to the existing dictionary
+address and link it from the report. This preserves the evidence while allowing
+the reader's explanation to improve. Presentation outputs have their own
+checksum manifest.
+
+## Data dictionary template
+
+A data dictionary teaches someone how to read the measurements. Use
+[Reading the PHAT benchmark data](benchmarks/phat_data.md) as the example.
+The reader should be able to open a file, interpret a row and understand how
+it contributes to the report. A list of filenames and technical abbreviations
+alone does not accomplish that.
+
+Use the following order for each dictionary. Keep exact field names in code
+format, with their meaning in ordinary prose. Explain a technical term where
+it first becomes useful: a pass is a round of measurements, a median selects
+the middle value, and resident memory is physical RAM held by a process.
+Adapt these descriptions to the actual study rather than copying assumptions
+from another comparison.
+
+```text
+# Reading the [comparator] benchmark data
+
+Introduce the computation and what the records let the reader understand.
+Link to the report. Identify the study version or date where needed.
+
+## Choose a file
+Recommend a starting table and explain what one row represents.
+Give a short File / What you can learn from it table with working links.
+
+## Read a row
+Choose one real, understandable request from the data.
+Use Field / Value and meaning columns for a small worked example.
+Interpret its time, ratio and output in words, with explicit units.
+
+## Understand the timings
+Explain the timer's beginning and end before introducing statistical fields.
+Describe samples, passes, medians and pairing in the order they are computed.
+State the ratio direction and explain geometric averaging if used.
+Distinguish observed ranges from confidence intervals.
+
+## Identify and combine requests
+Define input settings, output counts, grouping fields and missing values.
+Explain weights, separate evaluation sets and incomplete comparisons.
+Include a small output example if its stored form needs interpretation.
+
+## Read the memory and verification records
+Explain units and distinguish allocations, retained objects and process memory.
+Place detailed machine, source, verification and excluded-run records here.
+Link the checksum manifest and common reproduction recipe, with the study name.
+```
+
+Keep the main file table short enough to help someone choose. Introduce
+specialist records later, alongside the question they answer. Define each
+field through the quantity it measures, rather than expanding an abbreviation
+into another unexplained phrase. For nested JSON, show the path to the value.
+Explain the meaning of `null`, an empty field or a verification flag where it
+affects interpretation; a missing measurement and an unrequested output may
+use the same marker for different reasons.
+
+Check example values against the released data. Preserve exact column names,
+timing boundaries, weights and statistical procedures. The shared outline
+helps readers find explanations; it does not make different studies use the
+same experiment. Numerical detail belongs where it lets the reader interpret
+or reconstruct a result, with the full measurement files available for further
+inspection.
+
+Review the dictionary alongside its report. Changes to field meanings,
+download locations or study versions require checking both pages. An archived
+file's checksum does not exempt its public explanation from editorial review.

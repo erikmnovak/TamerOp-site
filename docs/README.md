@@ -653,7 +653,12 @@ versioned evidence belong to
 The website retains exact copies of the study evidence alongside the reports.
 Publication copies their figures, CSV/JSON and checksum files into the site.
 Do not replace dated result files silently or edit a README covered by their
-checksum manifest. Record the exact benchmark revision in each report and in
+checksum manifest. Author the current data dictionary separately, following
+the [dictionary template](benchmark_style.md#data-dictionary-template), and map
+it to the existing website address in `publication.toml`. The archived README
+remains an exact download; the maintained page explains the fields for readers.
+Review both the report and its dictionary when updating a study.
+Record the exact benchmark revision in each report and in
 the [reproduction recipe](benchmark_reproduction.md).
 
 With Matplotlib 3.9.3 installed, regenerate the common report figures:
