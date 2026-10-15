@@ -1,7 +1,7 @@
 """Derive published article navigation from editorial records and build routes.
 
 The inventory owns article identity and meaning; publication owns availability.
-navigation.toml only chooses collection labels, order and supporting ownership.
+navigation.toml chooses collection placement, labels, order and supporting ownership.
 """
 from __future__ import annotations
 
@@ -142,6 +142,17 @@ def prepare_catalog(docs: Path, stage: Path) -> dict:
         if page not in pages:
             raise ValueError(f"Missing published permanent anchor {name}: {page}")
     anchored = set(anchors.values())
+    placements = navigation.get("article_collections", {})
+    if not isinstance(placements, dict):
+        raise ValueError("article_collections must map article IDs to collections")
+    published = {item["id"]: item for item in pages.values()}
+    collection_ids = {config["id"] for config in navigation["collections"]}
+    for identity, collection in placements.items():
+        article = published.get(identity)
+        if article is None or article["type"] == "resource" or article["page"] in anchored:
+            raise ValueError(f"Collection placement requires a published, unanchored article: {identity}")
+        if not isinstance(collection, str) or collection not in collection_ids:
+            raise ValueError(f"Unknown collection for article {identity}: {collection}")
     collections, claimed = [], set()
     for config in navigation["collections"]:
         cid, page = config["id"], _html_page(config["page"])
@@ -151,7 +162,9 @@ def prepare_catalog(docs: Path, stage: Path) -> dict:
             raise ValueError(f"Duplicate collection: {cid}")
         order = {article: i for i, article in enumerate(config.get("order", []))}
         members = [item for item in pages.values()
-                   if item["type"] != "resource" and item["type"] in config["types"]
+                   if item["type"] != "resource"
+                   and (placements[item["id"]] == cid if item["id"] in placements
+                        else item["type"] in config["types"])
                    and item["page"] not in anchored]
         members.sort(key=lambda item: (order.get(item["id"], len(order)),
                                        item["title"].casefold(), item["id"]))

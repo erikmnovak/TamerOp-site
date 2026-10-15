@@ -38,7 +38,7 @@ type because they need an owner without being forced into a prose genre.
 | `migration` | Editorial action: `retain`, `review`, `split`, or `author`. `retain` preserves the article's identity and purpose; it does not certify that every sentence is already current. |
 | `migration_note` | Optional explanation of the proposed editorial change and the boundary it should respect. It is an authoring instruction, not text to place in a lesson. |
 
-Types describe the intended home of existing material. A file classified as a
+Types describe the editorial purpose of existing material. A file classified as a
 library guide can still contain algorithm detail that its migration note asks us
 to relocate. Assigning a type is not a claim that the migration has happened.
 Likewise, a planned implementation account can concern mature code, partly
@@ -66,7 +66,7 @@ answer more specialized questions:
 | [Documentation programme](documentation_plan.md) | Composition across and within the five main article families, shared examples, complete mathematical-map design, and staged migration/publication principles. No separate implementation or article-status ledger. |
 | [Reading routes](reading_map.toml) | Curricular nodes, suggested continuations, optional detours, and lesson footer destinations. The arrows do not encode mandatory prerequisites; articles state those where needed. Topic membership does not create a reading-map arrow. |
 | [Publication manifest](publication.toml) | Canonical-source-to-site routes, notebook execution, and generated page/download relationships. `existing` in the catalog does not mean published. |
-| [Navigation display](navigation.toml) | Collection labels, grouping and display order. It refers to catalog types and topics; it does not duplicate article sources or decide learning continuations. |
+| [Navigation display](navigation.toml) | Collection placement, labels, grouping and display order. It uses catalog types by default; `article_collections` can assign an article ID to one different menu home without changing its type. It does not duplicate article sources or decide learning continuations. |
 | [API coverage](api_coverage.toml) | Binding and family coverage, reference targets, examples, method review, and reference-writing backlog. An article record for a target does not mean its methods are documented. |
 | [Visualization support](visualization_support.md) | Display-family and frontend contracts, native/browser evidence, and required acceptance owners. A rendered tutorial does not qualify a live frontend. |
 | [API inventory guide](api_inventory.md) and generated runtime inventory | What bindings actually exist and how their identity and intended public exposure are reconciled. The generated symbol list is not an authored article. |

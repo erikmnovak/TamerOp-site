@@ -186,6 +186,46 @@ types = ["recipe"]
         with self.assertRaisesRegex(ValueError, "related_topics must list known topics"):
             self.stage_catalog()
 
+    def test_collection_placement_moves_article_without_changing_type_or_duplicating_it(self):
+        self.article("reproduce", "docs/reproduce.md", "recipe", ["geometry"])
+        self.article("recipes", "docs/src/collections/recipes.md", "resource",
+                     content="# Recipes\n\n<!-- COLLECTION: recipes -->\n")
+        self.guides["reproduce.md"] = "recipes/reproduce.md"
+        self.navigation += '''
+[[collections]]
+id = "recipes"
+title = "Task recipes"
+page = "collections/recipes.html"
+types = ["recipe"]
+[article_collections]
+reproduce = "using"
+'''
+        data = self.stage_catalog()
+        using, recipes = data["collections"][1:]
+        self.assertEqual([item["id"] for item in using["items"]], ["reproduce"])
+        self.assertEqual(recipes["items"], [])
+        article = data["pages"]["recipes/reproduce.html"]
+        self.assertEqual(article["collection"], "using")
+        self.assertEqual(article["type"], "recipe")
+        self.assertIn("[Reproduce](../recipes/reproduce.md)",
+                      (self.stage / "collections/using.md").read_text())
+        self.assertNotIn("[Reproduce]", (self.stage / "collections/recipes.md").read_text())
+        topic = next(topic for topic in data["topics"] if topic["id"] == "geometry")
+        self.assertEqual([item["id"] for item in topic["articles"]], ["reproduce"])
+
+    def test_collection_placement_rejects_missing_articles_and_unknown_destinations(self):
+        self.article("first", "docs/first.md", "lesson")
+        self.guides["first.md"] = "first.md"
+        original = self.navigation
+        for placement, error in (
+                ('missing = "using"', "requires a published, unanchored article"),
+                ('home = "using"', "requires a published, unanchored article"),
+                ('first = "missing"', "Unknown collection")):
+            with self.subTest(placement=placement):
+                self.navigation = original + '\n[article_collections]\n' + placement + '\n'
+                with self.assertRaisesRegex(ValueError, error):
+                    self.stage_catalog()
+
     def test_notebook_routes_exist_before_export_and_toml_covers_every_page_once(self):
         self.article("first", "docs/tutorials/first.ipynb", "lesson", content="{}")
         self.notebooks.append({"source": "tutorials/first.ipynb", "page": "tutorials/first.md"})

@@ -203,7 +203,7 @@ organize the usable articles by purpose:
 | Task recipes | Focused procedures for accomplishing a defined task and recognizing its result. |
 | API reference | Precise operation and shared-contract reference. |
 | Implementation | Accounts of how coherent computations work. |
-| Benchmarks | Completed comparisons and their evidence. |
+| Benchmarks | Completed comparisons, how they were measured and how to reproduce them. |
 
 Give each article one home in the collection menus, under its primary topic.
 Avoid second entrances unless they serve a specific reader need that the
@@ -212,8 +212,12 @@ another subject is not sufficient justification. Record the reason for an
 exception alongside its navigation configuration and keep the article's
 canonical home clear. In particular, benchmark reports belong in Benchmarks;
 link a report from a usage guide when its measurements help explain a choice.
-Benchmark methodology and report-writing guidance belong under contributor
-guidance.
+“How the benchmarks were measured” and “Reproduce a benchmark report” belong
+beside the reports under Benchmark results, with no duplicate menu entries in
+Task recipes or Contributing. Instructions for designing new studies and
+writing reports remain under contributor guidance. An article's editorial
+type need not determine its menu location; `navigation.toml` can assign its
+single collection home explicitly when that better serves the reader.
 
 Contextual links can connect an explanation to another article at the point
 where it becomes useful. The reading map and topic map also have distinct

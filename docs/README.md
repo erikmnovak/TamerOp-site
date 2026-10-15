@@ -206,7 +206,12 @@ article's H2/H3 headings; it must not inflate the collection hierarchy.
 Maintain one article record in [the inventory](article_inventory.md), with its
 canonical source, type, reader question and topics. `publication.toml` and
 authored pages under `docs/src/` identify published destinations.
-`navigation.toml` controls labels, grouping and order only. The catalog builder
+`navigation.toml` controls collection placement, labels, grouping and order.
+Collections use article types by default; `[article_collections]` assigns an
+existing article ID to one collection when its reader purpose calls for a
+different menu home. This moves the article instead of adding a second entrance.
+The measurement account and reproduction guide both belong under Benchmark
+results, after the individual reports. The catalog builder
 joins these sources to generate collection listings, the topic map, topic
 landings and metadata for navigation and search. Do not add article-source
 lists to `navigation.toml`, `make.jl` or hand-authored topic pages.
@@ -228,7 +233,9 @@ collection, but use it only for a specific reader need, with the reason stated
 beside the configuration. Explain why the canonical menu location or a link
 within an article would be insufficient. Keep the destination's article type
 and canonical home clear. Using TamerOp lists its own guides; reports stay in
-Benchmarks, and benchmark methodology stays under contributor guidance.
+Benchmark results, alongside the measurement account and reproduction guide.
+Instructions for designing new studies and writing reports stay under
+contributor guidance.
 The topic map still supports discovery across article families by subject.
 Installation has its permanent upper home because setup must be readily
 accessible from anywhere in the documentation; it is not repeated in the
