@@ -18,7 +18,11 @@ weights, timing boundary or meaning of a measurement.
 
 ## Page rhythm and tables
 
-Use a descriptive title such as “Finite module algebra: TamerOp and QPA”.
+Put the comparator first, followed by a short description of the computation:
+“QPA: finite module algebra”. Use the same title for the page, sidebar,
+search entry and report listing. TamerOp's participation is already understood
+from the benchmark section. For a study without an external comparator,
+name the measured activity first.
 Open with one short paragraph introducing the comparator, the problem it is
 known for solving, and why that makes it relevant here. Cite its own project
 or authors. Avoid unsupported claims about popularity or superiority.
@@ -163,7 +167,7 @@ single-tool study keeps the sequence while naming its actual measurement; it
 does not need an artificial competitor or ratio.
 
 ```markdown
-# Subject: TamerOp and Comparator
+# Comparator: subject of the comparison
 
 Introduce the comparator, its distinctive purpose and why we compare it here.
 

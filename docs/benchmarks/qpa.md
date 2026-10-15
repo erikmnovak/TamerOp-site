@@ -1,4 +1,4 @@
-# Finite module algebra: TamerOp and QPA
+# QPA: finite module algebra
 
 [QPA](https://gap-packages.github.io/qpa/), short for Quivers and Path Algebras,
 is a GAP package for computing with vector spaces and maps arranged along a

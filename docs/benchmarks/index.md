@@ -11,11 +11,11 @@ being answered.
 
 | Comparison | Main result |
 | :--- | :--- |
-| [Finite module algebra with QPA](qpa.md) | **TamerOp was 135.7× as fast** in the weighted aggregate of 200 completed comparisons, including construction and the complete query. The remaining 20 tensor requests did not complete in QPA and have no speed ratio. |
-| [Boundary matrix persistence with PHAT](phat.md) | **TamerOp took about 25% less time**, a 1.33× ratio across four equally weighted input families. Graphs showed a 2.03× advantage; the algebraic controls had similar aggregate performance. |
-| [Rips persistence with Ripser.py](ripser.md) | **TamerOp was 1.32× as fast** across the six equally weighted development families. Supplied dense distances showed a 5.05× advantage; sparse distances and small controls favored Ripser.py. |
-| [Rips barcodes with C++ Ripser](ripser_cpp.md) | **TamerOp was about 1.8× as fast on the circle inputs.** C++ Ripser was 1.61–1.77× as fast on the sparse spheres; most planar results were closer. |
-| [Image and volume persistence with CubicalRipser](cubicalripser.md) | **TamerOp was 2.18× as fast** in the balanced aggregate. The largest noisy 3D vertex volume took 4.57 seconds versus 15.7 seconds. Binary vertex volumes favored CubicalRipser. |
+| [QPA: finite module algebra](qpa.md) | **TamerOp was 135.7× as fast** in the weighted aggregate of 200 completed comparisons, including construction and the complete query. The remaining 20 tensor requests did not complete in QPA and have no speed ratio. |
+| [PHAT: ordinary persistence](phat.md) | **TamerOp took about 25% less time**, a 1.33× ratio across four equally weighted input families. Graphs showed a 2.03× advantage; the algebraic controls had similar aggregate performance. |
+| [Ripser.py: Vietoris–Rips persistence](ripser.md) | **TamerOp was 1.32× as fast** across the six equally weighted development families. Supplied dense distances showed a 5.05× advantage; sparse distances and small controls favored Ripser.py. |
+| [C++ Ripser: ordinary Rips barcodes](ripser_cpp.md) | **TamerOp was about 1.8× as fast on the circle inputs.** C++ Ripser was 1.61–1.77× as fast on the sparse spheres; most planar results were closer. |
+| [CubicalRipser: cubical barcodes](cubicalripser.md) | **TamerOp was 2.18× as fast** in the balanced aggregate. The largest noisy 3D vertex volume took 4.57 seconds versus 15.7 seconds. Binary vertex volumes favored CubicalRipser. |
 | [Browser interaction with a Julia viewer](visual_interaction.md) | **Median response was 274 ms for the small ring**, 4.97 seconds for the larger image and 582 ms for the two-square slice query. The report separates typical response from longer delays. |
 
 A ratio of 2 means TamerOp took half as long. Ratios summarize the specified

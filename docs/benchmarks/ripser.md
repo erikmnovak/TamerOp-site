@@ -1,4 +1,4 @@
-# Vietoris–Rips persistence: TamerOp and Ripser.py
+# Ripser.py: Vietoris–Rips persistence
 
 [Ripser.py](https://ripser.scikit-tda.org/en/latest/) brings Ripser's C++
 persistence engine to Python. It accepts dense and sparse distance data,

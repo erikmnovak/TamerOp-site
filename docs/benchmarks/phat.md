@@ -1,4 +1,4 @@
-# Ordinary persistence: TamerOp and PHAT
+# PHAT: ordinary persistence
 
 [PHAT](https://bitbucket.org/phat-code/phat/), the Persistent Homology Algorithms
 Toolbox, is a C++ library for recovering barcodes by reducing boundary matrices.

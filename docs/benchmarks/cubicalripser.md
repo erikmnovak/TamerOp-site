@@ -1,4 +1,4 @@
-# Cubical barcodes: TamerOp and CubicalRipser
+# CubicalRipser: cubical barcodes
 
 [CubicalRipser](https://github.com/shizuo-kaji/CubicalRipser) specializes in
 persistent homology of images and volumes. It adapts Ripser's approach to

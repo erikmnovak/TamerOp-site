@@ -2333,7 +2333,7 @@ migration = "author"
 
 [[articles]]
 id = "C01"
-title = "Finite module algebra: TamerOp and QPA"
+title = "QPA: finite module algebra"
 type = "benchmark_report"
 topics = ["performance", "algebra"]
 question = "What does the scoped comparison with QPA establish?"
@@ -2489,7 +2489,7 @@ migration = "author"
 
 [[articles]]
 id = "C14"
-title = "Vietoris–Rips persistence: TamerOp and Ripser.py"
+title = "Ripser.py: Vietoris–Rips persistence"
 type = "benchmark_report"
 topics = ["performance", "persistence"]
 question = "What does the fixed comparison with Ripser.py establish for ordinary Rips barcodes, cocycles and landmark workflows?"
@@ -2538,7 +2538,7 @@ migration = "author"
 
 [[articles]]
 id = "C18"
-title = "Ordinary persistence: TamerOp and PHAT"
+title = "PHAT: ordinary persistence"
 type = "benchmark_report"
 topics = ["performance", "persistence"]
 question = "What does the scoped comparison with PHAT establish?"
@@ -2586,7 +2586,7 @@ migration = "author"
 
 [[articles]]
 id = "C22"
-title = "Cubical barcodes: TamerOp and CubicalRipser"
+title = "CubicalRipser: cubical barcodes"
 type = "benchmark_report"
 topics = ["performance", "persistence"]
 question = "How do TamerOp and CubicalRipser compare on large image and volume barcodes?"
@@ -3520,7 +3520,7 @@ migration = "review"
 
 [[articles]]
 id = "C14_cpp"
-title = "Ordinary Rips barcodes: TamerOp and C++ Ripser"
+title = "C++ Ripser: ordinary Rips barcodes"
 type = "benchmark_report"
 topics = ["performance", "persistence"]
 question = "How does TamerOp compare with original C++ Ripser on larger complete-barcode requests?"

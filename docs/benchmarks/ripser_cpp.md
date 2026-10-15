@@ -1,4 +1,4 @@
-# Ordinary Rips barcodes: TamerOp and C++ Ripser
+# C++ Ripser: ordinary Rips barcodes
 
 [Ulrich Bauer's Ripser](https://github.com/Ripser/ripser) specializes in computing
 Vietoris–Rips persistence barcodes, with algorithms designed to keep the
