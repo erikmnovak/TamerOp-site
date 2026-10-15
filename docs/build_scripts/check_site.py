@@ -181,11 +181,24 @@ def check_catalog(catalog, root):
             branch_links = links(parsed, branch)
             if collection.get('grouped_sidebar'):
                 groups = collection['topic_groups']
+                expandable = [group for group in groups if group['items']]
                 disclosures = [node for node in parsed.elements if node.tag == 'details'
                                and 'data-topic' in node.attrs and inside(node, branch)]
-                if [node.attrs['data-topic'] for node in disclosures] != [group['id'] for group in groups]:
+                if [node.attrs['data-topic'] for node in disclosures] != [group['id'] for group in expandable]:
                     raise ValueError(f'{route}: missing or reordered sidebar topics')
-                for disclosure, group in zip(disclosures, groups):
+                entries = [node for node in parsed.elements
+                           if 'site-topic-entry' in node.attrs.get('class', '').split()
+                           and inside(node, branch)]
+                if len(entries) != len(groups):
+                    raise ValueError(f'{route}: missing sidebar topic heading')
+                for entry, group in zip(entries, groups):
+                    if not group['items']:
+                        destinations = [target(page, n.attrs['href']) for n in links(parsed, entry)]
+                        if (not group.get('page') or destinations != [(published(group['page']), '')]
+                                or any(n.tag in {'button', 'details'} and inside(n, entry)
+                                       for n in parsed.elements)):
+                            raise ValueError(f'{route}: topic without articles needs only its overview link')
+                for disclosure, group in zip(disclosures, expandable):
                     entry = disclosure.parent
                     if entry is None or 'site-topic-entry' not in entry.attrs.get('class', '').split():
                         raise ValueError(f'{route}: topic must have a separate heading and disclosure')
@@ -271,8 +284,10 @@ def check_catalog(catalog, root):
     for collection in collections:
         for group in collection.get('topic_groups', []):
             if group.get('page'):
-                topic_links(group['page'], [])
-            topic_links(collection['page'], [item['page'] for item in group['items']])
+                topic_links(group['page'], [item['page'] for item in group['items']])
+                topic_links(collection['page'], [group['page']])
+            else:
+                topic_links(collection['page'], [item['page'] for item in group['items']])
 
     # An orphan group can link to itself and back to the site without giving
     # readers any path into it. Follow actual anchors from the home page.

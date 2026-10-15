@@ -1,142 +1,84 @@
-# Finite-module algebra: TamerOp and QPA
+# Finite module algebra: TamerOp and QPA
 
-**Study completed 2026-10-03.** TamerOp returned independently verified answers
-for all **220** fixed requests. QPA returned matching answers for **200**.
-On those 200 completed comparisons, TamerOp was **135.70× as fast in the
-weighted aggregate** for native construction plus the complete query
-(approximate 95% interval **134.64–136.77×**). The advantage is substantial
-rather than a collection of marginal timing differences: even the smallest
-case-level primary ratio is **1.76×**. TamerOp was faster in every paired pass
-on all 200 matched requests.
+[QPA](https://gap-packages.github.io/qpa/), short for Quivers and Path Algebras,
+is a GAP package for computing with vector spaces and maps arranged along a
+directed graph, together with relations between compositions. Its tools extend
+from module maps to complexes and resolutions, which express a module through
+simpler modules. This breadth makes QPA a natural comparison for the algebra
+we perform on a finite encoding: both programs can answer questions about its
+maps and extension classes.
 
-These are measurements of compiled computation with previous mathematical
-results discarded. They concern the development snapshot and machine specified
-below. QPA's other 20 requests failed during elementary-tensor evaluation;
-they remain incomplete comparisons, with no speed ratio.
+## Results
 
-[All benchmark results](index.md) · [Runtimes and sizes](#actual-runtimes-and-input-sizes) ·
-[Machine and versions](#machine-and-versions) ·
-[Download the results](#data-and-reproducibility)
+**TamerOp was 135.7× as fast across the 200 completed comparisons**, measuring
+native input construction and the complete requested answer together. The
+weighted ratio has an approximate 95% interval of 134.6–136.8×. QPA's other
+20 requests failed while evaluating elementary tensors, so those requests
+have no speed ratio. TamerOp completed them.
 
-## Why compare finite-module algebra?
+The size of the difference depends strongly on the operation. A Hom basis,
+which describes all compatible maps between two modules, has a 3.60× aggregate
+advantage for TamerOp. Resolutions and operations on extension classes show
+larger differences. Across all completed requests, the smallest measured
+ratio was 1.76×; every paired pass favored TamerOp.
 
-In a finite encoding, the module on the finite poset is the object on which
-we perform algebra. It records a vector space at each label and a linear map
-for each order relation. For example, we can ask for all compatible maps from
-one such module to another. This is a Hom computation: the answer is a basis
-of actual maps, not just the number of maps in a basis.
+```@raw html
+<a href="presentation/qpa_ratios.svg"><picture>
+<source media="(max-width: 600px)" srcset="presentation/qpa_ratios_narrow.svg">
+<img src="presentation/qpa_ratios.svg" alt="QPA time divided by TamerOp time for the completed comparison and nine kinds of mathematical request. All ratios exceed one; Hom bases have the smallest aggregate difference." loading="lazy" style="width:100%;max-width:780px;height:auto">
+</picture></a>
+```
 
-QPA works with representations of quivers and algebras. The finite-poset
-problems here can be expressed in that setting using arrows and relations
-that enforce the same compositions. This gives the two programs a common
-mathematical problem without requiring them to share data structures or
-algorithms. QPA's implementation was left unchanged and used through its
-supported interfaces.
+The horizontal axis is **QPA time / TamerOp time**: a value of 10 means that
+TamerOp took one tenth of QPA's time for that comparison. Points summarize
+paired measurements, and the bars show approximate 95% intervals calculated
+from five paired process passes.
+The logarithmic scale keeps the smaller and larger ratios visible together.
 
-The study begins with finite-module data. It does not time the construction
-of an encoding from geometric regions or raw data. Ext and the other derived
-answers belong to the stated finite category; the comparison does not assert
-that they are unchanged when the encoding poset changes. See
-[finite encodings](../finite_encodings.md) and
-[mathematical categories](../math_categories.md) for that distinction.
+| Requested answer | Completed pairs | QPA time / TamerOp time |
+| :--- | ---: | ---: |
+| Complete Hom basis as module maps | 12 | 3.60× |
+| Dimension of Ext¹ | 12 | 292.9× |
+| Complete Hom maps, Ext representatives and their coordinates | 12 | 308.1× |
+| Kernel, image and cokernel, with their structural maps | 20 | 78.4× |
+| Projective or injective resolution, with its maps | 40 | 739.1× |
+| Pushout or pullback, with canonical maps | 40 | 23.5× |
+| Homology modules or a mapping cone, with maps | 40 | 132.9× |
+| Yoneda product table: Ext¹ × Ext¹ → Ext² | 12 | 601.7× |
+| Induced Ext maps in degrees 1 and 2 | 12 | 1388× |
+| Balanced tensor product and elementary-tensor coordinates | 0 of 20 | QPA evaluation errors |
 
-## What was measured?
+Ext describes extension classes, and the Yoneda product composes such classes;
+the product request returns their coordinates in a basis of Ext². These
+requests compare actual maps, representatives and coordinates wherever they
+are part of the requested answer. The dimension-only Ext¹ request is listed
+separately because it asks for less output.
 
-The primary measurement includes constructing the native inputs and producing
-the complete requested answer. Separate timers also measure construction and
-the query itself. Each phase starts from its own verified reset.
+### Actual runtimes and input sizes
 
-| Phase | Included work | Weighted QPA/TamerOp time |
-| --- | --- | ---: |
-| Native construction | Build native modules and, where needed, supplied maps, diagrams, and complexes | 3.94× |
-| Complete query | Produce the requested mathematical answer from the native input, with no earlier query results | 201.62× |
-| **Construction plus query** | **Both stages, measured together in one timer** | **135.70×** |
+For many of these inputs, TamerOp's complete request takes around a millisecond.
+QPA's median time ranges from less than a millisecond for a Hom basis to about
+2.34 seconds for induced Ext maps. The following plot gives the median case
+time in eight request groups. Resolutions, pushouts/pullbacks and
+homology/mapping cones are grouped here and separated in the table below;
+the table includes the combined Hom/Ext and tensor requests as well.
 
-All three aggregates use the same 200 mathematically matched requests. The
-total is measured directly; it is not obtained by adding separately measured
-medians. Both tools start from a prepared finite category and decoded scalar
-input. Category construction, scalar decoding, package loading, compilation,
-answer export, and independent validation are outside these timers.
+```@raw html
+<a href="presentation/qpa_times.svg"><picture>
+<source media="(max-width: 600px)" srcset="presentation/qpa_times_narrow.svg">
+<img src="presentation/qpa_times.svg" alt="Median complete-request times for eight kinds of finite module computation, with TamerOp in blue and QPA in orange." loading="lazy" style="width:100%;max-width:780px;height:auto">
+</picture></a>
+```
 
-Methods and measurement wrappers were warmed before sampling. Earlier results,
-resolutions, factors, and coordinate plans were then discarded and the reset
-checked. Both tools could reuse intermediate work while answering a single
-request. Thus the main result measures new computation after compilation,
-not retrieval of a previously computed answer.
+All table times are **milliseconds** (1,000 ms = 1 second). Each entry gives
+the median across the indicated inputs, followed by their minimum and maximum
+in parentheses. Each input's time is the median of five process medians.
+These ranges describe different inputs. They are not confidence intervals.
+“Input dimension sum” adds the vector-space dimensions in every supplied
+module record; several modules contribute to a map or diagram request.
 
-Five paired process passes used three independently reset samples per
-tool, case, and phase, with order reversed between passes. There were **19,200
-accepted timing rows** and 4,300 separately recorded warmup rows. Every accepted
-row passed the reset checks; every accepted Julia row recorded zero compilation
-and recompilation. No non-warmup rows were rejected for contamination.
-
-## Results by mathematical request
-
-The ratio below always uses construction plus the complete query. Ratios above
-one favor TamerOp. The request descriptions matter: a dimension-only answer
-and a full set of representative maps are different amounts of mathematical
-work.
-
-| Requested answer | Matched / planned | Weighted QPA/TamerOp time |
-| --- | ---: | ---: |
-| Complete Hom basis as module maps | 12 / 12 | 3.60× |
-| Dimension of Ext¹ | 12 / 12 | 292.93× |
-| Complete Hom maps, positive-degree Ext representatives, and their coordinates | 12 / 12 | 308.10× |
-| Kernel, image, and cokernel, including structural maps | 20 / 20 | 78.40× |
-| Projective or injective resolution, including its maps | 40 / 40 | 739.15× |
-| Pushout or pullback, with canonical maps | 40 / 40 | 23.48× |
-| Homology modules or a mapping cone, including maps | 40 / 40 | 132.87× |
-| Yoneda product table: Ext¹ × Ext¹ → Ext² | 12 / 12 | 601.71× |
-| Induced Ext maps in both arguments, in degrees 1 and 2 | 12 / 12 | 1387.50× |
-| Balanced tensor product and elementary-tensor coordinates | 0 / 20 | No ratio: QPA evaluation errors |
-
-For the combined Hom/Ext request and resolutions, the requested maximum degree
-is three on the Boolean three-cube and two on the grid and capped crowns.
-The product requests compute all products of the chosen Ext bases and express
-them in the target basis. The tensor request includes evaluating elementary
-tensors, not just returning a tensor-space dimension. Higher-degree Tor is
-outside this comparison.
-
-All 200 matched primary comparisons exceed the predeclared 10% practical
-speed margin in every pass. The smallest case-level primary ratio, **1.76×**,
-corresponds to about **43% less time** for TamerOp. Thus the complete-request
-advantage is meaningful in relative terms even at the low end; the runtimes
-below show the absolute scale.
-
-Construction alone varies more: **eight cases favor QPA in at least one pass**.
-This does not establish eight consistently slower cases or change the
-complete-request result. Construction timings and pass ranges remain available
-alongside the query and combined measurements. As in the
-[reporting guidance](../benchmarking.md#practical-significance-and-presentation),
-the magnitude and consistency of a difference matter more than a binary count.
-
-![Performance profile: TamerOp completes all 220 requests; QPA has verified complete timings for 200.](qpa_v1/performance_profile.svg)
-
-The horizontal axis allows a larger factor of the fastest verified completion;
-the vertical axis counts the fraction of all 220 requests completed within
-that factor. It gives every case equal weight, unlike the weighted aggregate
-above. QPA's curve reaches 200/220 because its 20 tensor requests have no
-verified completion time. One-sided completion contributes to coverage in
-this plot, not to a numerical speedup.
-
-## Actual runtimes and input sizes
-
-Absolute runtimes show the practical size of these differences. The table
-below gives construction-plus-query times for every request variant. All times are in
-**milliseconds** (1,000 ms = 1 second), rounded to three decimal places.
-Each time cell shows the **median across cases**, followed by the smallest
-and largest case times in parentheses. Each case time is itself the median
-of its five process-pass medians. The ranges describe different inputs, not
-confidence intervals or repeated-run variation.
-
-“Input dimension sum” adds the vector-space dimensions across all vertices
-in the supplied module records. For a map or diagram request, several
-modules contribute to that sum. It is not the number of poset vertices or
-the side length of one matrix. The cases mix the stated module families and
-fields; a larger sum alone need not mean a longer computation.
-
-| Request | Cases | Input dimension sum | TamerOp ms: median (min–max) | QPA ms: median (min–max) |
-| --- | ---: | ---: | ---: | ---: |
+| Request | Inputs | Input dimension sum | TamerOp ms: median (min–max) | QPA ms: median (min–max) |
+| :--- | ---: | ---: | ---: | ---: |
 | Hom basis | 12 | 12–74 | 0.391 (0.143–2.266) | 0.863 (0.570–7.239) |
 | Ext¹ dimension | 12 | 12–81 | 0.757 (0.542–2.154) | 164.583 (56.066–1,335.089) |
 | Complete Hom/Ext | 12 | 2–81 | 0.962 (0.653–3.384) | 240.087 (78.012–2,180.459) |
@@ -151,162 +93,137 @@ fields; a larger sum alone need not mean a longer computation.
 | Induced Ext maps | 12 | 20–56 | 1.392 (1.147–2.150) | 2,339.180 (338.540–16,328.116) |
 | Balanced tensor and evaluations | 20 | 25–73 | 1.109 (0.631–1.646) | No verified completion |
 
-The speedup table above uses weighted, paired geometric means. Dividing
-the two across-case medians here will generally give a different number:
-these medians show the scale of the waiting time, while the speed ratios
-compare the same input in each paired pass. Exact per-case times, sizes,
-fields, and ratios are available in the [CSV](qpa_v1/timings.csv).
+The ratios compare the same input in each paired pass before aggregation.
+Dividing the two medians in this table would instead compare summaries across
+different inputs, so it need not reproduce the reported ratio. The
+[per-case CSV](qpa_v1/timings.csv) gives every input's times, dimensions and field.
 
-The tensor row reports TamerOp's 20 verified computations. QPA's failure
-does not supply a completion time and is not included as a zero or an
-infinite runtime. None of these times include package loading or compilation.
+## What the comparison computes
 
-## Which inputs does this cover?
+A module on a finite poset assigns a vector space to each label and a linear
+map to each order relation. QPA expresses the same data using a quiver, a
+directed graph, whose relations require the same compositions. Both programs
+therefore receive the same mathematical problem while using their own data
+structures and algorithms. The [QPA manual](https://gap-packages.github.io/qpa/doc/chap0.html)
+describes its module, map and resolution operations.
 
-The suite contains 220 requests drawn from bounded synthetic input families,
-including 40 base module pairs. Its posets are the Boolean three-cube with
-8 vertices, a 4×4 grid with 16 vertices, and capped crowns with 9 or 17 vertices.
-Modules include intervals, projective and injective controls, nonsplit
-extensions, and modules specified by projective presentations. Pairs can have
-different dimensions and supports. The suite also varies dimensions and
-rational numerator and denominator sizes.
+The inputs use the Boolean three-cube, a 4×4 grid and capped crowns, with
+8, 16, 9 or 17 poset vertices. Modules include intervals, projective and
+injective controls, nonsplit extensions, and modules specified by projective
+presentations. Coefficients are exact rational numbers or arithmetic modulo
+the primes 2, 3 and 101. Changing the coefficient field can change the answer,
+so correctness is checked in each field.
 
-Coefficients are exact: rational numbers (QQ) or arithmetic modulo the primes
-2, 3, and 101 (F₂, F₃, F₁₀₁). Field-specific correctness checks precede the
-performance comparison; a field change is not assumed to preserve the answer.
+For the complete Hom/Ext and resolution requests, the maximum degree is three
+on the Boolean cube and two on the grid and crowns. Product requests compute
+all products of the chosen Ext bases. The tensor request computes the quotient
+by the balancing relations and the coordinates of every elementary tensor;
+this is where QPA's evaluations failed.
 
-| Coefficients | Matched requests | Weighted QPA/TamerOp time |
-| --- | ---: | ---: |
-| QQ | 101 | 94.29× |
-| F₂ | 21 | 157.04× |
-| F₃ | 57 | 167.92× |
-| F₁₀₁ | 21 | 136.38× |
+The comparison starts from finite module data. Constructing a finite encoding
+from geometry is a separate computation, and the derived answers here belong
+to the specified finite poset category. The accounts of
+[finite encodings](../finite_encodings.md) and
+[mathematical categories](../math_categories.md) explain that relationship.
 
-The per-request sum of supplied vector-space dimensions ranges from 1 to 253.
-That sum is a useful input-size description, but does not determine difficulty:
-maps, relations, coefficient sizes, and the requested output also matter.
-These are finite, bounded examples, not evidence of asymptotic scaling on
-arbitrarily large modules.
+Answers are checked using independent exact linear algebra. Hom checks establish
+that the returned maps span the whole solution space. Resolution checks verify
+the differentials and exactness; diagram checks verify the defining commuting
+maps and universal properties. Independent bar resolutions put Ext classes,
+products and induced maps into a common model where their coordinates can be
+compared. Tensor checks verify the balancing relations. These checks establish
+the requested mathematical answers without requiring the tools to choose
+identical bases.
 
-[![Construction-plus-query times against input size, separated by request and coefficient field.](qpa_v1/input_sizes.svg)](qpa_v1/input_sizes.svg)
+## How the measurements were taken
 
-Each panel shows one request variant. Both axes are logarithmic. Blue points
-are TamerOp and orange points are QPA; circles, squares, triangles, and diamonds
-denote QQ, F₂, F₃, and F₁₀₁. The horizontal axis sums vector-space dimensions
-over the supplied module records. Different families are not joined
-into a single scaling curve.
+The main timer starts from a prepared finite category and decoded scalar data.
+It includes native module construction and the complete requested computation,
+including access to the requested maps and coordinates. Loading packages,
+compilation, category preparation, scalar decoding, answer serialization and
+independent checking are outside the timer.
 
-The source and suite were frozen before confirmation. Of 36 requests reserved
-for evaluation after that freeze, 32 have matched answers and a weighted
-speed ratio of **111.82×**; the other four are QPA tensor failures. Those
-evaluation cases are now exposed and must not be described as unseen in
-future optimization studies.
+Separate measurements locate the difference between construction and query:
 
-## How were answers and aggregates checked?
+| Phase | QPA time / TamerOp time |
+| :--- | ---: |
+| Native construction | 3.94× |
+| Complete query | 201.6× |
+| Construction plus query, measured together | 135.7× |
 
-Independent exact checks validate complete maps and their spans, representatives
-and coordinates, resolution identities and exactness, diagram universal
-properties, and complex differentials and homology. Product and induced-map
-checks use comparison maps into an independently constructed normalized bar
-resolution. Tensor checks verify the balancing relations. Agreement of
-dimensions alone is not the acceptance test.
+All three rows use the same 200 completed comparisons. Construction alone can
+favor QPA on some inputs; the complete query accounts for most of TamerOp's
+advantage. The combined time is measured directly, rather than obtained by
+adding independently measured medians.
 
-All 220 TamerOp answers and 200 QPA answers passed their independent checks.
-The 20 QPA tensor requests failed elementary-tensor evaluation. All 120 worker
-processes finished within their limits, with no operation timeout, worker
-timeout, or recorded memory-cap breach. An independent reporting pass checked
-the numerical aggregation and accounted for every missing timing cell.
+Each of five paired process passes uses three fresh measurements per tool,
+input and phase. Warmup compiles the code before measurement; previous
+mathematical answers and caches are then discarded and the reset checked.
+Accepted Julia measurements record no compilation. Tools may reuse intermediate
+work within a request, and their execution order reverses between passes.
 
-The five mathematical areas each receive one fifth of the original weight:
-Hom/Ext and its maps/products; module and tensor constructions; resolutions;
-pushouts/pullbacks; and complexes. Within each area, weight is divided equally
-among request variants, then fields, then cases. These are declared coverage
-weights, not estimates of how often users perform each operation.
+The original weighting gives equal weight to five mathematical areas, then to
+request variants, fields and cases within them. Completed pairs retain 90% of
+that original weight. Their geometric mean gives the 135.7× result; giving
+each completed case equal weight instead gives 129.1×. The 95% interval uses
+variation between the five paired passes on this fixed suite and computer.
+QPA's unsuccessful tensor requests remain in the completion record and never
+receive a numerical time ratio. The [measurement methods](../benchmarking.md)
+explain the aggregation and missing-result conventions.
 
-Within a pass, the median of three samples gives each tool's time. We divide
-QPA's time by TamerOp's and aggregate the logarithms using the fixed weights.
-The reported ratio is the geometric mean over the five pass aggregates. The
-approximate 95% interval uses a t interval on those five log aggregates
-(four degrees of freedom). It describes variation for this fixed suite on
-this host, not uncertainty over all possible modules or machines. Giving all
-matched cases equal weight instead produces **129.08×**.
+### Computer, versions and memory
 
-The matched pairs account for **90% of the original weight**, all with TamerOp
-gains exceeding the practical margin; the remaining 10% is unresolved. The
-predeclared requirement
-for a numerical score over all 220 cases was therefore not met. The 135.70×
-result is conditional on the 200 completed pairs, alongside a separate
-completion advantage. It is not a 220-case speed score.
+The study ran on the [shared benchmark computer](../benchmarking.md#the-benchmark-computer)
+on 3 October 2026, with one computation thread and serial workers.
 
-## Machine and versions
-
-These specifications come from the metadata recorded for the actual run.
-
-| Component | Recorded configuration |
-| --- | --- |
-| CPU | 13th Gen Intel Core i7-1365U; 10 physical cores, 12 logical CPUs |
-| RAM | 32,504,468 KiB reported by Linux, approximately 31.0 GiB usable |
-| Platform | x86-64 Linux, kernel 6.8.0-106-generic, glibc 2.35 |
+| Component | Recorded version or setting |
+| :--- | :--- |
+| TamerOp snapshot | `qpa-v1-529681519b5d1b40` |
 | Julia | 1.12.1 |
-| TamerOp | Frozen development candidate `qpa-v1-529681519b5d1b40` |
-| Exact-algebra dependencies | Nemo 0.54.1; AbstractAlgebra 0.48.2; FLINT_jll 301.400.1+0 |
-| GAP / QPA | GAP 4.16.1 / QPA 1.37 |
-| Parallelism | One Julia thread and one BLAS thread; benchmark workers run serially |
-| Host use | Shared host, not exclusively reserved; sampled one-minute load 1.14–3.26, median 1.55 |
-| Limits | 60 seconds per operation; 900 seconds per worker; 4096 MiB process RSS cap |
+| GAP / QPA | 4.16.1 / 1.37 |
+| Nemo / AbstractAlgebra | 0.54.1 / 0.48.2 |
+| FLINT_jll | 301.400.1+0 |
+| Limits | 60 s per operation, 900 s per worker, 4 GiB sampled process memory |
 
-GAP used its released source with build configuration enabling its existing
-monotonic `clock_gettime` timer (`CPPFLAGS=-D_GNU_SOURCE -include time.h`).
-Clock checks passed before measurement. No QPA algorithms or source were
-patched. The CPU was not claimed to run at a fixed frequency, and the machine
-was not exclusively reserved; the intervals describe the observed runs under
-those conditions.
+GAP was built with its monotonic `clock_gettime` timer enabled
+(`CPPFLAGS=-D_GNU_SOURCE -include time.h`); QPA's algorithms were unchanged.
+The [provenance JSON](qpa_v1/provenance.json) identifies the complete frozen
+TamerOp source and dependency manifest by hash. Those hashes identify the
+measured code, including changes beyond its base Git commit.
 
-The TamerOp snapshot includes tested changes on top of commit
-`7bd0a7c9bb361be022ce6acf2544b803dc8f5577`. The commit alone does not identify
-the measured code, and this page does not attribute the results to a tagged
-release. The [provenance record](qpa_v1/provenance.json) supplies the candidate,
-source-snapshot, dependency-manifest, and evidence hashes.
+TamerOp's lower computation times came with greater process memory:
 
-## Memory
+| Measurement | TamerOp | QPA |
+| :--- | ---: | ---: |
+| Peak sampled resident process memory | 1494.5 MiB | 138.7 MiB |
 
-Peak sampled process resident memory was **1494.5 MiB for TamerOp** and
-**138.7 MiB for QPA**. TamerOp therefore used substantially more process memory
-in this campaign despite its lower computation times.
+Resident process memory includes the language runtime, compiled code and
+temporary storage as well as the mathematical objects. Per-request allocation
+counters are supplied separately; Julia's counter omits native FLINT
+allocations. The shared computer's sampled one-minute load ranged from 1.14
+to 3.26 during this study. No worker reached an operation, worker or memory
+limit.
 
-Resident memory includes the runtime, compiled code, temporary allocations,
-and mathematical objects. It is not the retained size of a module or result.
-The per-request allocation counters are supplied separately in the data;
-Julia's counter excludes native FLINT allocations. This study did not remeasure
-retained mathematical storage, and the allocation counters should not be read
-as a complete cross-runtime memory comparison.
+## Reproduce the results
 
-## Data and reproducibility
+The [reproduction recipe](../benchmark_reproduction.md) walks through checking
+the downloads and recomputing the reported comparisons. Start with the
+[summary JSON](qpa_v1/results.json), whose SHA-256 is:
 
-The public results accompany this page:
+```text
+3bfe85fd092d11c176b1b0961b1f5aac127028378c061f81131c11e2764cf302
+```
 
-- [Summary JSON](qpa_v1/results.json): full-precision aggregates, intervals,
-  field and request breakdowns, completion counts, and resource observations.
-- [Per-case CSV](qpa_v1/timings.csv): all 220 cases in all three phases,
-  including absolute times, ratios, allocations, weights, and unresolved rows.
-- [Per-pass observations](qpa_v1/observations.json): the five process medians,
-  sample counts, verification status, pass ratios, and output-file sizes.
-- [Provenance and machine metadata](qpa_v1/provenance.json) and
-  [SHA-256 checksums](qpa_v1/SHA256SUMS).
-- Figures: [performance profile](qpa_v1/performance_profile.svg) and
-  [runtime against input size](qpa_v1/input_sizes.svg).
-- [Data dictionary](qpa_v1/README.md): units, phase names, missing values,
-  weighting, and how to interpret the downloads.
+| Download | What it contains |
+| :--- | :--- |
+| [Per-case CSV](qpa_v1/timings.csv) | Times, ratios, input sizes, fields and weights |
+| [Per-pass observations](qpa_v1/observations.json) | The paired process medians used in the aggregates |
+| [Provenance JSON](qpa_v1/provenance.json) | Machine, software and source identities |
+| [SHA-256 manifest](qpa_v1/SHA256SUMS) | Checksums of the original data and figures |
+| [Data dictionary](qpa_v1/README.md) | Units, phases and field meanings |
+| [Figure record](presentation/presentation.json) and [checksums](presentation/SHA256SUMS) | Sources and integrity of the figures displayed here |
 
-The numerical files and figures are unmodified copies of the reviewed final
-report outputs. The provenance record selects machine and source information
-without publishing local paths or unrelated host details. This is a public
-results package, not yet a portable benchmark runner. The raw samples,
-fixtures, adapters, validators, and frozen source are retained in the local
-evidence archive; a self-contained reproduction bundle remains separate work.
-The downloads support inspection and recomputation of the reported aggregates,
-but do not by themselves rerun the mathematical computations.
-
-For measuring your own workload, follow the
-[benchmarking manual](../benchmarking.md), particularly its distinction between
-compilation, a new computation, and reuse of retained results.
+The [QPA study](https://github.com/erikmnovak/TamerOp-benchmarks/tree/cc389ab410d3d3e6df163a6af6bef48c9cf7b1f1/studies/qpa-v1)
+provides the frozen TamerOp source, exact module inputs and original algebra workers.
+The common recipe walks through checking the evidence, preparing the tools
+and collecting a new measurement on your computer.

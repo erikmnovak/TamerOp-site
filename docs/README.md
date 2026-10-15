@@ -166,6 +166,27 @@ where available. Links to supporting material not yet integrated into the
 site lead to its canonical repository source. A dirty build records the
 package's individual source hashes; the commit alone does not identify it.
 
+## Reconcile an approved preview before publication
+
+The review preview and GitHub Pages must use the same canonical sources and
+generated site. A private prototype can help explore a design, but approval
+followed by a request to consolidate or publish requires moving that design
+into the ordinary build. Do not carry its earlier prototype classification
+forward as a reason to leave approved work out.
+
+Before publication, record the approved changes and their canonical source
+paths in the review record. Check their actual rendered destinations, controls,
+assets, navigation and search entries in a clean build made from the proposed
+commit. A passing build or link check alone does not establish that the
+requested changes are present. Remove preview overlays that replace approved
+pages or navigation; serve the normal generated site for subsequent review.
+Keep speculative article outlines in planning material, without publishing
+empty destinations or adding unwritten articles to the menu.
+
+After deployment, check the live publication revision and representative
+approved features against that record. Distinguish a verified source commit,
+a successful build and a verified live deployment in progress reports.
+
 ## Maintain site navigation
 
 The sidebar keeps Introduction, Installation, Learning map and Topic map above
@@ -618,31 +639,35 @@ use counts as supporting detail. Preserve the same practical band for both
 tools, all measurements and material losses. Edit these canonical sources so
 the GitHub reports and generated website carry the same account.
 
-Use the [QPA-based visual standard](benchmark_style.md) and its shared
-[plotting preset](assets/benchmarks/report.mplstyle) for report appearance.
-Keep tool colors, typography, grids, legends and tables consistent while
-choosing plot types and panel layouts for each study's evidence. Review exported
-figures at their displayed size; the preset alone does not establish conformity.
+Use the [shared report template](benchmark_style.md) and
+[plotting preset](assets/benchmarks/report.mplstyle). PHAT supplies the
+results-first structure; the established QPA palette carries across all
+reports. Keep the shared section order, ratio direction, time units,
+software table and reproduction section. The common hardware description
+lives in [the measurement account](benchmarking.md#the-benchmark-computer).
 
-Author reports and data under `docs/benchmarks/`; record each canonical article
-in the inventory and its Markdown route in `publication.toml`. The catalog
-derives the benchmark collection membership. Publication
-copies linked figures, CSV/JSON data and checksum files into the site, so the
-reports work on GitHub and in the built website without local audit directories.
-Do not replace a dated result set silently when later measurements are available.
+Author reports under `docs/benchmarks/`; record each article in the inventory
+and its route in `publication.toml`. Runnable studies, source snapshots and
+versioned evidence belong to
+[TamerOp-benchmarks](https://github.com/erikmnovak/TamerOp-benchmarks).
+The website retains exact copies of the study evidence alongside the reports.
+Publication copies their figures, CSV/JSON and checksum files into the site.
+Do not replace dated result files silently or edit a README covered by their
+checksum manifest. Record the exact benchmark revision in each report and in
+the [reproduction recipe](benchmark_reproduction.md).
 
-PHAT's figures can be regenerated from its public summaries with
-[render_phat_figures.py](build_scripts/render_phat_figures.py). With Matplotlib
-installed (the recorded presentation uses 3.9.3), run from the repository root:
+With Matplotlib 3.9.3 installed, regenerate the common report figures:
 
 ```sh
-MPLCONFIGDIR=/tmp/tamerop-matplotlib python docs/build_scripts/render_phat_figures.py --preview-dir /tmp/tamerop-phat-figures
+MPLCONFIGDIR=/tmp/tamerop-matplotlib python docs/build_scripts/render_benchmark_reports.py
 ```
 
-This updates `docs/benchmarks/phat_v2/presentation/` and its separate checksums,
-leaving the original sealed results intact. It does not rerun the benchmarks.
-Review the SVG exports and page after regeneration. Ordinary site builds use
-the saved figures and do not require Matplotlib.
+The generator verifies the archived files, then writes ordinary and narrow
+SVG/PNG layouts to `docs/benchmarks/presentation/`. Its separate JSON record
+contains the plotted values and input/output hashes. This redraws existing
+measurements; it does not run a benchmark. Review the exports and rendered
+pages after regeneration. Ordinary website builds use these checked-in
+figures and do not need Matplotlib.
 
 ## Fit with the wider documentation plan
 

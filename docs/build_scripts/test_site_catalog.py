@@ -143,6 +143,17 @@ order = []
         with self.assertRaisesRegex(ValueError, "overview must be an inventoried resource"):
             self.stage_catalog()
 
+    def test_authored_topic_can_explain_a_subject_without_child_guides(self):
+        self.article("choosing_geometry", "docs/src/collections/using/topics/geometry.md",
+                     "resource", ["geometry"], content="# Geometry\n\nExplain the objects.\n")
+        data = self.stage_catalog()
+        group = data["collections"][1]["topic_groups"][0]
+        self.assertEqual(group["page"], "collections/using/topics/geometry.html")
+        self.assertEqual(group["items"], [])
+        self.assertEqual(data["pages"][group["page"]]["collection"], "using")
+        self.assertIn("[Choosing Geometry](using/topics/geometry.md)",
+                      (self.stage / "collections/using.md").read_text())
+
     def test_related_group_links_to_recipes_without_a_redundant_page(self):
         self.navigation = self.navigation.replace('order = []', 'order = ["export", "another"]')
         self.navigation += 'related_topics = ["geometry"]\n'

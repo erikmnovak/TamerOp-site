@@ -221,19 +221,20 @@ def prepare_catalog(docs: Path, stage: Path) -> dict:
         # One home cluster per article makes the sidebar a partition. Other
         # topic memberships remain available through the cross-family atlas.
         for tid, title in inventory["topics"].items():
+            page = f"collections/{collection['id']}/topics/{tid}.html"
+            overview = pages.get(page)
             members = [item for item in collection["items"] if item["topics"] and item["topics"][0] == tid]
             related = not members and tid in collection["related_topics"]
             if related:
                 members = [_summary_record(item) for item in published_articles
                            if tid in item["topics"] and item["collection"] != collection["id"]]
-            if not members:
+            if not members and overview is None:
                 continue
             members.sort(key=lambda item: (order.get(item["id"], len(order)),
                                            item["title"].casefold(), item["id"]))
-            page = f"collections/{collection['id']}/topics/{tid}.html"
             # A topic group does not need a page of its own. Only an authored
             # overview with explanatory content gets a separate destination.
-            overview = pages.get(page)
+            # Such an overview can teach a subject before it has child guides.
             if overview:
                 if overview["type"] != "resource" or tid not in overview["topics"]:
                     raise ValueError(f"Collection topic overview must be an inventoried resource for {tid}: {page}")

@@ -131,6 +131,13 @@ def sidebar(catalog: dict, current: str, brand: str, search: str, version: str) 
             visible_pages = set()
             own_pages = {item["page"] for item in items}
             for topic in collection["topic_groups"]:
+                if not topic["items"]:
+                    if topic.get("page"):
+                        pieces.append('<li class="site-topic-entry site-topic-leaf"><div class="site-topic-heading">'
+                                      + link(current, topic["page"], topic["title"], css="site-topic-link")
+                                      + '</div></li>')
+                        visible_pages.add(topic["page"])
+                    continue
                 selected = chosen and (current == topic["page"] or
                     any(item["page"] == current for item in topic["items"]))
                 title = html.escape(topic["title"])

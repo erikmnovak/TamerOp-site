@@ -294,9 +294,10 @@ the scoped study is complete.
 
 ## Planned competitor comparisons
 
-Roadmap recorded 2026-09-30, expanded 2026-10-06. **All 22 libraries below are
+Roadmap recorded 2026-09-30, expanded 2026-10-06 and 2026-10-15. **All 23 libraries below are
 in the comparison programme**; the status below distinguishes completed studies
 from planned work. CubicalRipser joins as C22; its fixed official study is now closed.
+Skyscraper-Invariant joins as C23, the primary specialist comparison for A51.
 Each comparison should help us understand a part of the finite-encoding workflow: constructing a
 module, retaining and analyzing its maps, or obtaining an invariant or figure.
 Specialized tools also give useful comparisons for direct filtration and
@@ -304,8 +305,8 @@ barcode tasks that do not require constructing an encoding.
 
 For the original 21 entries, the table preserves the order of **estimated
 remaining work, from least to most**, as of 2026-09-30, before QPA v1 and PHAT v2
-were completed. C22 is listed first by execution priority and has no historical
-effort rank. The original estimates include
+were completed. C22 is listed first by execution priority; C23 is a later addition.
+Neither has a historical effort rank. The original estimates include
 adapters, independent correctness checks, warmup/reset verification, timing and
 reporting for the intended overlap. It credits existing work rather than
 estimating every study from scratch. It is a planning judgment, not a measured
@@ -314,7 +315,7 @@ effort ranking or a ranking of importance, speed, or total library size.
 Positions within a few places of one another are approximate. Unknown TamerOp
 optimization work is not predictable from the competitor's feature list. Each
 study still needs its bounded charter; these ranks do not set case counts,
-machine-hour budgets or deadlines. The C01–C22 identifiers stay fixed when the
+machine-hour budgets or deadlines. The C01–C23 identifiers stay fixed when the
 effort order changes.
 
 **Status (2026-10-06):** C01 (QPA v1), C18 (PHAT v2), C14 (Ripser.py v1),
@@ -355,7 +356,8 @@ original scopes; none substitutes for this new study.
 | 18 | C10 | [Macaulay2](https://macaulay2.com/doc/Macaulay2/share/doc/Macaulay2/Macaulay2Doc/html/___Module.html) | Graded module constructions, free resolutions, Hom, Ext, Tor and homology. | Match polynomial-module interpretation, grading and degree components; do not substitute finite-poset derived groups. |
 | 19 | C11 | [OSCAR](https://hechtiderlachs.github.io/presentation_SIAM25.pdf) | Multigraded modules, complexes, Hom/tensor constructions and resolutions; Julia-to-Julia algebra. | Match category and requested terms/maps; materialize lazy outputs and exclude compilation in both tools' computation timings. |
 | 20 | C09 | [homalg](https://homalg-project.github.io/homalg_project/Modules/doc/chap10_mj.html) | Hom, tensor, Ext, Tor, complexes and operations on maps. | Identify the same module category and functors, with supported coefficient rings/backends and explicit comparisons of maps. |
-| 21 | C02 | [multipers](https://davidlapous.github.io/multipers/index.html) | Data-to-invariant workflows: multifiltrations, slices, Hilbert/rank/Euler signed measures, approximations, features and visualization. | Same filtration, grid choices, coefficient field, requested invariant and approximation accuracy. |
+| 21 | C02 | [multipers](https://davidlapous.github.io/multipers/index.html) | Data-to-invariant workflows: multifiltrations, slices, Hilbert/rank/Euler signed measures, approximations, features and visualization. A51's primary specialist comparison belongs to C23; a multipers skyscraper measurement is a secondary integration comparison. | Same filtration, grid choices, coefficient field, requested invariant and approximation accuracy; disclose shared backends. |
+| — | C23 | [Skyscraper-Invariant](https://github.com/JanJend/Skyscraper-Invariant), Jan Jendrysiak | A51: anchored HN/skyscraper computation, batches of anchors and filtered landscapes on two-parameter modules; qualify chamber construction separately. See the [planned scope](#skyscraper-invariant-c23-planned-scope). | Same F₂ module, support window, area normalization, anchors, thresholds and requested output; charge presentation/encoding conversion and automatic decomposition. Distinguish sampled grids, arbitrary-anchor queries and complete chambers. |
 
 The rough effort bands are **1–4: lower**, **5–9: moderate**, **10–16: higher**,
 and **17–21: largest**. Narrow supplied-matrix or barcode requests tend to have
@@ -381,6 +383,72 @@ they do not assume that TamerOp already implements all those outputs or authoriz
 new mathematical features solely to make a comparison possible. If no equivalent
 request exists, record the capability difference and the supported subset rather
 than treating missing functionality as an indefinitely large benchmark task.
+
+### Skyscraper-Invariant: C23 planned scope
+
+**Added 2026-10-15; measurements not yet started.** Compare A51 primarily with
+Jendrysiak's standalone Skyscraper-Invariant software. It exposes more of the
+specialist skyscraper workflow than multipers' current wrapper, particularly
+decomposition of anchor-generated modules and reuse across a grid scan. This
+choice concerns A51; multipers retains its broader data-to-invariant study C02.
+An optional multipers companion measures integration costs and must not count
+the shared backend as independent evidence of algorithmic performance.
+
+The source review inspected upstream version 0.2.1 at
+[`b64cd493`](https://github.com/JanJend/Skyscraper-Invariant/tree/b64cd493cd1df2bee259a0bf3365206c6ce764eb).
+Pin the chosen upstream revision, AIDA, Persistence-Algebra, CGAL and build
+settings in the eventual study charter. Use supported interfaces with upstream
+algorithms unchanged; verify the available routes again when freezing the study.
+
+| Candidate workflow | Required comparison |
+| --- | --- |
+| A selected anchor | HN factor slopes, multiplicities and resulting filtered ranks for the same module and anchor; obtain equivalent observables from each tool's native output. |
+| A batch of anchors | Complete invariant output on a fixed common grid, including construction and decomposition. Allow upstream's smart scan and TamerOp's prepared reuse inside the timed request. |
+| Filtered landscapes | The same thresholds, layers, points, direction and radius convention. Qualify agreement with an independent small oracle and declared error tolerance before including timings. |
+| Chamber preparation and subsequent queries | Include only if the pinned upstream interface exposes an equivalent working computation. Record preparation and new-query costs separately, as well as their total for the declared batch. |
+
+Start the matched comparison with two-parameter F₂ modules and uniform area.
+Fix a common finite support window and reconcile normalized area with TamerOp's
+density convention. Compare anchors at identical coordinates; a stored grid
+sample is not an arbitrary-anchor answer. Check slope ties, support boundaries,
+zero-dimensional strata and threshold inclusion explicitly. Compare integer
+ranks and multiplicities exactly, with declared numerical tolerances for
+upstream floating-point slopes and landscape values. Our exact rational
+chambers and landscape enclosures need their own correctness checks.
+
+Use both supplied presentations and modules arising from representative
+bifiltrations. Include direct sums with many thin pieces, thicker induced
+indecomposables, and repeated anchors within and across structural cells.
+Record presentation sizes, encoding size, stalk dimensions, induced-summand
+dimensions, coefficient sizes and output size. Freeze a bounded calibration
+ladder, final sizes, held-out cases, repetitions and time/RSS budgets before
+confirmation, following the [suite charter](#reusable-suite-charter). Include
+complete workloads taking seconds or longer where feasible; small controls
+alone cannot settle the benefit of decomposition or reuse.
+
+The primary timer includes conversion from the same starting information,
+required encoding or presentation construction, decomposition and the requested
+answer. Report native-object queries separately when their preparation differs.
+Keep compiled fresh-result timings, prepared queries and process-to-first-answer
+latency distinct. Preserve useful reuse within a request and reset mathematical
+state between independent requests. Automatic local decomposition and reuse
+across anchors are TamerOp optimization hypotheses to investigate, not assumed
+speed advantages. Credit earlier A51 internal route measurements as internal
+evidence only; they are not comparisons with upstream.
+
+Qualification must distinguish the paper, the executable and supporting code.
+At the inspected revision, the main program parses `--subdivision` without
+passing it to the computation, and the smart scan's subdivision-construction
+call is disabled. Do not infer a working complete-chamber interface from the
+flag alone. CGAL exact arrangement constructions also receive coefficients
+computed in floating point. The
+[companion quiver implementation](https://github.com/marcf-ox/sky-inv-quiv)
+is a possible later comparison for general HN and other fields, with its own
+charter. Arbitrary finite posets, non-Cartesian encodings, nonuniform densities,
+additional fields and retained algebraic witnesses remain capability comparisons
+unless a matching upstream request is established. Publish the eventual C23
+results under Benchmarks using the shared report and reproduction conventions;
+keep algorithm explanations in A51's implementation account.
 
 ### PersistenceDiagrams.jl: C16 harness and initial charter
 

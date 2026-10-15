@@ -1,29 +1,41 @@
-# Visual style for benchmark reports
+# Writing a benchmark report
 
-Use the [QPA report](benchmarks/qpa.md) as the aesthetic reference for public
-benchmark reports: a restrained scientific page, blue and orange comparisons,
-white figures, light grids, compact tables and a clear explanation beside each
-result. Its [performance profile](benchmarks/qpa_v1/performance_profile.svg)
-and [input-size panels](benchmarks/qpa_v1/input_sizes.svg) are the visual models.
-The shared [Matplotlib preset](assets/benchmarks/report.mplstyle) records the
-base settings so later report generators can reuse them.
+Use the [PHAT report](benchmarks/phat.md) as the structural model: a clear
+performance result, variation across meaningful families, and actual waiting
+times before the measurement details. The QPA figures established the shared
+blue and orange palette, white backgrounds and light grids. The
+[Matplotlib preset](assets/benchmarks/report.mplstyle) and
+[common figure generator](build_scripts/render_benchmark_reports.py) carry
+that visual identity across the reports.
 
-Keep this visual identity consistent across competitors. Adapt the plot type,
-panel count and section order to the mathematical question and available
-evidence. The [benchmarking manual](benchmarking.md) governs measurement,
-statistics and claims; styling never changes the population, weights, timing
-boundary or interpretation of a result.
+The reports deliberately share an order and vocabulary. Readers should find
+the answer, understand its size, and then examine how it was measured without
+learning a different report format for every comparator. The
+[measurement account](benchmarking.md) explains the common interpretation;
+the [execution protocol](https://github.com/erikmnovak/TamerOp-benchmarks/blob/main/PROTOCOL.md)
+governs the studies themselves. Formatting never changes the population,
+weights, timing boundary or meaning of a measurement.
 
 ## Page rhythm and tables
 
-Use a plain descriptive title such as “Finite-module algebra: TamerOp and
-QPA”. Open with a short quantitative account of the result, the compared
-population and the timing boundary. Give the reader a compact row of links
-to runtimes, machine details and downloads. Follow with the mathematical
-reason for the comparison and what was measured, then results by meaningful
-request or input family, actual times and sizes, and the relevant figures.
-Methods, machine specifications, memory and downloadable evidence complete
-the account. Combine or reorder these sections when the study needs it.
+Use a descriptive title such as “Finite module algebra: TamerOp and QPA”.
+Open with one short paragraph introducing the comparator, the problem it is
+known for solving, and why that makes it relevant here. Cite its own project
+or authors. Avoid unsupported claims about popularity or superiority.
+
+Follow the template below. Put the numerical finding at the start of Results,
+then the common ratio plot and actual runtimes. A weighted aggregate can be a
+headline when the study declares one. Otherwise use a concrete family or
+example, preserving substantial results in the other direction nearby.
+Say “2.18× as fast” or “about 54% less time”, with the scope that makes the
+number meaningful. Do not write “2.18× times faster”, treat a mean ratio as
+a universal factor, or invent an aggregate to fill a template slot.
+
+Keep methods, software and reproduction after the main results. Give the
+reader enough immediate context to understand the comparison, then develop
+the detailed conditions in their own sections. Remove authoring status,
+future-page promises and generic defensive disclaimers. A substantive timing
+boundary or missing comparison still belongs wherever it changes the claim.
 
 Keep the native documentation typography and ordinary Markdown tables. Use
 short connected paragraphs, descriptive headings, and bold only for the few
@@ -55,7 +67,7 @@ at export size; check legibility at the width used on the page.
 | Background and text | Opaque white figure and axes; black text |
 | Typography | DejaVu Sans or a comparable plain sans serif; normal weight |
 | Text sizes | 10 pt ticks, axis labels and legend; 12 pt panel titles; 11 pt shared heading/key |
-| Axes | Thin black frame on all four sides, 0.8 pt; outward ticks |
+| Axes | Thin black lines, 0.8 pt; outward ticks. Common horizontal comparison plots use the bottom frame; scaling panels may retain the full frame. |
 | Grid | Major ticks only, gray `#b0b0b0`, opacity 0.20, width 0.8 pt; behind the data |
 | Lines and points | 2 pt comparison lines; about 5 pt line markers; scatter area 22 pt² and opacity 0.65 when overlap matters |
 | Supporting marks | Gray `#788590` for individual ratio observations; `#44505b` for parity/reference lines; pale gray `#eeeeee` for a declared practical band |
@@ -135,11 +147,86 @@ screen, including light and dark themes. Check label size, clipping, legend
 placement, alternative text, numeric table alignment and access to full-size
 figures. Compare each chart's values, bounds, missing cases and captions with
 the data. Keep tables or downloads available where a dense figure requires
-zooming. The first page should feel like the same report family as QPA without
-requiring readers to learn its particular subject beforehand.
+zooming. The opening should follow the same structure as PHAT and use the shared
+figure language without requiring readers to learn its subject beforehand.
 
 An aesthetic revision re-renders existing measurements; it does not require
 new timing runs. Keep sealed measurement evidence intact. Publish revised
 figures with appropriate presentation provenance/checksums rather than silently
 overwriting an archived result set. A report may claim to use this style only
 after its actual exported figures have been reviewed.
+
+## Report template
+
+Use these section names and this sequence for new reports. An interaction or
+single-tool study keeps the sequence while naming its actual measurement; it
+does not need an artificial competitor or ratio.
+
+```markdown
+# Subject: TamerOp and Comparator
+
+Introduce the comparator, its distinctive purpose and why we compare it here.
+
+## Results
+
+State the principal supported performance finding, its workload and boundary.
+Show the standard ratio figure with a short explanatory caption.
+Include meaningful family differences and incomplete comparisons.
+
+### Actual runtimes and input sizes
+
+Give an understandable time example and a compact table or time plot.
+Identify the cases or groups shown and how those times were summarized.
+
+## What the comparison computes
+
+Explain the inputs, requested mathematical answer and relevant conventions.
+Define necessary terminology and why the outputs are comparable.
+
+## How the measurements were taken
+
+State the timer boundary, preparation/reset, repetitions and aggregation.
+Explain how the answers were checked. Link the common computer specification.
+Give a consistent software/resource table and the meaningful memory results.
+
+## Reproduce the results
+
+Link the common reproduction recipe and the versioned benchmark study.
+Provide the principal result JSON and its literal SHA-256 fingerprint.
+List the supporting observations, input/source records and checksum manifest.
+```
+
+### One hardware reference, specific study records
+
+The [benchmark computer](benchmarking.md#the-benchmark-computer) is the
+canonical human-readable hardware description. The overview gives a brief
+processor/memory summary and links there. Individual reports link there too,
+then use a two-column Component / Recorded version or setting table for their
+software versions, source identity, thread or affinity choices, memory and
+time limits, and relevant environmental differences. Keep the original
+machine JSON with each study; a common computer does not imply unchanged
+software or background activity.
+
+### Common figures and exact evidence
+
+Generate the leading ratio and time figures with
+`docs/build_scripts/render_benchmark_reports.py`. Its study adapters read the
+archived JSON directly. Each figure has an ordinary and a narrow layout,
+selected through a native HTML picture element; labels remain readable on
+a phone without shrinking a wide multipanel sheet. Match the prose and table
+units to the actual axis. Use a logarithmic scale for multiplicative ratios,
+and identify that scale in the caption. State whether marks show confidence
+intervals, pass ranges, or no uncertainty estimate.
+
+Choose additional scaling plots when they explain a result. The shared
+appearance does not require the same statistical graphic for incompatible
+measurements. Supply explanatory captions and alternative text, with tables
+or linked JSON retaining exact values. Image links can open the SVG without
+an extra instruction or download button.
+
+Keep the evidence owned by TamerOp-benchmarks and the website's copies
+identical. The report records a benchmark commit or release, never just a
+moving branch for its reproducibility claim. Later data receive a new study
+version. Treat a sealed README like any other hashed archive file: improved
+current instructions belong in the report or reproduction guide, leaving the
+historical bytes intact. Presentation outputs have their own checksum manifest.

@@ -29,6 +29,7 @@
         for (const entry of menu.querySelectorAll('.site-topic-entry')) {
             const branch = entry.querySelector('.site-topic');
             const button = entry.querySelector('.site-topic-toggle');
+            if (!branch || !button) continue;
             function syncTopicButton() {
                 button.setAttribute('aria-expanded', String(branch.open));
                 button.setAttribute('aria-label',

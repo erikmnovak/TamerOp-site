@@ -370,7 +370,7 @@ migration_note = "Retain the complete concurrent polyhedral encoding task and it
 
 [[articles]]
 id = "benchmarking"
-title = "Benchmarking TamerOp"
+title = "How the benchmarks were measured"
 type = "contributor_guide"
 topics = ["performance", "development"]
 question = "How do I measure a meaningful computation and report what the evidence supports?"
@@ -394,8 +394,19 @@ migration = "split"
 migration_note = "Preserve methodology and study charters; gradually separate development histories from reusable guidance and link canonical report records from this catalog."
 
 [[articles]]
+id = "benchmark_reproduction"
+title = "Reproduce a benchmark report"
+type = "recipe"
+topics = ["performance"]
+question = "How do I verify the published evidence, rerun a comparison and redraw its figures?"
+state = "existing"
+source = "docs/benchmark_reproduction.md"
+related = ["benchmarks", "benchmarking", "benchmark_style", "C01", "C18", "C14", "C14_cpp", "C22"]
+migration = "retain"
+
+[[articles]]
 id = "benchmark_style"
-title = "Visual style for benchmark reports"
+title = "Writing a benchmark report"
 type = "contributor_guide"
 topics = ["documentation", "performance"]
 question = "How should a benchmark report look and explain its measured evidence?"
@@ -2322,7 +2333,7 @@ migration = "author"
 
 [[articles]]
 id = "C01"
-title = "Finite-module algebra: TamerOp and QPA"
+title = "Finite module algebra: TamerOp and QPA"
 type = "benchmark_report"
 topics = ["performance", "algebra"]
 question = "What does the scoped comparison with QPA establish?"
@@ -2619,6 +2630,86 @@ related = ["recipes_collection"]
 migration = "retain"
 
 [[articles]]
+id = "using_persistence_overview"
+title = "Persistence and filtered complexes"
+type = "resource"
+topics = ["persistence"]
+question = "How do barcodes, representatives and other constructions help us follow a changing space?"
+state = "existing"
+source = "docs/src/collections/using/topics/persistence.md"
+migration = "retain"
+
+[[articles]]
+id = "using_encodings_overview"
+title = "Finite descriptions and parameter queries"
+type = "resource"
+topics = ["encodings"]
+question = "How can I construct, query and compare a finite encoding?"
+state = "existing"
+source = "docs/src/collections/using/topics/encodings.md"
+migration = "retain"
+
+[[articles]]
+id = "using_algebra_overview"
+title = "Modules, maps and derived algebra"
+type = "resource"
+topics = ["algebra"]
+question = "Which algebraic constructions answer my question about modules and their maps?"
+state = "existing"
+source = "docs/src/collections/using/topics/algebra.md"
+migration = "retain"
+
+[[articles]]
+id = "using_geometry_overview"
+title = "Geometric inputs and filtrations"
+type = "resource"
+topics = ["geometry"]
+question = "Which geometric and filtration choices determine the module I construct?"
+state = "existing"
+source = "docs/src/collections/using/topics/geometry.md"
+migration = "retain"
+
+[[articles]]
+id = "using_features_overview"
+title = "Features and data analysis"
+type = "resource"
+topics = ["features"]
+question = "How can I turn persistence results into comparable numerical features?"
+state = "existing"
+source = "docs/src/collections/using/topics/features.md"
+migration = "retain"
+
+[[articles]]
+id = "using_visualization_overview"
+title = "Visualization and interaction"
+type = "resource"
+topics = ["visualization"]
+question = "Which views and retained selections make a mathematical question readable?"
+state = "existing"
+source = "docs/src/collections/using/topics/visualization.md"
+migration = "retain"
+
+[[articles]]
+id = "using_data_io_overview"
+title = "Data, saving and interchange"
+type = "resource"
+topics = ["data_io"]
+question = "What should I preserve to inspect a result or resume a mathematical query?"
+state = "existing"
+source = "docs/src/collections/using/topics/data_io.md"
+migration = "retain"
+
+[[articles]]
+id = "using_arithmetic_overview"
+title = "Fields, grades and numerical arithmetic"
+type = "resource"
+topics = ["arithmetic"]
+question = "How do coefficient fields, exact grades and numerical tolerances affect the answer?"
+state = "existing"
+source = "docs/src/collections/using/topics/arithmetic.md"
+migration = "retain"
+
+[[articles]]
 id = "using_invariants_overview"
 title = "Invariants, slices and distances"
 type = "resource"
@@ -2627,7 +2718,7 @@ question = "When should I explore slices, compare modules by matching distance, 
 state = "existing"
 source = "docs/src/collections/using/topics/invariants.md"
 migration = "retain"
-scope = "Orientation among the existing slice, exact matching and generalized rank guides, with distinct entry questions and mathematical scope. Replaces the generated article-list index at the same route."
+scope = "Orientation among slices, exact matching and generalized rank, with distinct entry questions and an explanation of signed summaries and approximation choices. Links existing treatments from their canonical homes."
 
 [[articles]]
 id = "recipes_collection"

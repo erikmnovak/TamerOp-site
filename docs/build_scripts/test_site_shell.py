@@ -158,6 +158,24 @@ class ShellTests(unittest.TestCase):
         self.assertIn("Implementation account", external_output)
         self.assertNotIn("open", next(n for n in parsed.elements if n.attrs.get("data-topic") == "related").attrs)
 
+    def test_topic_without_child_guides_has_a_link_without_empty_controls(self):
+        config = catalog()
+        group = config["collections"][0]
+        group["grouped_sidebar"] = True
+        route = "collections/using/topics/data_io.html"
+        group["topic_groups"] = [dict(id="data_io", title="Data and saving", page=route,
+                                      overview_title="Data and saving", items=[])]
+        config["pages"][route] = dict(title="Data and saving", collection="using", type="resource")
+        output = transform(HTML, route, config)
+        parsed = Structure(output)
+        entry = parsed.one(class_name="site-topic-leaf")
+        contents = output[entry.start:entry.end]
+        self.assertIn('href="data_io.html"', contents)
+        self.assertIn('aria-current="page"', contents)
+        self.assertNotIn('<button', contents)
+        self.assertNotIn('<details', contents)
+        self.assertNotIn('Current page', contents)
+
     def test_retained_subject_pages_do_not_force_a_small_collection_into_groups(self):
         config = catalog()
         group = config["collections"][0]

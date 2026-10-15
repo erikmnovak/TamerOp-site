@@ -1,246 +1,188 @@
 # Ordinary Rips barcodes: TamerOp and C++ Ripser
 
-**Larger-workload comparison v1, 2026-10-06.** This report compares TamerOp with the
-original upstream C++ Ripser executable. It is a separate, narrower study
-than the [Ripser.py comparison](ripser.md). The larger workloads below return
-complete barcodes from supplied distances, without landmarks or cocycles.
-The primary numbers include file reading and barcode output, with Julia
-compilation warmed and previous mathematical results discarded.
+[Ulrich Bauer's Ripser](https://github.com/Ripser/ripser) specializes in computing
+Vietoris–Rips persistence barcodes, with algorithms designed to keep the
+calculation fast while using little memory. We chose the original C++ executable
+as a comparison for TamerOp's direct Rips computations: both programs start
+from distances and return the intervals describing when homology classes
+appear and disappear. The study below measures larger barcode requests using
+the results of 6 October 2026.
 
-TamerOp's clearest advantage is on the circles: **about 1.8 times as fast**
-at both sizes. The 1,408-vertex request takes **25.5 seconds versus
-48.8 seconds** in the displayed medians. Dense planar inputs and the larger
-sphere are closer; the larger F2 planar request favors C++ by about 12% in the
-paired-ratio summary.
+## Results
 
-C++ Ripser has a clearer advantage on the sparse spheres: **1.61-1.77 times as
-fast**, and about **1.55 times as fast** on the smaller F3 sphere. The tables and
-figures retain every size, field and observed range.
+**TamerOp was about 1.8× as fast on the two circle inputs.** C++ Ripser was
+**1.61–1.77× as fast on the sparse spheres** and **1.55× as fast on the smaller
+dense sphere**. Most planar requests and the larger dense sphere were closer,
+with the larger planar request over F₂ favoring C++ Ripser by a factor of 1.12.
 
-These are **shared-machine observations**, with substantial variation in
-absolute times. Repetitions and reversed ordering describe that variation;
-they do not remove systematic contention.
+On the 1,408-vertex circle, the complete request took **25.5 s in TamerOp and
+48.8 s in C++ Ripser**. On the 704-vertex sparse sphere, it took **69.7 s and
+43.7 s**. The timer includes reading the distance file, computing the barcode
+and emitting its intervals; Julia methods are already compiled.
 
-Both tools completed all **10 timed requests** with exactly matching
-interval multisets. These results describe the stated inputs, fields and
-measurement conditions.
+```@raw html
+<a href="presentation/ripser_cpp_ratios.svg"><picture>
+<source media="(max-width: 600px)" srcset="presentation/ripser_cpp_ratios_narrow.svg">
+<img src="presentation/ripser_cpp_ratios.svg" alt="All ten C++ Ripser comparisons, with the ratio of C++ time to TamerOp time and the range across process passes." loading="lazy" style="width:100%;max-width:780px;height:auto">
+</picture></a>
+```
 
-[All benchmark results](index.md) · [Times and sizes](#times-and-sizes) ·
-[Machine](#machine-and-builds) · [Download data](ripser_cpp_v1/README.md)
+A ratio above one favors TamerOp: a value of 2 means it takes half as long.
+A ratio below one favors C++ Ripser. Markers are geometric means of paired
+process ratios, and lines show their minimum and maximum across three passes.
+These ranges describe the repetitions on a shared workstation; they are not
+confidence intervals.
 
-## What this comparison asks
+### Actual runtimes and input sizes
 
-As an edge threshold increases, a Rips filtration adds edges and fills their
-cliques. The request is the complete ordinary barcode from H0 through the
-stated degree, including essential classes and interval multiplicities.
-TamerOp uses its direct ordinary-persistence route. A finite encoding remains
-useful for subsequent questions requiring spaces and maps; it is unnecessary
-to materialize that richer object just to return this barcode.
+Times are medians of three process medians, in seconds. F₂, F₃ and F₁₀₁ denote
+arithmetic modulo 2, 3 and 101. A degree label H₂ includes H₀, H₁ and H₂.
+All ten measured inputs appear below.
 
-The fixed suite contains two sizes each of circle-derived dense distances,
-planar dense distances over two fields, spherical dense distances, and
-radius-restricted sparse spherical distances. The circle points are equally
-spaced on the unit circle; planar points are uniform in the square (-1,1)^2;
-spherical points are normalized Gaussian vectors on the unit sphere in R3.
-Seeds and the exact generation rules are in the [input definitions](ripser_cpp_v1/fixtures.json).
-Supplied grades are Euclidean distances rounded to multiples of 1/4096, shared exactly by Float32 and
-Float64. These are the supplied dissimilarities being benchmarked, rather
-than unrounded Euclidean distances. Fields are F2, F3 and F101. Sparse omitted
-edges are absent, and both tools receive the same already restricted graph.
-For sparse requests, essential bars survive the declared cutoff in that
-supplied graph; they need not remain essential in the untruncated point cloud.
+| Input | Vertices | Field / through | TamerOp (s) | C++ Ripser (s) | C++ / TamerOp time |
+| :--- | ---: | :--- | ---: | ---: | ---: |
+| Circle | 1,280 | F₂ / H₁ | 15.5 | 28.6 | 1.83× |
+| Circle | 1,408 | F₂ / H₁ | 25.5 | 48.8 | 1.79× |
+| Planar | 1,024 | F₂ / H₂ | 31.7 | 28.7 | 0.962× |
+| Planar | 1,152 | F₂ / H₂ | 55.4 | 45.7 | 0.890× |
+| Planar | 1,024 | F₁₀₁ / H₂ | 38.5 | 37.4 | 0.944× |
+| Planar | 1,152 | F₁₀₁ / H₂ | 47.2 | 50.1 | 1.05× |
+| Sphere | 448 | F₃ / H₂ | 24.9 | 16.8 | 0.645× |
+| Sphere | 512 | F₃ / H₂ | 40.6 | 42.7 | 1.05× |
+| Sparse sphere | 640 | F₂ / H₂ | 49.8 | 28.0 | 0.565× |
+| Sparse sphere | 704 | F₂ / H₂ | 69.7 | 43.7 | 0.620× |
 
-Sizing pilots targeted roughly 20-40 seconds in C++ on the larger requests;
-actual durations differ by input, field and tool. The pilot is excluded from
-the reported measurements. Sizes were frozen before confirmation, and neither
-implementation was optimized against these results. These synthetic inputs
-are not a random sample of applications or an independent reproduction of
-the earlier Ripser.py suite.
+```@raw html
+<a href="presentation/ripser_cpp_times.svg"><picture>
+<source media="(max-width: 600px)" srcset="presentation/ripser_cpp_times_narrow.svg">
+<img src="presentation/ripser_cpp_times.svg" alt="Elapsed times for the larger input in each family and field, comparing TamerOp with C++ Ripser in seconds." loading="lazy" style="width:100%;max-width:780px;height:auto">
+</picture></a>
+```
 
-## Ripser and Ripser.py are different comparisons
+The plot selects the larger input from each family and field. It shows how
+the ratio translates into elapsed time, including the sparse-sphere result
+favoring C++ Ripser. Reported ratios use the paired process medians. The time
+columns summarize each program separately, so dividing the displayed times
+need not give the reported ratio.
 
-[Upstream Ripser](https://github.com/Ripser/ripser) provides a C++ executable
-for ordinary Rips barcodes. [Ripser.py](https://ripser.scikit-tda.org/en/latest/)
-uses a modified C++ engine behind its Python API and adds workflows such as
-landmark selection and retained cocycles. This report uses the standard
-upstream branch, not its experimental representative-output branches.
-Weighted vertex inputs, raw-cloud distance construction, representative
-cocycles and landmark selection are outside this study.
+## What the comparison computes
 
-The earlier page measures TamerOp against Ripser.py 0.6.15. Its ratios cannot
-be substituted for ratios against this C++ executable. Likewise, comparing
-numbers between the two reports would mix different inputs, sizes and timing
-boundaries. This page does not measure Python-wrapper overhead.
+A Vietoris–Rips filtration adds an edge when its distance reaches the threshold
+and fills every clique with its simplex. Both programs return the complete
+barcode through the requested homology degree, including repeated intervals
+and classes that remain at the end of the filtration. TamerOp uses its direct
+ordinary persistence route, without constructing a
+[finite encoding](../finite_encodings.md).
 
-## Times and sizes
+The inputs contain equally spaced circle points, random planar points in
+(-1,1)², or normalized Gaussian points on a sphere in R³. Their Euclidean
+distances are rounded to multiples of 1/4096, which both Float32 and Float64
+represent exactly. The benchmark therefore computes persistence on the same
+supplied dissimilarities in both programs. The
+[input definitions](ripser_cpp_v1/fixtures.json) give the sizes, seeds and
+construction rules.
 
-Times below are **seconds**, measured from input-file reading through complete
-barcode output. Displayed times are medians of three process medians; each
-process contributes two accepted samples. Ratios are geometric means of the
-three paired-process ratios, so they need not equal the quotient of displayed
-times. Parentheses give minimum and maximum process ratios, **not confidence
-intervals**. Values above one favor TamerOp. The symmetric practical-similarity
-band is 1/1.10-1.10.
+Sparse inputs retain only edges within the stated radius before either tool
+reads the graph. A class that remains at the end of such a filtration is
+essential in that restricted graph; later edges from the full point cloud
+could kill it. This common restriction matters because a separate small
+control exposed a cutoff error in the pinned upstream sparse CLI. The
+[four-vertex example and expected answer](ripser_cpp_v1/sparse_threshold_limitation.json)
+record that behavior. It is excluded from speed comparisons.
 
-| Input | Vertices | Field / through | Intervals | TamerOp (s) | C++ Ripser (s) | C++ / TamerOp (range) |
-| :--- | ---: | :--- | ---: | ---: | ---: | ---: |
-| circle | 1,280 | F2 / H1 | 1,281 | 15.5 | 28.6 | 1.83 (1.73-1.93) |
-| circle | 1,408 | F2 / H1 | 1,409 | 25.5 | 48.8 | 1.79 (1.70-1.91) |
-| planar | 1,024 | F2 / H2 | 1,275 | 31.7 | 28.7 | 0.96 (0.90-1.02) |
-| planar | 1,152 | F2 / H2 | 1,429 | 55.4 | 45.7 | 0.89 (0.83-0.94) |
-| planar | 1,024 | F101 / H2 | 1,275 | 38.5 | 37.4 | 0.94 (0.90-0.97) |
-| planar | 1,152 | F101 / H2 | 1,429 | 47.2 | 50.1 | 1.05 (0.98-1.12) |
-| sphere | 448 | F3 / H2 | 574 | 24.9 | 16.8 | 0.64 (0.61-0.67) |
-| sphere | 512 | F3 / H2 | 657 | 40.6 | 42.7 | 1.05 (1.02-1.09) |
-| sparse sphere | 640 | F2 / H2 | 816 | 49.8 | 28 | 0.57 (0.55-0.58) |
-| sparse sphere | 704 | F2 / H2 | 895 | 69.7 | 43.7 | 0.62 (0.59-0.66) |
+The [Ripser.py report](ripser.md) measures a different interface, which adds
+landmark selection and representative cocycles to its Python workflow. Here
+the requested result is the barcode alone, from a supplied distance file.
 
-[![Complete file-to-barcode runtimes against vertex count, separated by input family and coefficient field.](ripser_cpp_v1/presentation/runtime_sizes.svg)](ripser_cpp_v1/presentation/runtime_sizes.svg)
+## How the measurements were taken
 
-Lines connect the two measured sizes within the same family and field; they
-are guides to the eye, not fitted scaling laws. Vertical marks show the range
-of process medians.
+Both programs start from the same text file. C++ Ripser runs in a new process
+for each call, so its timer includes executable launch, input parsing and
+barcode printing. TamerOp runs in a loaded Julia process; its uninterrupted
+timer includes file reading, native construction, the checked public query
+and full barcode emission. The comparison measures complete requests with
+compiled Julia methods, including C++ executable launch.
 
-[![Every measured C++ Ripser to TamerOp time ratio, with paired-process ranges and the declared practical-similarity band.](ripser_cpp_v1/presentation/ratios.svg)](ripser_cpp_v1/presentation/ratios.svg)
+Each case starts a fresh Julia worker in each of three passes. A discarded
+warmup precedes two accepted samples per tool. Case order reverses in the
+second pass, and tool order alternates between samples. Every request rereads
+its input and creates new mathematical state. TamerOp uses `cache=nothing`;
+C++ process exit discards its graph and reduction. The accepted Julia samples
+record zero compilation and recompilation.
 
-The diamond marks each geometric ratio; the gray segment retains process
-variation. All requests, including material losses, remain visible.
+Sizing used absolute runtimes and resource feasibility, after which inputs
+were frozen for confirmation. [The shared methodology](../benchmarking.md)
+explains the treatment of warmup, paired ratios and fresh computation.
+The [observation record](ripser_cpp_v1/observations.json) retains individual
+measurements and discarded warmups.
 
-## Timing and fresh computations
+### Matching the answers
 
-Both tools start from the same text distance file. C++ Ripser runs through its
-supported CLI in a new process; its timer includes executable launch, input
-parsing and barcode printing. TamerOp runs in a loaded Julia process with the
-required methods warmed. Its uninterrupted timer includes reading the file,
-native construction, the checked public persistence query, and full barcode
-emission. Thus this is a comparison of complete requests with compiled code,
-with the remaining CLI launch cost explicitly included. It is not a claim
-about pure reduction-kernel speed or new Julia-session latency.
+Complete interval multisets agree by degree, including essential classes and
+multiplicities. The supplied grades are separated sufficiently that Ripser's
+printed endpoints decode uniquely to their original values; the harness
+rejects inputs whose values would become ambiguous when printed. Small
+controls additionally agree with an independent explicit boundary reduction,
+covering several fields, equal grades, a stored zero edge and a disconnected
+sparse component. See the [verification record](ripser_cpp_v1/verification.json).
 
-Every request rereads its input and builds new mathematical state. TamerOp
-uses `cache=nothing`; C++ process exit discards graphs, reductions and results.
-Previous answers are used only for verification outside timing. Ordinary reuse
-within one computation is retained. Three passes reverse case order on the
-second pass and alternate tool order for successive samples. Each case starts
-a fresh Julia worker in each pass, giving 30 independent case sessions.
-Each case/tool/session has a discarded full warmup before its two accepted
-samples. Input hashes and complete outputs are checked throughout. A launcher
-termination interrupted the fourth case of the first pass. The three fully
-completed case checkpoints were retained; the partial fourth-case warmup was
-archived and excluded. Subsequent invocations run one bounded case at a time
-with the same timing code, inputs, process layout and limits. The
-[recovery record](ripser_cpp_v1/execution_recovery.json) identifies the controller
-change; neither implementation changed.
+### Computer, versions and memory
 
-All **120 accepted samples** passed verification; **0 compilation-contaminated samples** were rejected.
+The study used [the benchmark computer](../benchmarking.md#the-benchmark-computer),
+with one numerical thread and serial workers pinned to logical CPU 0.
+Recorded one-minute load ranged from 1.59 to 18.11. The ranges beside the
+ratios show the timing variation observed on that shared workstation.
 
-The limits were 240 seconds per timed request, 600 seconds for startup or a
-Julia warmup, and 6 GiB worker RSS. C++ process completion is polled at 10 ms
-intervals; that scheduling granularity is included, not subtracted. It is
-small relative to these measured computations. Julia native-construction and
-public-query times are available as supporting columns in the downloads.
+| Component | Recorded version or setting |
+| :--- | :--- |
+| TamerOp | The same [frozen source](ripser_cpp_v1/candidate_hashes.json) as the Ripser.py study |
+| Julia | 1.12.1 with `--heap-size-hint=4G` |
+| C++ Ripser | Upstream commit `01add51ff64aaf40889483260cc5c3b7d0f2a1e7` |
+| Compiler | g++ 11.4.0; `-O3`, `NDEBUG`, Robin Hood hashing |
+| Coefficient builds | F₂ specialization; `USE_COEFFICIENTS` for odd primes |
+| Worker limits | 6 GiB resident memory; 240 s per request |
 
-All final Julia processes use `--heap-size-hint=4G`, a supported
-[garbage-collection setting](https://docs.julialang.org/en/v1/manual/memory-management/#Memory-Hints)
-chosen for the 6 GiB process guard. GC work inside the request remains timed.
-The first attempt with Julia's default heap policy exceeded that guard during
-the 1,152-point planar F2 request. Its complete observations are retained
-[separately](ripser_cpp_v1/initial_default_heap_observations.json). After a
-three-query memory check with identical barcodes, a second shared-session
-attempt used the heap hint but also exceeded the cap after earlier cases had
-run. Those observations are [retained as well](ripser_cpp_v1/shared_heap_hint_observations.json).
-The final protocol starts a fresh Julia process for each case in each pass,
-with normal package precompilation, the heap hint, and unchanged inputs,
-library source and memory cap. Both earlier attempts are excluded from the
-final timing summary. The comparison therefore does not establish that a
-single long-lived Julia session stays below this memory budget. These numbers
-therefore apply to this runtime configuration, not to every Julia memory policy.
+The heap hint informs Julia's garbage collector of the memory budget.
+Natural garbage collection during a request remains timed. Earlier attempts
+with the default heap policy, and then with several cases sharing a Julia
+session, exceeded the memory limit. The reported measurements use a separate
+worker for each case and pass, with the stated heap hint. The
+[configuration record](ripser_cpp_v1/runtime_configuration_revision.json)
+retains those changes and links them to the excluded observations.
 
-## Correctness and a sparse-cutoff limitation
+Across these cases, TamerOp's process peaks ranged from 2.90 to 5.28 GiB,
+while C++ invocation peaks ranged from 0.02 to 2.03 GiB. The Julia peak includes
+loading, compilation, warmup and repeated computations of that case; each C++
+call has its own process. Retained TamerOp barcode objects occupied
+11.2–48.8 KiB. These are different memory quantities: the small returned
+barcode does not account for the runtime and temporary reduction storage.
+Per-case resident memory, allocation traffic and retained sizes are separate
+columns in the [complete data table](ripser_cpp_v1/summary.csv).
 
-All complete interval multisets are compared by degree, including essential
-bars and multiplicities. Dyadic input grades are separated sufficiently that
-upstream Ripser's six-significant-digit printed endpoints decode uniquely
-back to the exact input values; the harness rejects ambiguous inputs. Six
-small controls additionally agree with an independent explicit simplicial
-boundary reduction: spheres over several fields, equal grades, a stored-zero
-edge, and a disconnected sparse component.
+## Reproduce the results
 
-A separate preflight control exposed a limitation in the pinned upstream
-sparse CLI. Supplying a triangle at grade 1 and edges to a fourth vertex at
-grade 2 with `--threshold 1` still produces an H0 death at 2. The independent
-reference and TamerOp retain that component as essential within the cutoff.
-The original failure, expected answer and input are
-[preserved publicly](ripser_cpp_v1/sparse_threshold_limitation.json). No speed
-ratio is assigned to that incorrect result. The measured sparse inputs are
-already restricted to the common radius before either tool reads them; this
-does not claim that upstream's arbitrary sparse-cutoff path is correct.
+Follow [Reproduce a benchmark report](../benchmark_reproduction.md) to verify
+the records and regenerate the common figures. The study's principal files are:
 
-## Machine and builds
+| Record | Download |
+| :--- | :--- |
+| File and field descriptions | [Data dictionary](ripser_cpp_v1/README.md) |
+| Full summary and paired ratios | [summary.json](ripser_cpp_v1/summary.json) · [summary.csv](ripser_cpp_v1/summary.csv) |
+| Individual observations | [observations.json](ripser_cpp_v1/observations.json) |
+| Mathematical checks | [verification.json](ripser_cpp_v1/verification.json) · [control checks](ripser_cpp_v1/control_verification.json) |
+| Inputs and timing protocol | [manifest.json](ripser_cpp_v1/manifest.json) · [fixtures.json](ripser_cpp_v1/fixtures.json) |
+| Software, harness and computer | [source hashes](ripser_cpp_v1/candidate_hashes.json) · [harness hashes](ripser_cpp_v1/harness_hashes.json) · [machine and build](ripser_cpp_v1/machine_and_build.json) |
+| Integrity checks | [SHA256SUMS](ripser_cpp_v1/SHA256SUMS) |
 
-The runs used an Intel Core i7-1365U (10 physical cores, 12 logical CPUs),
-approximately 31.0 GiB RAM, Linux, and one numerical
-thread pinned to CPU 0. This was a monitored workstation, not an exclusively
-reserved server. Recorded one-minute load averages ranged from
-1.59 to 18.11; the
-paired-process ranges above show observed variation. These are shared-machine
-observations, so small differences should not be treated as stable rankings
-under all machine conditions.
+The SHA-256 of `summary.json` is:
 
-- **TamerOp:** Julia 1.12.1, with the unchanged frozen source snapshot
-  from the Ripser.py v1 study; [source hashes](ripser_cpp_v1/candidate_hashes.json).
-- **C++ Ripser:** upstream commit `01add51ff64aaf40889483260cc5c3b7d0f2a1e7`, compiled with
-  `g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0`, `-O3`, `NDEBUG` and Robin Hood hashing. F2 requests use
-  the upstream binary specialized for F2; odd-prime requests use its supported
-  `USE_COEFFICIENTS` build. The competitor's source was not modified.
+```text
+0ee767629be22d60dc77760cd654feba76b0983d4b8a512c343166a5dae8607d
+```
 
-After normal package precompilation, the 30 case sessions had
-a median TamerOp import time of 3.41 s
-(range 2.14-6.01 s).
-This measures the import inside an already started Julia process after the
-harness dependencies were loaded, not total startup or installed-package
-latency. Discarded per-case warmups are also included in the raw data; they
-are not a matched cold-start benchmark.
-
-## Memory and reproduction
-
-The downloads report sampled process RSS separately from Julia allocation
-traffic and retained result size. Julia's column is the per-case process
-high-water mark, including its runtime, compilation, warmup and repeated
-computations of that case. C++ starts a new process for each call. Their
-difference must not be read as a difference in mathematical object storage.
-Allocation traffic is cumulative allocation during a call, not simultaneous
-resident memory. These measurements accompany the speed results rather than
-replacing them.
-
-Across the ten cases, TamerOp's observed case-process peaks range from
-2.90 to
-5.28 GiB, compared with
-0.02 to
-2.03 GiB for C++ invocations.
-Retained TamerOp barcode objects are only
-11.2-48.8 KiB; that small returned object does not account for the runtime or temporary reduction storage.
-
-| Input / vertices / field | TamerOp peak RSS (GiB) | C++ peak RSS (GiB) | TamerOp allocation traffic (GiB/call) |
-| :--- | ---: | ---: | ---: |
-| circle / 1,280 / F2 | 2.90 | 1.020 | 2.06 |
-| circle / 1,408 / F2 | 3.57 | 2.025 | 2.82 |
-| planar / 1,024 / F2 | 3.73 | 0.023 | 6.78 |
-| planar / 1,152 / F2 | 4.92 | 0.029 | 9.62 |
-| planar / 1,024 / F101 | 3.74 | 0.023 | 6.79 |
-| planar / 1,152 / F101 | 4.92 | 0.029 | 9.64 |
-| sphere / 448 / F3 | 3.85 | 1.014 | 6.64 |
-| sphere / 512 / F3 | 5.28 | 2.015 | 9.65 |
-| sparse sphere / 640 / F2 | 3.56 | 0.266 | 3.06 |
-| sparse sphere / 704 / F2 | 4.04 | 0.271 | 3.78 |
-
-RSS columns are maxima over the accepted observations; allocation traffic is
-the median per call. The different process lifetimes described above remain
-part of their interpretation.
-
-The [data directory](ripser_cpp_v1/README.md) contains every timing observation,
-summaries, the frozen manifest, machine/build details, verification information
-and checksums. Original logs, inputs, the pinned upstream checkout and the
-resumable harness remain in the local study archive. The public data is not
-yet a standalone reproduction bundle. The [benchmarking manual](../benchmarking.md)
-describes the requirements for that eventual release.
+The [benchmark project](https://github.com/erikmnovak/TamerOp-benchmarks/tree/cc389ab410d3d3e6df163a6af6bef48c9cf7b1f1/studies/ripser-cpp-v1)
+provides the frozen TamerOp source, original measurement workers and input
+generator. Preparation checks out the pinned C++ source, builds its two
+coefficient variants and verifies the generated input hashes. The reproduction
+guide walks through checking the published records, rebuilding these figures
+and running a new comparison on your own machine.

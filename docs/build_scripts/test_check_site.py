@@ -382,6 +382,26 @@ class CatalogSiteTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Generated topic destination is absent'):
             self.check(changed)
 
+    def test_collection_can_reach_articles_through_an_explanatory_overview(self):
+        route = 'collections/mathematics/topics/encodings.html'
+        self.catalog['pages'][route] = {'collection': 'mathematics'}
+        self.collections[0]['topic_groups'] = [
+            {'page': route, 'items': [{'page': 'lessons/module.html'}]}]
+        self.write_page(route)
+        topic = self.root / route
+        topic.write_text(topic.read_text().replace('<summary>Collection</summary>',
+            '<summary>Collection</summary><a href="encodings.html" aria-current="page">Finite encodings</a>', 1)
+            .replace('<h1>Article</h1>',
+            '<h1>Finite encodings</h1><a href="../../../lessons/module.html">Module</a>'))
+        overview = self.root / 'collections/mathematics.html'
+        overview.write_text(overview.read_text().replace('<h1>Article</h1>',
+            '<h1>Article</h1><a href="mathematics/topics/encodings.html">Finite encodings</a>'))
+        self.check()
+        topic.write_text(topic.read_text().replace('href="../../../lessons/module.html"',
+                                                   'href="../../../reading_map.html"'))
+        with self.assertRaisesRegex(ValueError, 'missing published topic treatment'):
+            self.check()
+
 
 if __name__ == '__main__':
     unittest.main()

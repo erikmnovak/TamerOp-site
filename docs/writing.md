@@ -21,10 +21,11 @@ sequence, reader questions, and expected mathematical answers. The
 [API inventory guide](api_inventory.md) explains how to maintain the generated
 binding inventory and the explicit reference-writing backlog.
 
-Benchmark reports also follow the shared [visual standard](benchmark_style.md),
-using QPA as the aesthetic reference. Its page, table and figure conventions
-complement the narrative guidance here without requiring identical plot types
-for different studies.
+Benchmark reports follow the shared [report template](benchmark_style.md),
+using PHAT's results-first structure and the established QPA figure palette.
+Keep their headings, ratio direction, tables and reproduction sections
+consistent. Explain the performance finding before the detailed methodology;
+use the common computer reference and keep each study's exact evidence intact.
 
 ## Choose an article's purpose before its format
 
