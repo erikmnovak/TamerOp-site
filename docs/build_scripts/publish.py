@@ -29,7 +29,6 @@ from reading_map import render_reading_map
 from navigation import validate_continuations
 from site_catalog import prepare_catalog
 from source_paths import package_root, source_path, source_name, source_url
-from visualization_support import render_selected
 from public_outputs import declarations, output_records, verify_outputs, render_outputs, present_outputs
 
 DOCS = Path(__file__).resolve().parents[1]
@@ -441,7 +440,7 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
         for source, page in authored:
             if source.suffix != ".md":
                 continue
-            authored_text = render_selected() if source == DOCS / "visualization_support.md" else source.read_text()
+            authored_text = source.read_text()
             text = rewrite_links(authored_text, source, page, pages, stage)
             page.parent.mkdir(parents=True, exist_ok=True)
             page.write_text(f'```@meta\nEditURL = "{source_url(source)}"\n```\n\n'

@@ -1,8 +1,8 @@
 # One source for the map, lesson continuations and site footer.
 # next/alternate are canonical paths, checked against each lesson ending.
 # The diagram emphasizes entry choices; support/reference nodes stay off its routes.
-# Before extending it, read writing.md#preserve-choices-as-the-reading-map-grows
-# and README.md#map-expansion-checklist. Preserve reader choices, not coordinates.
+# Schema and validation commands are documented in article_inventory.md
+# and README.md#maintain-the-reading-map. Preserve reader choices, not coordinates.
 width = 800
 height = 1120
 node_width = 240

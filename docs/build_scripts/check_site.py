@@ -265,6 +265,11 @@ def check_catalog(catalog, root):
         article = parsed.one(tag='article', id='documenter-page')
         destinations = set()
         for node in links(parsed, article):
+            url = urlsplit(node.attrs['href'])
+            if url.scheme or url.netloc:
+                # Authored overview prose can cite other repositories. Such
+                # links do not satisfy the required local catalog treatments.
+                continue
             destination, fragment = target(page, node.attrs['href'])
             if not destination.is_file():
                 raise ValueError(f'{route}: broken generated topic link {node.attrs["href"]}')

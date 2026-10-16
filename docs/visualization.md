@@ -721,15 +721,26 @@ normalize values or compute every pair. The
 the [reference](src/reference/visualization.md#collections-of-features-distances-and-kernels)
 states context, masks, budgets and session behavior.
 
-### Display paths
+### Choose a display
 
-CairoMakie records one selected figure. With Julia running, WGLMakie can
-provide controls that request new results. A volume `:slice_viewer` has
-labelled sliders; rendering it again creates an independent view, while Cairo
-shows the selected plane. Saved HTML offers only the states explicitly
-prepared for offline use. The [support matrix](visualization_support.md)
-records which environments have been checked; a standalone browser check does
-not qualify every notebook host.
+Choose the display according to what you want to explore. CairoMakie produces
+a figure for a selected result. Saved visual sessions let a reader compare
+prepared selections in a browser. With Julia running, WGLMakie provides controls
+that can request new computations, such as another slice or parameter value.
+
+| What you want to do | Display |
+| --- | --- |
+| Include a selected result in a notebook, paper or presentation | A CairoMakie figure, with SVG, PNG or PDF export. |
+| Let readers compare prepared results on a website | A saved visual session with named selections and their figures. |
+| Explore new parameter values and linked selections | A WGLMakie inspector connected to a running Julia session. |
+
+A volume `:slice_viewer` has labelled sliders for choosing a plane. Each render
+has its own selection; CairoMakie shows the selected plane as a figure. For
+live exploration, the [inspection guide](tutorials/live_inspection.ipynb)
+opens a standalone browser window. Embedding the same controls in IJulia,
+Pluto or VS Code also depends on that host's connection to Julia; these
+embedded controls have not been verified in those hosts. Static notebook figures remain
+available through CairoMakie.
 
 ### Enter and repair a finite diagram
 

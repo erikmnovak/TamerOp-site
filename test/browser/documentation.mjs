@@ -266,12 +266,19 @@ try {
     assert.equal(await tab.locator('.site-collection[open]').count(), 1);
     assert.equal(await tab.locator('.site-topic[open] a[aria-current="page"]').count(), 1);
     const mobile = viewport.width < 1056;
-    if (mobile) await tab.locator('#documenter-sidebar-button').click();
+    if (mobile) {
+      await tab.locator('#documenter-sidebar-button').click();
+      // Keyboard focus needs the drawer to finish becoming visible.
+      await tab.waitForFunction(() =>
+        document.getElementById('site-navigation').getBoundingClientRect().left === 0);
+    }
     const using = tab.locator('[data-collection="using"]');
     const invariant = using.locator('.site-topic-entry:has(> [data-topic="invariants"])');
     const algebra = using.locator('.site-topic-entry:has(> [data-topic="algebra"])');
     const priorURL = tab.url();
-    await invariant.locator('button').focus(); await tab.keyboard.press('Enter');
+    await invariant.locator('button').focus();
+    assert.equal(await invariant.locator('button').evaluate(el => el === document.activeElement), true);
+    await tab.keyboard.press('Enter');
     await algebra.locator('button').focus(); await tab.keyboard.press('Space');
     assert.equal(tab.url(), priorURL, 'Arrows expand without navigating');
     assert.notEqual(await invariant.locator('details').getAttribute('open'), null);

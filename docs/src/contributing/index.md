@@ -1,47 +1,37 @@
-# Contributing and project information
+# Contributing
 
-A useful contribution can begin with a mathematical question, an unclear
-explanation, or a small example whose answer seems wrong. The
-[contribution guide](https://github.com/erikmnovak/TamerOp.jl/blob/main/CONTRIBUTING.md) explains how to report a problem,
-set up a checkout and propose a change. Use it for the shared procedure, then
-consult the guidance for the work you are doing.
+A contribution can start with a question, an unclear explanation or an example
+whose answer seems wrong. Use the shared
+[issue tracker](https://github.com/erikmnovak/TamerOp.jl/issues) to report a
+problem or propose work, including the relevant page, study or small example.
+[Discussions](https://github.com/erikmnovak/TamerOp.jl/discussions) is a place
+for usage questions and mathematical ideas.
 
-## Write and organize documentation
+## Choose where to contribute
 
-The [writing guide](../../writing.md) explains article purposes, approachable
-exposition and the relationship between the learning routes and topic map.
-The [site build guide](../../README.md) covers publication and rendered review.
-Maintain article identities and subject links through the
-[article inventory](../../article_inventory.md); use the
-[API inventory guide](../../api_inventory.md) for public-binding coverage and
-reference review.
+| Contribution | What helps us review it |
+| :--- | :--- |
+| [TamerOp.jl](https://github.com/erikmnovak/TamerOp.jl/blob/main/CONTRIBUTING.md): code or an optimization | Explain the changed behavior, provide relevant tests and make performance claims reproducible. |
+| [TamerOp-site](https://github.com/erikmnovak/TamerOp-site/blob/main/CONTRIBUTING.md): a lesson, example or correction | Describe the audience and mathematical purpose, supply working examples and credit sources. |
+| [TamerOp-benchmarks](https://github.com/erikmnovak/TamerOp-benchmarks/blob/main/CONTRIBUTING.md): a benchmark or a run on another computer | Supply the inputs, software versions, hardware, answer checks and raw results. |
 
-## Check a change
+Fork the repository you want to change, work on a branch and open a pull request
+there. Link the shared issue when there is one. Early discussion helps us agree
+on the purpose of a substantial contribution; small corrections can arrive
+directly as pull requests.
 
-The [testing guide](../../testing.md) helps select mathematical, package and
-integration checks and explains the evidence each provides. Live inspector
-changes also use the [browser guide](https://github.com/erikmnovak/TamerOp.jl/blob/main/test/browser/README.md), which
-keeps native checks and actual frontend acceptance distinct.
+Erik Novak reviews contributions and oversees their integration, including the
+final API, teaching presentation and releases. Contributors can concentrate
+on their code, example or measurement while Erik helps fit it into the project.
+Credit is retained when work is adapted, and substantial changes to its meaning
+are discussed with its author. If you are interested in becoming a maintainer,
+email [erikmendesnovak@gmail.com](mailto:erikmendesnovak@gmail.com).
 
-For performance work, begin with the [benchmarking manual](../../benchmarking.md)
-and [comparison-suite guide](../../benchmark_suites.md). They define equivalent
-requests, timing conditions, correctness checks and a bounded study. The
-[benchmark style guide](../../benchmark_style.md) governs presentation of the
-resulting evidence; [completed reports](../../benchmarks/index.md) show its use.
+## Cite the work
 
-## Release and credit the work
-
-The [release guide](../../releasing.md) covers candidate verification,
-registration and tagging. The [changelog](https://github.com/erikmnovak/TamerOp.jl/blob/main/CHANGELOG.md) records
-package changes.
-
-The [citation record](https://github.com/erikmnovak/TamerOp.jl/blob/main/CITATION.cff) credits Erik Novak as the software
-author and explains how to identify the version or commit used in research.
-The [repository contributor history](https://github.com/erikmnovak/TamerOp.jl/graphs/contributors)
-records contributions to tracked files. Mathematical and software sources are
-credited where their ideas are used, including the
-[implementation bibliography](../../implementation/references.md).
-
-## Browse all contributor guidance
-
-<!-- COLLECTION: contributing -->
+The [citation record](https://github.com/erikmnovak/TamerOp.jl/blob/main/CITATION.cff)
+provides the software citation; identify the version or commit used in your
+research. Mathematical and software sources are cited where their ideas are
+used, including the [implementation bibliography](../../implementation/references.md).
+The [changelog](https://github.com/erikmnovak/TamerOp.jl/blob/main/CHANGELOG.md)
+records changes to the library.

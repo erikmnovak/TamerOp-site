@@ -374,6 +374,36 @@ class CatalogSiteTests(unittest.TestCase):
             '<h1>Article</h1><a href="../lessons/module.html">Module</a>'))
         self.check(changed)
 
+    def test_topic_and_collection_prose_can_link_to_external_references(self):
+        self.collections[0]['topic_groups'] = [
+            {'page': None, 'items': [{'page': 'lessons/module.html'}]}]
+        overview = self.root / 'collections/mathematics.html'
+        overview.write_text(overview.read_text().replace('</article>',
+            '<a href="../lessons/module.html">Module</a></article>'))
+        for route in ('topic_map.html', 'topics/encodings.html',
+                      'collections/mathematics.html'):
+            page = self.root / route
+            page.write_text(page.read_text().replace('</article>',
+                '<a href="https://github.com/erikmnovak/TamerOp.jl/blob/main/test/README.md">Tests</a>'
+                '<a href="//example.test/reference.html">Reference</a></article>'))
+        self.check()
+
+    def test_external_reference_cannot_replace_a_required_local_treatment(self):
+        page = self.root / 'topics/encodings.html'
+        before, article = page.read_text().split('<article id="documenter-page">', 1)
+        article = article.replace('href="../lessons/module.html"',
+                                  'href="https://example.test/lessons/module.html"')
+        page.write_text(before + '<article id="documenter-page">' + article)
+        with self.assertRaisesRegex(ValueError, 'missing published topic treatment lessons/module.html'):
+            self.check()
+
+    def test_sidebar_catalog_links_must_remain_local(self):
+        page = self.root / 'index.html'
+        page.write_text(page.read_text().replace('href="collections/mathematics.html"',
+            'href="https://example.test/collections/mathematics.html"'))
+        with self.assertRaisesRegex(ValueError, 'catalog navigation must use local links'):
+            self.check()
+
     def test_authored_topic_overview_must_be_published(self):
         changed = copy.deepcopy(self.catalog)
         changed['collections'][0]['topic_groups'] = [
