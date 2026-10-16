@@ -9,11 +9,11 @@ for usage questions and mathematical ideas.
 
 ## Choose where to contribute
 
-| Contribution | What helps us review it | Where to propose the change |
-| --- | --- | --- |
-| Library code or an optimization | Explain the changed behavior, provide relevant tests and make performance claims reproducible. | [TamerOp.jl](https://github.com/erikmnovak/TamerOp.jl/blob/main/CONTRIBUTING.md) |
-| A lesson, example or correction | Describe the audience and mathematical purpose, supply working examples and credit sources. | [TamerOp-site](https://github.com/erikmnovak/TamerOp-site/blob/main/CONTRIBUTING.md) |
-| A benchmark or a run on another computer | Supply the inputs, software versions, hardware, answer checks and raw results. | [TamerOp-benchmarks](https://github.com/erikmnovak/TamerOp-benchmarks/blob/main/CONTRIBUTING.md) |
+| Contribution | What helps us review it |
+| :--- | :--- |
+| [TamerOp.jl](https://github.com/erikmnovak/TamerOp.jl/blob/main/CONTRIBUTING.md): code or an optimization | Explain the changed behavior, provide relevant tests and make performance claims reproducible. |
+| [TamerOp-site](https://github.com/erikmnovak/TamerOp-site/blob/main/CONTRIBUTING.md): a lesson, example or correction | Describe the audience and mathematical purpose, supply working examples and credit sources. |
+| [TamerOp-benchmarks](https://github.com/erikmnovak/TamerOp-benchmarks/blob/main/CONTRIBUTING.md): a benchmark or a run on another computer | Supply the inputs, software versions, hardware, answer checks and raw results. |
 
 Fork the repository you want to change, work on a branch and open a pull request
 there. Link the shared issue when there is one. Early discussion helps us agree

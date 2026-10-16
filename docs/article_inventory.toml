@@ -2697,7 +2697,7 @@ migration = "retain"
 
 [[articles]]
 id = "contributor_home"
-title = "Contributing and project information"
+title = "Contributing"
 type = "resource"
 topics = ["development"]
 question = "Who contributes to TamerOp, and how can I help?"
