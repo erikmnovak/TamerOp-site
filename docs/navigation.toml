@@ -76,7 +76,7 @@ id = "contributing"
 title = "Contributing"
 page = "contributing/index.html"
 types = ["contributor_guide"]
-order = ["contributing", "writing", "testing", "visualization_support", "documentation_build", "benchmark_suites", "benchmark_style", "releasing"]
+order = []
 primary = false
 
 # Supporting records stay attached to their owners, outside article lists.

@@ -1,25 +1,16 @@
-# Maintaining the API inventory and documentation backlog
+# Maintaining the API inventory
 
-Use the generated [runtime inventory](api_inventory.toml) together with the
-authored [coverage manifest](api_coverage.toml). They answer different questions:
-the inventory records what bindings actually exist; the manifest records where
-we intend to explain them and what work remains. The
-[first learning path](learning_path.md) determines the first reference-writing
-pass. Completing the other families is not a prerequisite for publishing that
-finished path.
-
-For the complete manual, use the [documentation programme](documentation_plan.md)
-to group reader questions and the [article catalog](article_inventory.toml) to
-locate each canonical reference. Comparison, decomposition, persistence variants
-and visual-session contracts have planned homes within the existing owner-family
-coverage. This subdivision does not reassign bindings or establish that new
-methods exist. Review concrete method families when features land; link related
-topics to one precise contract instead of duplicating signatures and defaults.
+The [runtime inventory](api_inventory.toml) records the bindings found when
+TamerOp is loaded. The [coverage manifest](api_coverage.toml) assigns those
+bindings to reference families and records their examples and review state.
+For example, several names can refer to one function, while two functions with
+the same short name can be different objects. The inventory preserves that
+distinction so the documentation can identify which operation it explains.
 
 ## Reproduce the inventory
 
-Run these commands from the website root after preparing its environment with
-`julia docs/bootstrap.jl`. The inventory describes the selected TamerOp checkout:
+Prepare the [website environment](README.md#prepare-the-tools), then run these
+commands from the website root. They use the selected TamerOp checkout:
 
 ```sh
 julia --startup-file=no --project=docs/.build/environment docs/build_scripts/api_inventory.jl
@@ -27,112 +18,74 @@ julia --startup-file=no --project=docs/.build/environment docs/build_scripts/api
 julia --startup-file=no docs/build_scripts/check_api_coverage.jl
 ```
 
-The first command updates the tracked snapshot. The second loads the package
-again and fails if the snapshot differs. It compares the Julia version as well
-as the generated data, so switching even the Julia patch version requires a
-reviewed regeneration. The last command validates coverage assignments and
-reports the backlog from TOML without loading TamerOp. It does not replace the
-runtime freshness check.
+The first command updates the tracked snapshot. The second reloads the package
+and compares it with that snapshot, including the Julia version. Changing the
+Julia patch version therefore requires a reviewed regeneration. The last
+command checks the coverage assignments and referenced files from TOML,
+without loading TamerOp.
 
-The inventory uses normal `import TamerOp`; it does not load source fragments,
-test helpers, local examples, or files under `audit/`. Source fingerprints cover
-`Project.toml`, Julia source under `src/` and `ext/`, and the generator. No
-timestamp, checkout location, or Git commit enters the snapshot. Optional
-integrations are not deliberately activated; any extensions loaded transitively
-are recorded. Extension-specific methods still need separate semantic review.
+The generator uses ordinary `import TamerOp`. Its source fingerprints cover
+`Project.toml`, Julia files under `src/` and `ext/`, and the generator.
+They omit timestamps, checkout paths and Git commits. Optional integrations
+are not deliberately activated; any extensions loaded through dependencies
+are recorded.
 
-## What the initial reconciliation found
+## Read the runtime records
 
-The initial snapshot was generated on Julia 1.12.1. Counts exclude module
-self-bindings and describe bindings or object identities as labelled; they
-are not counts of independent mathematical capabilities.
+| Record or field | Meaning |
+| --- | --- |
+| `objects` | Functions, types and modules grouped by runtime object identity. Scalar constants keep separate bindings even when their values compare equal. |
+| `canonical_binding` | A stable qualified name used to identify an object in the documentation. |
+| `aliases` | Other names that refer to the same runtime object. |
+| Defining module, declaration owners and tiers | Where an object is defined, where the public interface declares it and how callers reach it. |
+| Per-binding metadata and docstring presence | Observations about each name, including whether documentation is attached. |
+| `owner_candidates` | Additional names found in owner modules for which public intent needs review. |
+| Reconciliation records | Disagreements between declared names and the runtime objects, including collisions. |
 
-| Measurement | Count |
-| --- | ---: |
-| Declared `SIMPLE_API` names | 203 |
-| Declared `ADVANCED_API` names, including the simple list | 1,031 |
-| Actual root exports | 206 |
-| Actual `Advanced` exports | 1,205 |
-| Advanced binding-table names absent from `ADVANCED_API` | 138 |
-| Declared advanced names undefined or not exported | 0 |
-| Curated qualified owner bindings | 1,186 |
-| Distinct intended public objects after alias grouping | 1,218 |
+`DataFileIO.artifact` and `Featurizers.artifact`, for example, are distinct
+objects. Aliases of one generic function share an identity, but its different
+method families can need different explanations. A docstring flag records
+presence; review the actual methods, assumptions, outputs and errors when
+deciding whether the reference is complete.
 
-The root's three extra exports are `Advanced`, `SIMPLE_API`, and `ADVANCED_API`.
-The `Advanced` export count includes 37 modules. The static union of declared
-names and binding-table names is therefore not a runtime export count.
+The candidate scan includes local functions, types and modules whose names do
+not start with an underscore, together with documented or explicitly public
+bindings. It includes aliases from an owner's own child modules and omits
+unrelated imports. Selection as public API is recorded in the coverage manifest.
 
-Ten binding-table rows point to a different runtime target object than the
-listed owner object. Nine reflect the simple `Workflow` binding taking
-precedence over a same-named advanced owner generic. Both objects remain in
-the inventory: their capabilities must not disappear merely because the names
-match. The remaining row is `contains`: the preexisting `Base.contains`
-binding prevents the advanced table from installing/exporting
-`PLPolyhedra.contains`. The qualified owner operation remains accounted for;
-the unrelated, unexported target is retained as reconciliation evidence and
-excluded from the intended-public denominator. This documentation preparation
-records the discrepancy without changing the package API.
+## Read the coverage manifest
 
-## Identity, scope, and limits
+| Entry | What to maintain |
+| --- | --- |
+| `families` | Family identity and question, owner modules, reference pages, guides and example sources. |
+| `reference_status`, `example_status`, `review_status` | Separate statements about authored reference material, examples and semantic review. |
+| `overrides` | Explicit assignment of a binding to a family when owner-based routing is insufficient. |
+| `qualified_apis` | Selected operations used through qualified names, with a reason, evidence and family. |
+| `first_path` | The introductory reference subset and its examples. |
+| `backlog` | Specific reference work still required for the family. |
 
-Each `objects` record has a stable qualified `canonical_binding`, its aliases,
-runtime defining module, declaration owners, tiers, and per-binding metadata.
-Functions, types, and modules are grouped by runtime object identity, not by
-name. Scalar constants remain separate bindings even if their values happen
-to compare equal. A canonical key is a documentation identity, not a claim
-that all methods of a generic belong to one subsystem.
+The routing order is an explicit override, then the canonical owner, then the
+declaration owner. Every intended public object needs one unambiguous family.
+A planned reference path may be absent while its `reference_status` is
+`backlog`; guide and example paths must exist. Paths beginning with `src/`,
+`ext/` or `test/` resolve in the selected library checkout, while website
+paths resolve here. The checker uses `TAMEROP_SOURCE` or the adjacent
+TamerOp.jl checkout.
 
-For example, `DataFileIO.artifact` is distinct from `Featurizers.artifact`.
-Conversely, several bindings of a shared generic need one canonical reference
-location plus explanations of materially different method families. The
-inventory's docstring flag only records presence. It does not prove that all
-methods, mathematical assumptions, errors, or workflows are explained.
+## Update coverage after a change
 
-Qualified owner APIs require an intent decision beyond exports. Curated owner
-bindings are retained even when a facade selects another object. The manifest
-also explicitly selects documented owner operations outside those tables,
-including field constructors, file-inspection accessors, and external readers.
-Its `qualified_apis` entries record the evidence and assigned family.
+Read the affected method families and their current reference before editing
+the assignments. Explain their mathematical purpose, inputs, returned values,
+field and domain assumptions, meaningful errors and relevant costs. Link a
+working example. Shared operations should have one canonical contract, with
+links from other contexts.
 
-The remaining `owner_candidates` are a review queue, not automatically public
-API and not automatically internal. The scan retains local non-underscore
-functions/types/modules and documented or explicitly public bindings, including
-aliases imported from an owner's own child modules. It omits unrelated-owner
-and Base imports. This is a conservative discovery aid, not proof that every
-intentionally qualified operation has already been identified. Further intent
-review belongs in the backlog, not in an inflated completion percentage.
+Record authored material, execution and review in their respective fields.
+Regenerate the runtime inventory after an API change, inspect the diff and run
+both checks. Review added exports, candidates and collisions as interface
+questions; binding counts alone cannot establish that a reference explains
+its methods.
 
-## How to advance coverage honestly
-
-The twelve families follow the planned reference organization. Owner-based
-routing supplies an initial home; explicit overrides route cross-cutting
-workflows and options by mathematical task. These assignments are provisional
-until method-family review. In particular, the broad derived-functor owner
-still needs finer separation of resolutions, products, and spectral sequences.
-Every intended curated object must nevertheless have an unambiguous assignment.
-
-The manifest records existing guide paths, planned reference paths, example
-sources, and separate reference/example/review statuses. A planned path is
-allowed to be absent while its status is `backlog`. An existing guide or a
-passing oracle does not make its entire API family documented. Empty example
-lists are explicit gaps. The first-path list selects the bindings to explain
-first, including the specific box-presentation `encode` method and the
-method-dependent results of `dimensions`.
-
-For each writing pass:
-
-1. Select a reader question and a method family from the backlog. Check whether
-   an existing guide already owns its contract before writing another account.
-2. Explain the mathematical purpose, inputs, options, returned object, field and
-   domain assumptions, meaningful errors, and costs. Link a verified example.
-3. Add or refine a manifest assignment when a generic spans families; retain
-   one canonical home and use cross-references for other contexts.
-4. Record execution and editorial review separately. Only update completion
-   status when the corresponding artifact and review exist.
-5. Regenerate the inventory after API changes and run both checks. Review new
-   exports, owner candidates, and binding collisions without deleting working
-   APIs merely to simplify the count.
-
-The current manifest intentionally marks reference authoring as backlog. Its
-purpose is to make the remaining work concrete while the first teaching path
-and documentation site are implemented.
+The [article catalog](article_inventory.md) gives each reference page its
+article identity and source. Update it when adding or changing a reference
+destination, then check the rendered API links through the ordinary site build.

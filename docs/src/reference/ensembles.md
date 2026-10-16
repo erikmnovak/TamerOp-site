@@ -119,9 +119,8 @@ Live WGLMakie controls require Julia and permit replicate, probe and view change
 Invalid selections preserve the previous state. Each linked viewer
 releases its own listeners when it closes; closing the session releases its inputs and leaves
 a static snapshot. Static CairoMakie exports and WGLMakie HTML scenes do not provide live
-statistical recomputation. See the [support matrix](../../visualization_support.md)
-for the rendering and control behavior verified in native, browser and
-notebook environments.
+statistical recomputation. See the [display choices](../../visualization.md#choose-a-display)
+for choosing between figures, prepared selections and live controls.
 
 For a finite set of choices, `save_visual_session` can store named snapshots
 whose figures remain selectable in a browser after Julia closes. The

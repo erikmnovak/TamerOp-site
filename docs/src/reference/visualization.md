@@ -1507,7 +1507,7 @@ rendering from particular notebook frontends.
 
 ## Backend and frontend contract
 
-The [display support matrix](../../visualization_support.md) distinguishes native
+The [display guide](../../visualization.md#choose-a-display) distinguishes native
 rendering, executed standalone-browser interaction and notebook embedding.
 CairoMakie returns static figures. WGLMakie returns a Bonito application for
 linked inspectors and `ImageNd` volume slice viewers; ordinary static

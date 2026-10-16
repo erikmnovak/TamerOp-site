@@ -193,7 +193,7 @@ inputs, Hom spaces and listeners while retaining `inspection_snapshot`.
 Static PNG, SVG and PDF figures and selection among saved finite states are
 supported. Live queries require Julia and WGLMakie. Saving those views retains
 the prepared selections; it does not save the mathematical source needed to
-reconstruct a session. See the [display support guide](../../visualization_support.md)
+reconstruct a session. See the [display choices](../../visualization.md#choose-a-display)
 for the distinct browser and notebook display contracts.
 
 

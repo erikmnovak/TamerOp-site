@@ -151,5 +151,5 @@ python -m venv .venv
 The output contains the SVG and PNG figures, narrow versions for phones,
 the values drawn in each plot and a separate SHA256SUMS file. Rendering these
 figures does not run Julia or change the original evidence. The
-[report template](benchmark_style.md#report-template) explains how to use
-the same presentation for another study.
+[figure tools](https://github.com/erikmnovak/TamerOp-site/blob/main/docs/build_scripts/BENCHMARK_FIGURES.md)
+describe the plotting inputs, shared settings and exported files.

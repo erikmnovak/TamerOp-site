@@ -43,7 +43,7 @@ states only.
 
 Live browser controls use WGLMakie with Julia running. Static notebook figures,
 a standalone browser inspector and live controls embedded in a notebook have
-separate capabilities; consult the [display support matrix](../../visualization_support.md)
+separate capabilities; consult the [display choices](../../visualization.md#choose-a-display)
 for the intended host. Live controls in IJulia, Pluto and VS Code have not
 been qualified by the standalone browser checks.
 

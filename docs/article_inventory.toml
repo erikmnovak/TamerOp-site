@@ -55,12 +55,12 @@ migration = "retain"
 [[articles]]
 id = "contributing"
 title = "Contributing to TamerOp"
-type = "contributor_guide"
+type = "resource"
 topics = ["development"]
 question = "How can I contribute a useful change or report?"
 state = "existing"
 source = "library:CONTRIBUTING.md"
-related = ["testing", "writing", "benchmarking", "releasing"]
+related = ["testing", "benchmarking", "releasing"]
 migration = "retain"
 
 [[articles]]
@@ -82,7 +82,7 @@ topics = ["getting_started", "encodings"]
 question = "Which mathematical learning route should I follow?"
 state = "existing"
 source = "docs/src/reading_map.md"
-related = ["reading_routes", "topic_atlas", "learning_path"]
+related = ["reading_routes", "topic_atlas"]
 migration = "review"
 migration_note = "Keep curricular choices distinct from the topic atlas and update prose when lesson destinations change."
 
@@ -377,21 +377,8 @@ question = "How do I measure a meaningful computation and report what the eviden
 state = "existing"
 plan_ids = ["A23", "A24", "A26"]
 source = "docs/benchmarking.md"
-related = ["benchmark_suites", "benchmark_style", "benchmarks"]
+related = ["benchmarks"]
 migration = "retain"
-
-[[articles]]
-id = "benchmark_suites"
-title = "Designing a comparison that can finish"
-type = "contributor_guide"
-topics = ["performance", "development"]
-question = "How do I design a bounded, semantically matched comparison and finish it?"
-state = "existing"
-plan_ids = ["A22", "A25"]
-source = "docs/benchmark_suites.md"
-related = ["benchmarking", "benchmark_style", "C01", "C18"]
-migration = "split"
-migration_note = "Preserve methodology and study charters; gradually separate development histories from reusable guidance and link canonical report records from this catalog."
 
 [[articles]]
 id = "benchmark_reproduction"
@@ -401,36 +388,25 @@ topics = ["performance"]
 question = "How do I verify the published evidence, rerun a comparison and redraw its figures?"
 state = "existing"
 source = "docs/benchmark_reproduction.md"
-related = ["benchmarks", "benchmarking", "benchmark_style", "C01", "C18", "C14", "C14_cpp", "C22"]
-migration = "retain"
-
-[[articles]]
-id = "benchmark_style"
-title = "Writing a benchmark report"
-type = "contributor_guide"
-topics = ["documentation", "performance"]
-question = "How should a benchmark report look and explain its measured evidence?"
-state = "existing"
-source = "docs/benchmark_style.md"
-related = ["benchmarking", "writing", "C01", "C18"]
+related = ["benchmarks", "benchmarking", "C01", "C18", "C14", "C14_cpp", "C22"]
 migration = "retain"
 
 [[articles]]
 id = "testing"
 title = "Running correctness tests"
-type = "contributor_guide"
+type = "resource"
 topics = ["development"]
 question = "Which correctness checks are appropriate for a change or release?"
 state = "existing"
-source = "docs/testing.md"
-related = ["visualization_support", "browser_checks", "writing", "releasing"]
+source = "library:test/README.md"
+related = ["browser_checks", "releasing"]
 migration = "retain"
 plan_ids = ["A17", "A79"]
 
 [[articles]]
 id = "browser_checks"
 title = "Live inspector browser checks"
-type = "contributor_guide"
+type = "resource"
 topics = ["development", "visualization"]
 question = "How do I verify live inspector behavior in an actual browser?"
 state = "existing"
@@ -439,32 +415,21 @@ related = ["testing", "B46"]
 migration = "retain"
 
 [[articles]]
-id = "writing"
-title = "Writing documentation that teaches"
-type = "contributor_guide"
-topics = ["documentation"]
-question = "How do I write precise, connected and approachable TamerOp documentation?"
-state = "existing"
-source = "docs/writing.md"
-related = ["documentation_build", "article_inventory_guide", "benchmark_style"]
-migration = "retain"
-
-[[articles]]
 id = "documentation_build"
 title = "Build the teaching site"
-type = "contributor_guide"
+type = "resource"
 topics = ["documentation", "development"]
 question = "How do I build and review canonical lessons, downloads and site pages?"
 state = "existing"
 plan_ids = ["A18"]
 source = "docs/README.md"
-related = ["writing", "publication", "reading_routes", "article_inventory_guide"]
+related = ["publication", "reading_routes", "article_inventory_guide"]
 migration = "retain"
 
 [[articles]]
 id = "api_inventory_guide"
 title = "Maintaining the API inventory and documentation backlog"
-type = "contributor_guide"
+type = "resource"
 topics = ["documentation", "development"]
 question = "How do I reconcile runtime bindings with intended API documentation?"
 state = "existing"
@@ -476,25 +441,13 @@ migration = "retain"
 [[articles]]
 id = "releasing"
 title = "Releasing TamerOp"
-type = "contributor_guide"
+type = "resource"
 topics = ["development"]
 question = "How do I validate and publish one release candidate?"
 state = "existing"
 plan_ids = ["A15"]
-source = "docs/releasing.md"
+source = "library:RELEASING.md"
 related = ["testing", "contributing"]
-migration = "retain"
-
-[[articles]]
-id = "learning_path"
-title = "Implementing the first learning path"
-type = "resource"
-topics = ["documentation", "encodings"]
-question = "What mathematical examples and acceptance checks govern the first learning route?"
-state = "existing"
-plan_ids = ["A18"]
-source = "docs/learning_path.md"
-related = ["reading_map", "ring", "square", "writing"]
 migration = "retain"
 
 [[articles]]
@@ -527,7 +480,7 @@ topics = ["performance"]
 question = "Which measured comparisons can I read, and what do they cover?"
 state = "existing"
 source = "docs/benchmarks/index.md"
-related = ["C01", "C18", "benchmark_suites"]
+related = ["C01", "C18"]
 migration = "retain"
 
 [[articles]]
@@ -613,19 +566,19 @@ topics = ["documentation"]
 question = "Which existing and planned articles have an editorial home?"
 state = "existing"
 source = "docs/article_inventory.toml"
-related = ["article_inventory_guide", "writing"]
+related = ["article_inventory_guide"]
 migration = "retain"
 
 [[articles]]
 id = "article_inventory_guide"
 title = "Maintaining the article inventory"
-type = "contributor_guide"
+type = "resource"
 topics = ["documentation"]
 question = "How do I maintain article identities, boundaries, topic membership and migration intent?"
 state = "existing"
 plan_ids = ["A18"]
 source = "docs/article_inventory.md"
-related = ["article_inventory", "writing", "documentation_build"]
+related = ["article_inventory", "documentation_build"]
 migration = "retain"
 
 [[articles]]
@@ -2340,7 +2293,7 @@ question = "What does the scoped comparison with QPA establish?"
 state = "existing"
 source = "docs/benchmarks/qpa.md"
 plan_ids = ["C01"]
-related = ["benchmark_suites", "benchmark_style", "qpa_data"]
+related = ["qpa_data"]
 migration = "retain"
 
 [[articles]]
@@ -2352,7 +2305,7 @@ question = "What would a semantically matched comparison with multipers establis
 state = "planned"
 scope = "Candidate scope: Data-to-invariant workflows: multifiltrations, slices, Hilbert/rank/Euler signed measures, approximations, features and visualization. Alignment before measuring: Same filtration, grid choices, coefficient field, requested invariant and approximation accuracy. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C02", "A22", "A23", "A26"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2364,7 +2317,7 @@ question = "What would a semantically matched comparison with Persistence-Algebr
 state = "planned"
 scope = "Candidate scope: Graded presentations, minimization, kernels, Hom maps and supported free resolutions. Alignment before measuring: Match grading and presentation semantics; begin with its documented F2 coefficient support. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C03"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2376,7 +2329,7 @@ question = "What would a semantically matched comparison with FlangePresentation
 state = "planned"
 scope = "Candidate scope: Construct flat-injective presentations of finite-dimensional persistence modules from free resolutions. Alignment before measuring: Match supported module classes and starting information; verify represented spaces and maps, and charge any required resolution construction. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C04"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2388,7 +2341,7 @@ question = "What would a semantically matched comparison with RIVET establish?"
 state = "planned"
 scope = "Candidate scope: Two-parameter Hilbert functions, bigraded Betti data, fibered barcode construction and slice queries; visual exploration. Alignment before measuring: Same module, grades and slice conventions; separate construction from new slice queries and GUI assessment. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C05"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2400,7 +2353,7 @@ question = "What would a semantically matched comparison with Hera establish?"
 state = "planned"
 scope = "Candidate scope: Bottleneck/Wasserstein distances and two-parameter matching-distance approximation. Alignment before measuring: Match normalization, essential bars, parameter domain and error guarantee; distinguish approximate matching from TamerOp's finite-window exact request. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C06"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2412,7 +2365,7 @@ question = "What would a semantically matched comparison with mpfree establish?"
 state = "planned"
 scope = "Candidate scope: Bifiltered chain complexes to minimal presentations of persistent homology. Alignment before measuring: Match homology degree, coefficient field, grading and minimality; validate the presented module. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C07"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2424,7 +2377,7 @@ question = "What would a semantically matched comparison with 2pac establish?"
 state = "planned"
 scope = "Candidate scope: Two-parameter persistent cohomology and supported presentation/resolution outputs. Alignment before measuring: Fix homology/cohomology conversion, grading, field and requested resolution range. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C08"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2436,7 +2389,7 @@ question = "What would a semantically matched comparison with homalg establish?"
 state = "planned"
 scope = "Candidate scope: Hom, tensor, Ext, Tor, complexes and operations on maps. Alignment before measuring: Identify the same module category and functors, with supported coefficient rings/backends and explicit comparisons of maps. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C09"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2448,7 +2401,7 @@ question = "What would a semantically matched comparison with Macaulay2 establis
 state = "planned"
 scope = "Candidate scope: Graded module constructions, free resolutions, Hom, Ext, Tor and homology. Alignment before measuring: Match polynomial-module interpretation, grading and degree components; do not substitute finite-poset derived groups. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C10"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2460,7 +2413,7 @@ question = "What would a semantically matched comparison with OSCAR establish?"
 state = "planned"
 scope = "Candidate scope: Multigraded modules, complexes, Hom/tensor constructions and resolutions; Julia-to-Julia algebra. Alignment before measuring: Match category and requested terms/maps; materialize lazy outputs and exclude compilation in both tools' computation timings. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C11"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2472,7 +2425,7 @@ question = "What would a semantically matched comparison with SageMath establish
 state = "planned"
 scope = "Candidate scope: Quiver representations and Hom spaces; chain complexes and homology. Alignment before measuring: Check support for required relations: a quiver alone does not enforce poset commutativity. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C12"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2484,7 +2437,7 @@ question = "What would a semantically matched comparison with GUDHI establish?"
 state = "planned"
 scope = "Candidate scope: Filtered-complex construction and persistent homology from point clouds, images and supplied complexes. Alignment before measuring: Match filtration definition, threshold, field and barcode/representative output; charge input conversion. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C13"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2497,7 +2450,7 @@ state = "existing"
 source = "docs/benchmarks/ripser.md"
 scope = "Final v1: 31 development requests and six separately reported reserved evaluation cases, four paired passes, complete ordinary barcodes and opt-in cocycles, verified fresh mathematical work. Numerical scope, representative sampling and native-output differences remain explicit."
 plan_ids = ["C14"]
-related = ["benchmark_suites", "benchmark_style", "ripser_data"]
+related = ["ripser_data"]
 migration = "retain"
 
 [[articles]]
@@ -2509,7 +2462,7 @@ question = "What would a semantically matched comparison with Ripserer.jl establ
 state = "planned"
 scope = "Candidate scope: Rips, cubical and alpha persistence, including supported representative cycles/cocycles. Alignment before measuring: Match filtration and representative type; exclude compilation for both Julia implementations. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C15"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2521,7 +2474,7 @@ question = "What would a semantically matched comparison with PersistenceDiagram
 state = "planned"
 scope = "Candidate scope: Diagram distances/matchings, landscapes, images, Betti curves and plotting. Alignment before measuring: Same diagrams, endpoint/essential-bar conventions, feature parameters and sampling grid. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C16"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2533,7 +2486,7 @@ question = "What would a semantically matched comparison with Dionysus establish
 state = "planned"
 scope = "Candidate scope: Persistent homology/cohomology and representatives; zigzag or vineyard tasks where both tools support the same request. Alignment before measuring: Match filtration events, directions, field and output semantics; record any currently unsupported branch explicitly. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C17"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2545,7 +2498,7 @@ question = "What does the scoped comparison with PHAT establish?"
 state = "existing"
 source = "docs/benchmarks/phat.md"
 plan_ids = ["C18"]
-related = ["benchmark_suites", "benchmark_style", "phat_data"]
+related = ["phat_data"]
 migration = "retain"
 
 [[articles]]
@@ -2557,7 +2510,7 @@ question = "What would a semantically matched comparison with rhomboidtiling est
 state = "planned"
 scope = "Candidate scope: Planar/3D rhomboid tilings, higher-order Delaunay mosaics and multicover bifiltrations. Alignment before measuring: Match radius/depth conventions, depth cap, degeneracy assumptions, grades and sliced/unsliced construction. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C19"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2569,7 +2522,7 @@ question = "What would a semantically matched comparison with AIDA establish?"
 state = "planned"
 scope = "Candidate scope: Indecomposable decomposition and supported presentation/decomposition tasks. Alignment before measuring: Establish an actual common output first; an exact indecomposable decomposition is different from an interval approximation or signed invariant decomposition. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C20"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2581,7 +2534,7 @@ question = "What would a semantically matched comparison with MPIntInv establish
 state = "planned"
 scope = "Candidate scope: Interval-based invariants and multiplicities of finite-grid representations; supported filtration-to-invariant workflows. Alignment before measuring: Match interval family and compression convention, finite-grid category and signed multiplicities; identify external backend work. Establish the shared implemented request before authoring results; this planned article contains no measured finding."
 plan_ids = ["C21"]
-related = ["benchmark_suites", "benchmark_style"]
+related = []
 migration = "author"
 
 [[articles]]
@@ -2594,7 +2547,7 @@ state = "existing"
 source = "docs/benchmarks/cubicalripser.md"
 scope = "The closed 48-request study covers nonperiodic 2D/3D F2 barcodes under vertex and top-cell conventions, with noise, binary and smooth arrays, fixed size ladders and reserved asymmetric inputs. Three process passes give 864 exact-verified compiled uncached samples. Report substantial strengths and binary-vertex losses, larger calibration limits, machine and memory separately. Singleton axes and representative-cycle requests remain outside the timed scope."
 plan_ids = ["C22", "A25", "A113"]
-related = ["benchmark_suites", "benchmark_style", "cubicalripser_data"]
+related = ["cubicalripser_data"]
 migration = "retain"
 
 [[articles]]
@@ -3482,19 +3435,6 @@ plan_ids = ["B72", "A95", "A98"]
 migration = "retain"
 
 [[articles]]
-id = "documentation_programme"
-title = "A coherent documentation programme"
-type = "resource"
-topics = ["documentation", "development"]
-question = "How do mathematical lessons, library guides, recipes, API contracts and implementation accounts grow together?"
-state = "existing"
-scope = "Authoring architecture for the full A01-A122 programme: complete mathematical curriculum relation, vertical collection composition, horizontal topic handoffs, existing-source migrations and optimization/publication policy. Article identity and state remain in this catalog; implementation evidence stays in development records."
-related = ["article_inventory_guide", "learning_path", "writing", "documentation_build", "api_coverage"]
-plan_ids = ["A18", "A20", "A45"]
-migration = "retain"
-source = "docs/documentation_plan.md"
-
-[[articles]]
 id = "ripser_data"
 title = "Ripser.py v1 benchmark data"
 type = "resource"
@@ -3528,7 +3468,7 @@ state = "existing"
 source = "docs/benchmarks/ripser_cpp.md"
 scope = "Ten larger dense/sparse distance requests, three paired process passes on a shared workstation, exact interval checks and separately retained sparse-threshold limitation. Distinct from the Ripser.py study."
 plan_ids = ["C14"]
-related = ["C14", "benchmark_suites", "benchmark_style", "ripser_cpp_data"]
+related = ["C14", "ripser_cpp_data"]
 migration = "retain"
 
 [[articles]]
@@ -3541,19 +3481,6 @@ state = "existing"
 source = "docs/benchmarks/ripser_cpp_data.md"
 related = ["C14_cpp"]
 migration = "retain"
-
-[[articles]]
-id = "visualization_support"
-title = "Visualization support and acceptance"
-type = "contributor_guide"
-topics = ["development", "visualization"]
-question = "Which display paths are supported and what evidence is required for each?"
-state = "existing"
-source = "docs/visualization_support.md"
-related = ["testing", "browser_checks", "writing", "ref_visualization"]
-migration = "retain"
-plan_ids = ["A36", "A37"]
-scope = "Generated from library:test/visualization_support.toml. Standing coordinate/interaction contracts, supported versus verified family paths, mandatory native/browser evidence and bounded frontend qualification. Outside the mathematical reading map."
 
 [[articles]]
 id = "ref_ensembles"
@@ -3578,5 +3505,5 @@ state = "existing"
 source = "docs/benchmarks/visual_interaction.md"
 scope = "Actual browser input through committed readout and subsequent rendering, small and larger retained filtrations, first browser use versus subsequent queries, software rendering and shared-desktop limitations. Keep latency evidence separate from guide instructions and algorithm explanations; no cross-tool speed claim or universal frame-rate guarantee."
 plan_ids = ["A123"]
-related = ["B46", "ref_visual_sessions", "guide_live_inspection", "benchmarking", "benchmark_style"]
+related = ["B46", "ref_visual_sessions", "guide_live_inspection", "benchmarking"]
 migration = "retain"

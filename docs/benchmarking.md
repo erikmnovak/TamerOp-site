@@ -177,7 +177,7 @@ weights.
 Raw records retain sample times, warmups, counters, verification outcomes,
 process identities and failures. Repetition describes the observed variation;
 it cannot remove systematic interference from other work on the computer.
-The [study-design guide](benchmark_suites.md) explains how scope, weighting
+The [study-design guide](https://github.com/erikmnovak/TamerOp-benchmarks/blob/main/PROTOCOL.md#design-a-bounded-suite) explains how scope, weighting
 and sampling are chosen before confirmation.
 
 ## Checking the mathematical answers
@@ -233,6 +233,6 @@ New timing runs write new records, reflecting the machine on which they ran.
 
 Follow [Reproduce a benchmark report](benchmark_reproduction.md) to verify the
 files, regenerate figures or run a comparison. Authors preparing another
-study can use the [study charter](benchmark_suites.md#reusable-suite-charter),
-[execution protocol](https://github.com/erikmnovak/TamerOp-benchmarks/blob/main/PROTOCOL.md)
-and [report template](benchmark_style.md#report-template).
+study can use the [study charter](https://github.com/erikmnovak/TamerOp-benchmarks/blob/main/PROTOCOL.md#reusable-suite-charter)
+and [contribution guide](https://github.com/erikmnovak/TamerOp-benchmarks/blob/main/CONTRIBUTING.md)
+to describe the comparison and supply its evidence.

@@ -207,8 +207,8 @@ session.
 Live inspection depends on a running Julia process and a working connection
 to the browser. A direct Julia selection checks the mathematical transition;
 keyboard entry, pointer events, message delivery and closing a browser involve
-additional behavior. The [support matrix](../visualization_support.md) records
-the supported display paths, and the
+additional behavior. The [display guide](../visualization.md#choose-a-display) describes
+the available display modes, and the
 [browser checking guide](https://github.com/erikmnovak/TamerOp.jl/blob/main/test/browser/README.md) describes how those
 interactions are exercised.
 

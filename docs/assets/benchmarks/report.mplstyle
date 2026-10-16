@@ -1,5 +1,5 @@
 # QPA-based appearance for public benchmark reports.
-# Semantic rules and review guidance: docs/benchmark_style.md.
+# Rendering instructions: docs/build_scripts/BENCHMARK_FIGURES.md.
 # Apply inside matplotlib.pyplot.style.context(...).
 # Assign colors explicitly by tool identity when some series are absent.
 # Hex colors omit # because Matplotlib style files use it for comments.
