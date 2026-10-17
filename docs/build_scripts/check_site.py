@@ -11,6 +11,7 @@ from publish import DOCS, sha256, validate_outputs
 from navigation import continuation_links, published_pages, validate_continuations
 from site_shell import Structure
 from public_outputs import declarations, output_routes, verify_outputs
+from agent_guide import check_downloads as check_agent_guide
 
 
 class Links(HTMLParser):
@@ -355,6 +356,8 @@ def check_site():
             if url.fragment and target in html and unquote(url.fragment) not in html[target].ids:
                 raise ValueError(f'{page.relative_to(root)}: missing anchor {link}')
     check_notebooks(manifest, html, root)
+    if any(name.startswith('library:agent/') for name in manifest.get('guides', {})):
+        check_agent_guide(root, json.loads((root / 'downloads/publication.json').read_text()), manifest['guides'])
     check_catalog(json.loads((root / 'catalog.json').read_text()), root)
     print(f'Publication checks passed: {len(html)} HTML pages; catalog coverage and reachability, navigation, local outlines, reading continuations, local links, anchors, images and notebook downloads.')
 

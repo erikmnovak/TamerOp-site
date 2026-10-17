@@ -55,7 +55,9 @@ try {
     'collections/api.html', 'collections/using/topics/invariants.html',
     'guides/inputs_to_objects.html', 'guides/spaces_and_maps.html',
     'implementation/qq_coordinates.html', 'benchmarks/phat.html',
-    'contributing/index.html', 'tutorials/ring.html'];
+    'contributing/index.html', 'tutorials/ring.html', 'agents/index.html',
+    'agents/workflows/data_to_encoding.html', 'agents/workflows/module_maps.html',
+    'agents/workflows/visualization.html'];
   async function checkPageRendering(label) {
     await page.evaluate(() => document.fonts.ready);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, label);
@@ -79,6 +81,21 @@ try {
     await page.screenshot({ path: path.join(output, route.replaceAll('/', '-') + '.png') });
     checked.push(route);
   }
+
+  // The task guide and its original source downloads come from the same library.
+  await page.goto(base + 'start/install.html');
+  await page.locator('article a').filter({ hasText: /^agent guide$/ }).click();
+  assert.equal(page.url(), base + 'agents/index.html');
+  const agentMarkdown = page.locator('.agent-guide-source a').filter({ hasText: 'Read this page as Markdown' });
+  const markdownResponse = await page.request.get(new URL(await agentMarkdown.getAttribute('href'), page.url()).href);
+  assert.equal(markdownResponse.status(), 200);
+  assert.match(await markdownResponse.text(), /^# Using TamerOp with coding agents/m);
+  const archive = page.locator('.agent-guide-source a').filter({ hasText: 'Download the guide, examples and skill' });
+  assert.equal((await page.request.get(new URL(await archive.getAttribute('href'), page.url()).href)).status(), 200);
+  await page.locator('article a[href="workflows/data_to_encoding.html"]').click();
+  const script = page.locator('article a[href$="data_to_encoding.jl"]');
+  assert.equal(await script.count(), 1);
+  assert.equal((await page.request.get(new URL(await script.getAttribute('href'), page.url()).href)).status(), 200);
 
   // The directory entrance and every nested Introduction link share one page.
   await page.goto(base);

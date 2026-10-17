@@ -30,6 +30,7 @@ from navigation import validate_continuations
 from site_catalog import prepare_catalog
 from source_paths import package_root, source_path, source_name, source_url
 from public_outputs import declarations, output_records, verify_outputs, render_outputs, present_outputs
+import agent_guide
 
 DOCS = Path(__file__).resolve().parents[1]
 ROOT = DOCS.parent
@@ -395,6 +396,9 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
         raise RuntimeError("Run julia docs/bootstrap.jl first; see docs/README.md.")
     validate_environment()
     config = tomllib.loads((DOCS / "publication.toml").read_text())
+    has_agent_guide = any(name.startswith("library:agent/") for name in config["guides"])
+    agent_record, agent_files = (agent_guide.snapshot(PACKAGE_ROOT, config["guides"])
+                                 if has_agent_guide else (None, {}))
     source_hashes = package_source_hashes()
     site_state = site_checkout_state()
     manifest_hash = sha256(manifest)
@@ -429,11 +433,15 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
             shutil.copytree(previous, downloads)
         else:
             downloads.mkdir()
+        if agent_record is not None:
+            agent_guide.stage_downloads(stage, agent_record, agent_files)
         pages = {(DOCS / "src" / p.relative_to(stage)).resolve(): p
                  for p in stage.rglob("*.md")}
         pages.update({source_path(DOCS, src): stage / dest for src, dest in config["guides"].items()})
         pages.update({(DOCS / n["source"]).resolve(): stage / n["page"] for n in config["notebooks"]})
         authored = list(pages.items())
+        pages.update({(PACKAGE_ROOT / "agent" / name).resolve(): stage / agent_guide.DOWNLOAD_ROOT / name
+                      for name in agent_files if Path(name).suffix != ".md"})
         pages.update({(DOCS / "src" / p.relative_to(stage)).resolve(): p for p in pages.values()})
         pages.update({(DOCS / "src" / "downloads" / Path(n["source"]).name).resolve():
                       downloads / Path(n["source"]).name for n in config["notebooks"]})
@@ -442,8 +450,14 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
                 continue
             authored_text = source.read_text()
             text = rewrite_links(authored_text, source, page, pages, stage)
+            edit_url = source_url(source)
+            if source.is_relative_to(PACKAGE_ROOT / "agent"):
+                revision_prefix = agent_guide.REPOSITORY + "/blob/" + agent_record["library_revision"] + "/"
+                text = text.replace(agent_guide.REPOSITORY + "/blob/main/", revision_prefix)
+                edit_url = edit_url.replace(agent_guide.REPOSITORY + "/blob/main/", revision_prefix)
+                text += agent_guide.page_note(agent_record, source, PACKAGE_ROOT, page, stage)
             page.parent.mkdir(parents=True, exist_ok=True)
-            page.write_text(f'```@meta\nEditURL = "{source_url(source)}"\n```\n\n'
+            page.write_text(f'```@meta\nEditURL = "{edit_url}"\n```\n\n'
                             + documenter_markdown(text))
         if "reading_map" in config:
             map_config = config["reading_map"]
@@ -554,8 +568,14 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
         if reuse_unchanged:
             record.update(reuse_mode="unchanged", previous_publication={
                 "sha256": capture_hash, "git_commit": capture["git_commit"]})
+        if agent_record is not None and agent_guide.snapshot(PACKAGE_ROOT, config["guides"])[0] != agent_record:
+            raise ValueError("The agent guide changed during publication; rebuild.")
         record = {**record, "site": site_state,
                   "package_repository": "https://github.com/erikmnovak/TamerOp.jl"}
+        if agent_record is not None:
+            record.update(agent_guide=agent_record, package_checkout={
+                "git_commit": agent_record["library_revision"],
+                "working_tree_dirty": agent_record["working_tree_dirty"]})
         (downloads / "publication.json").write_text(json.dumps(record, indent=2) + "\n")
         target = build / "src"
         if target.exists():
@@ -566,6 +586,8 @@ def publish(julia: str, reuse_executed: bool = False, reuse_unchanged: bool = Fa
     print("Building Documenter HTML from the captured outputs", flush=True)
     subprocess.run([julia, "--startup-file=no", "--threads=1", f"--project={ENVIRONMENT}",
                     str(DOCS / "make.jl")], cwd=ROOT, env=env, check=True)
+    if agent_record is not None:
+        agent_guide.install_downloads(DOCS / "build", agent_files)
     # Retain byte-identical data downloads, including the raw data dictionaries,
     # alongside their HTML pages so the published SHA256SUMS remain verifiable.
     for asset in (DOCS / "benchmarks").rglob("*"):

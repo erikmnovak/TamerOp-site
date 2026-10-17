@@ -55,7 +55,7 @@ id = "api"
 title = "API reference"
 page = "collections/api.html"
 types = ["api_reference"]
-order = []
+order = ["agent_guide"]
 
 [[collections]]
 id = "implementation"
@@ -80,6 +80,21 @@ order = []
 primary = false
 
 # Supporting records stay attached to their owners, outside article lists.
+[[resources]]
+id = "agent_data_to_encoding"
+collection = "api"
+owner = "agent_guide"
+
+[[resources]]
+id = "agent_module_maps"
+collection = "api"
+owner = "agent_guide"
+
+[[resources]]
+id = "agent_visualization"
+collection = "api"
+owner = "agent_guide"
+
 [[resources]]
 id = "implementation_bibliography"
 collection = "implementation"
