@@ -110,6 +110,10 @@ page = "reading_map.md"
 
 # Existing chapters retain their canonical locations during site migration.
 [guides]
+"library:agent/README.md" = "agents/index.md"
+"library:agent/workflows/data_to_encoding.md" = "agents/workflows/data_to_encoding.md"
+"library:agent/workflows/module_maps.md" = "agents/workflows/module_maps.md"
+"library:agent/workflows/visualization.md" = "agents/workflows/visualization.md"
 "decomposition.md" = "explanations/decomposition.md"
 "implementation/interval_decomposition.md" = "implementation/interval_decomposition.md"
 "implementation/ensembles.md" = "implementation/ensembles.md"

@@ -30,6 +30,51 @@ documentation = "Documentation and navigation"
 development = "Development and maintenance"
 
 [[articles]]
+id = "agent_guide"
+title = "Using TamerOp with coding agents"
+type = "api_reference"
+topics = ["getting_started"]
+question = "How can a coding agent choose a TamerOp workflow, run it and interpret its result?"
+state = "existing"
+source = "library:agent/README.md"
+scope = "Package setup and version discovery, task routing, public operation help and optional Codex or Claude Code skill installation. The library owns the guide and its executable examples."
+related = ["agent_data_to_encoding", "agent_module_maps", "agent_visualization", "installation"]
+migration = "retain"
+
+[[articles]]
+id = "agent_data_to_encoding"
+title = "From points to a finite encoding"
+type = "resource"
+topics = ["geometry", "encodings"]
+question = "How can an agent construct and inspect a small multiparameter persistence example?"
+state = "existing"
+source = "library:agent/workflows/data_to_encoding.md"
+related = ["agent_guide"]
+migration = "retain"
+
+[[articles]]
+id = "agent_module_maps"
+title = "Compute with a module's spaces and maps"
+type = "resource"
+topics = ["algebra", "encodings"]
+question = "How can an agent describe a finite module and check the maps between its spaces?"
+state = "existing"
+source = "library:agent/workflows/module_maps.md"
+related = ["agent_guide"]
+migration = "retain"
+
+[[articles]]
+id = "agent_visualization"
+title = "Inspect a result and save its figure"
+type = "resource"
+topics = ["visualization", "data_io"]
+question = "How can an agent inspect a visual result and save it for its user?"
+state = "existing"
+source = "library:agent/workflows/visualization.md"
+related = ["agent_guide"]
+migration = "retain"
+
+[[articles]]
 id = "project_readme"
 title = "TamerOp"
 type = "resource"

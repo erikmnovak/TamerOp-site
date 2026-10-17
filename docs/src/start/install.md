@@ -6,6 +6,10 @@ Julia 1.x release; follow the
 if needed. The blocks labelled `julia` below belong at the Julia prompt,
 while terminal commands are labelled `sh`.
 
+If you are working with a coding agent, the
+[agent guide](../agents/index.md) connects setup with complete examples and an
+optional skill for Codex or Claude Code.
+
 ## Create an environment
 
 A Julia environment records the packages used by your work, allowing you to

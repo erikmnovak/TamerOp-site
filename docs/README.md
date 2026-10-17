@@ -125,6 +125,17 @@ changes records individual source hashes as well as its commit.
 Each article has one canonical source. Its website page, notebook download and
 figures derive from that source.
 
+The public coding agent guide is owned by `agent/` in the selected library
+checkout. Its `library:` routes in `publication.toml` produce `agents/index.html`
+and the workflow pages. Edit that library source to change the guide. The
+publisher generates a complete ZIP archive and copies the original Markdown,
+Julia examples and skill files under `downloads/agent/`; it preserves their
+bytes and relative directory structure. `downloads/agent-guide.json` records
+the library version, revision and file hashes, also included in
+`downloads/publication.json`. The build fails on missing guide inputs or changes
+during publication, and `check_site.py` verifies the published files, archive,
+page links and source record. These downloads require no private reference files.
+
 | File | What it controls |
 | --- | --- |
 | [article_inventory.toml](article_inventory.toml) | Article identity, question, scope, type, topics and canonical source. See the [schema guide](article_inventory.md). |

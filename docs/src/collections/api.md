@@ -6,6 +6,9 @@ has the stated meaning. It also describes how to check your inputs. To see
 how several operations work together on an example, begin with
 [Using TamerOp](using.md), where the guides follow and interpret the computation.
 
+The [coding agent guide](../agents/index.md) gives task routes, executable examples
+and guidance for using the documentation shipped with the installed package.
+
 ## Find an operation's contract
 
 An operation's contract is the combination of its accepted inputs, guarantees
@@ -48,7 +51,7 @@ method-specific help in Julia.
 | Interpret algebraic scope | `OP.hom`, `OP.ext`, `OP.tor`, `OP.resolve` | [Mathematical categories](../../math_categories.md) |
 | Choose coefficients and geometry | `OA.EncodingOptions`, `OP.PipelineOptions` | [Options and their effects](../../option_contracts.md) |
 
-## Shared contracts
+## Guides and shared contracts
 
 <!-- COLLECTION: api -->
 
